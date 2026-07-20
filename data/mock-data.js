@@ -327,8 +327,9 @@ const MOCK_DATA = [
     industry: 'ผ้าไม่ถักทอ',
     address: 'ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
     lat: 13.0965, lng: 100.9650,
-    current: { bod: 9.7, cod: 38.4, do: 5.2, ph: 7.0, temp: 30.5 },
-    history: generateHistory(9.7, 38.4, 5.2, 7.0, 30.5)
+    monitor: ['ph','tds','tss','cod','bod'],
+    current: { bod: 9.7, cod: 38.4, do: 5.2, ph: 7.0, temp: 30.5, tds: 350, tss: 28 },
+    history: generateHistory(9.7, 38.4, 5.2, 7.0, 30.5, 350, 28)
   },
   {
     id: 30,
@@ -639,8 +640,9 @@ const MOCK_DATA = [
     industry: 'อาหาร',
     address: '600/1 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
     lat: 13.0995, lng: 100.9558,
-    current: { bod: 12.2, cod: 52.5, do: 4.0, ph: 7.4, temp: 32.5 },
-    history: generateHistory(12.2, 52.5, 4.0, 7.4, 32.5)
+    monitor: ['ph','tds','tss','cod','bod'],
+    current: { bod: 12.2, cod: 52.5, do: 4.0, ph: 7.4, temp: 32.5, tds: 420, tss: 38 },
+    history: generateHistory(12.2, 52.5, 4.0, 7.4, 32.5, 420, 38)
   },
   {
     id: 61,
@@ -692,27 +694,5 @@ const MOCK_DATA = [
     monitor: ['ph','tds','tss','cod','bod'],
     current: { bod: 12.4, cod: 52.8, do: 4.5, ph: 7.3, temp: 32.8, tds: 440, tss: 35 },
     history: generateHistory(12.4, 52.8, 4.5, 7.3, 32.8, 440, 35)
-  },
-  {
-    id: 66,
-    name: 'Thai Asahi',
-    nameTh: 'ไทยอาซาฮี',
-    industry: 'อาหาร',
-    address: '628/1 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0978, lng: 100.9615,
-    monitor: ['ph','tds','tss','cod','bod'],
-    current: { bod: 10.2, cod: 42.5, do: 4.8, ph: 7.2, temp: 32.0, tds: 390, tss: 30 },
-    history: generateHistory(10.2, 42.5, 4.8, 7.2, 32.0, 390, 30)
-  },
-  {
-    id: 67,
-    name: 'Sahachol Interpack',
-    nameTh: 'สหชลอ อินเตอร์แพ็ค',
-    industry: 'บรรจุภัณฑ์',
-    address: '633 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0982, lng: 100.9628,
-    monitor: ['ph','tds','tss','cod','bod'],
-    current: { bod: 9.8, cod: 38.2, do: 5.0, ph: 7.1, temp: 31.5, tds: 360, tss: 25 },
-    history: generateHistory(9.8, 38.2, 5.0, 7.1, 31.5, 360, 25)
   }
 ];
