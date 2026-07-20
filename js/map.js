@@ -93,6 +93,10 @@ function addFactoryMarker(factory) {
     this.setStyle({ radius: 2.5, weight: 1, fillOpacity: 0.7 });
   });
 
+  marker.on('click', function () {
+    selectFactory(factory.id);
+  });
+
   const popupHTML = buildPopupHTML(factory);
   marker.bindPopup(popupHTML, {
     maxWidth: 300,
