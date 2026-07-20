@@ -22,7 +22,7 @@ const TILE_LAYERS = {
 
 function initMap() {
   map = L.map('map', {
-    center: [13.0833, 100.9667],
+    center: [13.0980, 100.9630],
     zoom: 15,
     zoomControl: true,
     attributionControl: true
@@ -43,10 +43,10 @@ function setTileLayer(type) {
 
 function drawEstateBoundary() {
   const estateBoundary = L.polygon([
-    [13.0960, 100.9540],
-    [13.0960, 100.9820],
-    [13.0730, 100.9820],
-    [13.0730, 100.9540]
+    [13.1025, 100.9520],
+    [13.1025, 100.9700],
+    [13.0880, 100.9700],
+    [13.0880, 100.9520]
   ], {
     color: '#d4a017',
     weight: 2,
