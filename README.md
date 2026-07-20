@@ -4,7 +4,8 @@
 
 ## ฟีเจอร์
 
-- **แผนที่โรงงาน** — Circle Marker สีเขียว/แดง บน Leaflet.js
+- **แผนที่จริง** — OpenStreetMap (Street) + ArcGIS (Satellite) สลับได้
+- **Circle Marker** — สีเขียว (ผ่าน) / แดง (ไม่ผ่าน) + glow effect
 - **Hover Popup** — ชี้ที่โรงงาน → แสดงชื่อ + ค่าพารามิเตอร์น้ำเสีย
 - **Sidebar รายชื่อ** — รายชื่อ 15 โรงงาน + ค้นหา + สถานะผ่าน/ไม่ผ่าน
 - **กราฟแนวโน้ม** — Chart.js แสดงค่า BOD, COD, DO, pH, Temperature 7 วันย้อนหลัง
@@ -27,9 +28,9 @@
 saha-sr-wq-dashboard/
 ├── index.html              ← หน้าจอหลัก
 ├── css/
-│   └── styles.css          ← ธีมสีเหลือง-ทอง-น้ำเงิน
+│   └── styles.css          ← ธีมสีเหลือง-ทอง-น้ำเงิน (Light/Dark)
 ├── js/
-│   ├── app.js              ← Controller หลัก
+│   ├── app.js              ← Controller หลัก + Theme Toggle
 │   ├── map.js              ← Leaflet map + circle markers
 │   └── charts.js           ← Chart.js trend lines
 ├── data/
@@ -39,10 +40,11 @@ saha-sr-wq-dashboard/
 
 ## Tech Stack
 
-- **Leaflet.js 1.9** — แผนที่ interactive
+- **Leaflet.js 1.9** — แผนที่ interactive (OpenStreetMap + ArcGIS Satellite)
 - **Chart.js 4.x** — กราฟแนวโน้ม
 - **Vanilla JS** — ไม่ต้อง build, ไม่ต้อง npm
 - **CSS Grid + Flexbox** — Responsive layout
+- **CSS Variables** — รองรับ Light/Dark Theme
 
 ## วิธีใช้งาน
 
@@ -54,25 +56,31 @@ https://akradechLao.github.io/saha-sr-wq-dashboard/
 
 ## ข้อมูลโรงงาน (15 แห่ง)
 
-ตรวจสอบจาก SPI Official Website: industrial-park.spi.co.th
+ตรวจสอบจาก SPI Official Website: `industrial-park.spi.co.th` สาขาศรีราชา
 
-| # | โรงงาน | อุตสาหกรรม |
-|---|--------|-----------|
-| 1 | Thai Samsung Electronics | อิเล็กทรอนิกส์ |
-| 2 | Lion (Thailand) | ผลิตภัณฑ์ทำความสะอาด |
-| 3 | Sahacogen (Chonburi) | โรงไฟฟ้า |
-| 4 | Saha Seiren | ชิ้นส่วนยานยนต์ |
-| 5 | Asahi Kasei Spunbond (Thailand) | ผ้าไม่ถักทอ |
-| 6 | TopTrend Manufacturing | สินค้าอุปโภคบริโภค |
-| 7 | Molten (Thailand) | พลาสติก/โพลิเมอร์ |
-| 8 | Kenmin Foods (Thailand) | อาหาร |
-| 9 | Thai President Foods | บะหมี่กึ่งสำเร็จรูป (มาม่า) |
-| 10 | Nissin Foods (Thailand) | บะหมี่สำเร็จรูป |
-| 11 | S&J International Enterprises | เครื่องสำอาง |
-| 12 | Thai Arai | ชิ้นส่วนพลาสติก |
-| 13 | Racha Ushino | ผ้าขนหนู |
-| 14 | Thai Lotte | ขนมหวาน/อาหารว่าง |
-| 15 | SPI Office & Outlet | สำนักงาน |
+| # | โรงงาน | อุตสาหกรรม | ที่อยู่ |
+|---|--------|-----------|--------|
+| 1 | Thai Samsung Electronics | อิเล็กทรอนิกส์ | 313 หมู่ 1 ถ.สุขาภิบาล 8 ต.บึง อ.ศรีราชา |
+| 2 | Lion (Thailand) | ผลิตภัณฑ์ทำความสะอาด | 602 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา |
+| 3 | Sahacogen (Chonburi) | โรงไฟฟ้า | 636 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา |
+| 4 | Saha Seiren | ชิ้นส่วนยานยนต์ | 592 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา |
+| 5 | Asahi Kasei Spunbond (Thailand) | ผ้าไม่ถักทอ | ต.หนองขาม อ.ศรีราชา |
+| 6 | TopTrend Manufacturing | สินค้าอุปโภคบริโภค | 334 หมู่ 1 ต.บึง อ.ศรีราชา |
+| 7 | Molten (Thailand) | พลาสติก/โพลิเมอร์ | 666 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา |
+| 8 | Kenmin Foods (Thailand) | อาหาร | 600/45 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา |
+| 9 | Thai President Foods | บะหมี่กึ่งสำเร็จรูป (มาม่า) | 601 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา |
+| 10 | Nissin Foods (Thailand) | บะหมี่สำเร็จรูป | 631 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา |
+| 11 | S&J International Enterprises | เครื่องสำอาง | 600/4 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา |
+| 12 | Thai Arai | ชิ้นส่วนพลาสติก | 623/1-2 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา |
+| 13 | Racha Ushino | ผ้าขนหนู | 630 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา |
+| 14 | Thai Lotte | ขนมหวาน/อาหารว่าง | 600/8 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา |
+| 15 | SPI Office & Outlet | สำนักงาน | 999 หมู่ 11 ต.หนองขาม อ.ศรีราชา |
+
+## แหล่งข้อมูล
+
+- SPI Official Website: https://industrial-park.spi.co.th
+- กรมควบคุมมลพิษ: เกณฑ์มาตรฐานน้ำทิ้งจากโรงงานอุตสาหกรรม
+- OpenStreetMap + ArcGIS: แผนที่
 
 ## License
 
