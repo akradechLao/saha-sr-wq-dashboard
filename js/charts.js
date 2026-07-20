@@ -26,51 +26,52 @@ function renderTrendChart(factory) {
   const history = factory.history;
   const labels = history.map(h => h.dateShort);
   const colors = getChartColors();
+  const hasOil = history[0].oil !== undefined;
 
   const datasets = [
     {
-      label: 'BOD (mg/L)',
+      label: 'BOD',
       data: history.map(h => h.bod),
       borderColor: '#d4a017',
       backgroundColor: 'rgba(212, 160, 23, 0.08)',
-      borderWidth: 2.5,
+      borderWidth: 2,
       tension: 0.35,
       fill: true,
-      pointRadius: 3,
-      pointHoverRadius: 6,
+      pointRadius: 2,
+      pointHoverRadius: 5,
       pointBackgroundColor: '#d4a017',
       pointBorderColor: colors.pointBorder,
-      pointBorderWidth: 2,
+      pointBorderWidth: 1.5,
       yAxisID: 'y'
     },
     {
-      label: 'COD (mg/L)',
+      label: 'COD',
       data: history.map(h => h.cod),
       borderColor: '#3b82f6',
       backgroundColor: 'rgba(59, 130, 246, 0.06)',
       borderWidth: 2,
       tension: 0.35,
       fill: false,
-      pointRadius: 3,
-      pointHoverRadius: 6,
+      pointRadius: 2,
+      pointHoverRadius: 5,
       pointBackgroundColor: '#3b82f6',
       pointBorderColor: colors.pointBorder,
-      pointBorderWidth: 2,
+      pointBorderWidth: 1.5,
       yAxisID: 'y1'
     },
     {
-      label: 'DO (mg/L)',
+      label: 'DO',
       data: history.map(h => h.do),
       borderColor: '#22c55e',
       backgroundColor: 'rgba(34, 197, 94, 0.06)',
       borderWidth: 2,
       tension: 0.35,
       fill: false,
-      pointRadius: 3,
-      pointHoverRadius: 6,
+      pointRadius: 2,
+      pointHoverRadius: 5,
       pointBackgroundColor: '#22c55e',
       pointBorderColor: colors.pointBorder,
-      pointBorderWidth: 2,
+      pointBorderWidth: 1.5,
       yAxisID: 'y'
     },
     {
@@ -81,15 +82,15 @@ function renderTrendChart(factory) {
       borderWidth: 2,
       tension: 0.35,
       fill: false,
-      pointRadius: 3,
-      pointHoverRadius: 6,
+      pointRadius: 2,
+      pointHoverRadius: 5,
       pointBackgroundColor: '#a855f7',
       pointBorderColor: colors.pointBorder,
-      pointBorderWidth: 2,
+      pointBorderWidth: 1.5,
       yAxisID: 'y'
     },
     {
-      label: 'Temp (°C)',
+      label: 'Temp',
       data: history.map(h => h.temp),
       borderColor: '#ef4444',
       backgroundColor: 'rgba(239, 68, 68, 0.06)',
@@ -97,14 +98,68 @@ function renderTrendChart(factory) {
       borderDash: [5, 3],
       tension: 0.35,
       fill: false,
-      pointRadius: 3,
-      pointHoverRadius: 6,
+      pointRadius: 2,
+      pointHoverRadius: 5,
       pointBackgroundColor: '#ef4444',
       pointBorderColor: colors.pointBorder,
-      pointBorderWidth: 2,
+      pointBorderWidth: 1.5,
       yAxisID: 'y1'
     }
   ];
+
+  if (history[0].tds !== undefined) {
+    datasets.push({
+      label: 'TDS',
+      data: history.map(h => h.tds),
+      borderColor: '#06b6d4',
+      borderWidth: 1.5,
+      tension: 0.35,
+      fill: false,
+      pointRadius: 2,
+      pointHoverRadius: 4,
+      pointBackgroundColor: '#06b6d4',
+      pointBorderColor: colors.pointBorder,
+      pointBorderWidth: 1,
+      yAxisID: 'y2',
+      borderDash: [3, 2]
+    });
+  }
+
+  if (history[0].tss !== undefined) {
+    datasets.push({
+      label: 'TSS',
+      data: history.map(h => h.tss),
+      borderColor: '#f97316',
+      borderWidth: 1.5,
+      tension: 0.35,
+      fill: false,
+      pointRadius: 2,
+      pointHoverRadius: 4,
+      pointBackgroundColor: '#f97316',
+      pointBorderColor: colors.pointBorder,
+      pointBorderWidth: 1,
+      yAxisID: 'y2',
+      borderDash: [6, 3]
+    });
+  }
+
+  if (hasOil) {
+    datasets.push({
+      label: 'Oil',
+      data: history.map(h => h.oil),
+      borderColor: '#84cc16',
+      borderWidth: 1.5,
+      tension: 0.35,
+      fill: false,
+      pointRadius: 2,
+      pointHoverRadius: 4,
+      pointBackgroundColor: '#84cc16',
+      pointBorderColor: colors.pointBorder,
+      pointBorderWidth: 1,
+      yAxisID: 'y2',
+      borderDash: [2, 2]
+    });
+  }
 
   trendChart = new Chart(ctx, {
     type: 'line',
@@ -184,13 +239,24 @@ function renderTrendChart(factory) {
           position: 'right',
           title: {
             display: true,
-            text: 'COD / Temperature',
+            text: 'COD / Temp',
             color: colors.textMuted,
             font: { size: 10 }
           },
           ticks: {
             color: colors.textMuted,
             font: { size: 10 }
+          },
+          grid: {
+            drawOnChartArea: false
+          }
+        },
+        y2: {
+          display: false,
+          position: 'right',
+          ticks: {
+            color: colors.textMuted,
+            font: { size: 9 }
           },
           grid: {
             drawOnChartArea: false

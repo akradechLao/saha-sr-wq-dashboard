@@ -1,11 +1,11 @@
-function generateHistory(bod, cod, doVal, ph, temp) {
+function generateHistory(bod, cod, doVal, ph, temp, tds, tss, oil) {
   const days = [];
   const now = new Date();
   const dayNames = ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.'];
   for (let i = 6; i >= 0; i--) {
     const d = new Date(now);
     d.setDate(d.getDate() - i);
-    days.push({
+    const entry = {
       date: d.toISOString().split('T')[0],
       dateShort: `${d.getDate()}/${d.getMonth() + 1}`,
       dayName: dayNames[d.getDay()],
@@ -14,7 +14,11 @@ function generateHistory(bod, cod, doVal, ph, temp) {
       do: +(doVal + (Math.random() - 0.5) * 2).toFixed(1),
       ph: +(ph + (Math.random() - 0.5) * 1).toFixed(1),
       temp: +(temp + (Math.random() - 0.5) * 3).toFixed(1)
-    });
+    };
+    if (tds !== undefined) entry.tds = +(tds + (Math.random() - 0.5) * 100).toFixed(0);
+    if (tss !== undefined) entry.tss = +(tss + (Math.random() - 0.5) * 30).toFixed(0);
+    if (oil !== undefined) entry.oil = +(oil + (Math.random() - 0.5) * 2).toFixed(1);
+    days.push(entry);
   }
   return days;
 }
@@ -24,7 +28,10 @@ const STANDARDS = {
   cod:  { max: 120, unit: 'mg/L', label: 'COD',        method: 'Standard Methods 5220D' },
   do:   { min: 2,   unit: 'mg/L', label: 'DO',         method: 'Electrode Method 4500-O' },
   ph:   { min: 6,   max: 9, unit: '-', label: 'pH',     method: 'Electrode Method 4500-H' },
-  temp: { max: 40,  unit: '°C',   label: 'Temperature', method: 'Thermometric' }
+  temp: { max: 40,  unit: '°C',   label: 'Temperature', method: 'Thermometric' },
+  tds:  { max: 500, unit: 'mg/L', label: 'TDS',        method: 'Conductivity Method' },
+  tss:  { max: 50,  unit: 'mg/L', label: 'TSS',        method: 'Standard Methods 2540D' },
+  oil:  { max: 5,   unit: 'mg/L', label: 'Oil & Grease', method: 'IR Spectrophotometry' }
 };
 
 // ข้อมูลโรงงานทั้งหมดจาก SPI Official Website: industrial-park.spi.co.th
@@ -67,8 +74,9 @@ const MOCK_DATA = [
     industry: 'สิ่งทอ',
     address: '622/3-4 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20280',
     lat: 13.0990, lng: 100.9580,
-    current: { bod: 11.8, cod: 48.5, do: 4.0, ph: 7.3, temp: 32.0 },
-    history: generateHistory(11.8, 48.5, 4.0, 7.3, 32.0)
+    monitor: ['ph','tds','tss','cod','bod','oil'],
+    current: { bod: 11.8, cod: 48.5, do: 4.0, ph: 7.3, temp: 32.0, tds: 420, tss: 28, oil: 3.2 },
+    history: generateHistory(11.8, 48.5, 4.0, 7.3, 32.0, 420, 28, 3.2)
   },
   {
     id: 5,
@@ -267,8 +275,9 @@ const MOCK_DATA = [
     industry: 'ผลิตภัณฑ์ทำความสะอาด',
     address: '602 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
     lat: 13.0997, lng: 100.9553,
-    current: { bod: 15.3, cod: 68.7, do: 3.2, ph: 7.8, temp: 33.5 },
-    history: generateHistory(15.3, 68.7, 3.2, 7.8, 33.5)
+    monitor: ['ph','tds','tss','cod','bod'],
+    current: { bod: 15.3, cod: 68.7, do: 3.2, ph: 7.8, temp: 33.5, tds: 380, tss: 35 },
+    history: generateHistory(15.3, 68.7, 3.2, 7.8, 33.5, 380, 35)
   },
   {
     id: 25,
@@ -317,8 +326,9 @@ const MOCK_DATA = [
     industry: 'ผ้าไม่ถักทอ',
     address: 'ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
     lat: 13.0965, lng: 100.9650,
-    current: { bod: 9.7, cod: 38.4, do: 5.2, ph: 7.0, temp: 30.5 },
-    history: generateHistory(9.7, 38.4, 5.2, 7.0, 30.5)
+    monitor: ['ph','tds','tss','cod','bod'],
+    current: { bod: 9.7, cod: 38.4, do: 5.2, ph: 7.0, temp: 30.5, tds: 350, tss: 30 },
+    history: generateHistory(9.7, 38.4, 5.2, 7.0, 30.5, 350, 30)
   },
   {
     id: 30,
@@ -507,8 +517,9 @@ const MOCK_DATA = [
     industry: 'ชิ้นส่วนพลาสติก',
     address: '623/1-2 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
     lat: 13.0942, lng: 100.9575,
-    current: { bod: 7.5, cod: 32.8, do: 5.5, ph: 7.2, temp: 31.8 },
-    history: generateHistory(7.5, 32.8, 5.5, 7.2, 31.8)
+    monitor: ['ph','tds','tss','cod','bod'],
+    current: { bod: 7.5, cod: 32.8, do: 5.5, ph: 7.2, temp: 31.8, tds: 320, tss: 22 },
+    history: generateHistory(7.5, 32.8, 5.5, 7.2, 31.8, 320, 22)
   },
   {
     id: 49,
@@ -517,8 +528,9 @@ const MOCK_DATA = [
     industry: 'เสื้อผ้าสำเร็จรูป',
     address: '600/3 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
     lat: 13.0995, lng: 100.9570,
-    current: { bod: 14.5, cod: 62.8, do: 3.5, ph: 7.6, temp: 33.8 },
-    history: generateHistory(14.5, 62.8, 3.5, 7.6, 33.8)
+    monitor: ['ph','tds','tss','cod','bod'],
+    current: { bod: 14.5, cod: 62.8, do: 3.5, ph: 7.6, temp: 33.8, tds: 450, tss: 42 },
+    history: generateHistory(14.5, 62.8, 3.5, 7.6, 33.8, 450, 42)
   },
   {
     id: 50,
@@ -617,8 +629,9 @@ const MOCK_DATA = [
     industry: 'เครื่องสำอาง',
     address: '600/4 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
     lat: 13.0935, lng: 100.9565,
-    current: { bod: 5.8, cod: 22.4, do: 6.0, ph: 7.0, temp: 30.5 },
-    history: generateHistory(5.8, 22.4, 6.0, 7.0, 30.5)
+    monitor: ['ph','tds','tss','cod','bod','oil'],
+    current: { bod: 5.8, cod: 22.4, do: 6.0, ph: 7.0, temp: 30.5, tds: 280, tss: 18, oil: 1.5 },
+    history: generateHistory(5.8, 22.4, 6.0, 7.0, 30.5, 280, 18, 1.5)
   },
   {
     id: 60,
@@ -637,8 +650,9 @@ const MOCK_DATA = [
     industry: 'โรงไฟฟ้า',
     address: '636 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
     lat: 13.0988, lng: 100.9606,
-    current: { bod: 22.1, cod: 125.3, do: 1.8, ph: 6.2, temp: 38.7 },
-    history: generateHistory(22.1, 125.3, 1.8, 6.2, 38.7)
+    monitor: ['ph','tds','tss','cod','bod'],
+    current: { bod: 22.1, cod: 125.3, do: 1.8, ph: 6.2, temp: 38.7, tds: 520, tss: 48 },
+    history: generateHistory(22.1, 125.3, 1.8, 6.2, 38.7, 520, 48)
   },
   {
     id: 62,
@@ -667,8 +681,9 @@ const MOCK_DATA = [
     industry: 'อาหารทะเล',
     address: '666/2 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
     lat: 13.1008, lng: 100.9648,
-    current: { bod: 15.5, cod: 68.2, do: 3.0, ph: 7.5, temp: 34.0 },
-    history: generateHistory(15.5, 68.2, 3.0, 7.5, 34.0)
+    monitor: ['ph','tds','tss','cod','bod'],
+    current: { bod: 15.5, cod: 68.2, do: 3.0, ph: 7.5, temp: 34.0, tds: 480, tss: 40 },
+    history: generateHistory(15.5, 68.2, 3.0, 7.5, 34.0, 480, 40)
   },
   {
     id: 65,

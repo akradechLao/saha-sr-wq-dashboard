@@ -122,6 +122,10 @@ function buildPopupHTML(factory) {
     { label: 'Temp', value: d.temp, unit: '°C', pass: checks.temp }
   ];
 
+  if (d.tds !== undefined) rows.push({ label: 'TDS', value: d.tds, unit: 'mg/L', pass: checks.tds });
+  if (d.tss !== undefined) rows.push({ label: 'TSS', value: d.tss, unit: 'mg/L', pass: checks.tss });
+  if (d.oil !== undefined) rows.push({ label: 'Oil', value: d.oil, unit: 'mg/L', pass: checks.oil });
+
   const paramsHTML = rows.map(r => `
     <div class="popup-param">
       <span class="param-name">${r.label}</span>
@@ -153,16 +157,22 @@ function buildPopupHTML(factory) {
 }
 
 function isPass(d) {
-  return d.bod <= 20 && d.cod <= 120 && d.do >= 2 && d.ph >= 6 && d.ph <= 9 && d.temp <= 40;
+  return d.bod <= 20 && d.cod <= 120 && d.do >= 2 && d.ph >= 6 && d.ph <= 9 && d.temp <= 40
+    && (d.tds === undefined || d.tds <= 500)
+    && (d.tss === undefined || d.tss <= 50)
+    && (d.oil === undefined || d.oil <= 5);
 }
 
 function getParamChecks(d) {
   return {
-    bod: d.bod <= 20,
-    cod: d.cod <= 120,
-    do:  d.do >= 2,
-    ph:  d.ph >= 6 && d.ph <= 9,
-    temp: d.temp <= 40
+    bod:  d.bod <= 20,
+    cod:  d.cod <= 120,
+    do:   d.do >= 2,
+    ph:   d.ph >= 6 && d.ph <= 9,
+    temp: d.temp <= 40,
+    tds:  d.tds === undefined || d.tds <= 500,
+    tss:  d.tss === undefined || d.tss <= 50,
+    oil:  d.oil === undefined || d.oil <= 5
   };
 }
 

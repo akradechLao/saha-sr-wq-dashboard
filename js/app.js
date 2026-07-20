@@ -196,6 +196,10 @@ function renderParamGrid(factory) {
     { key: 'temp', label: 'Temperature', value: d.temp, unit: '°C',   pass: checks.temp, standard: '≤ 40 °C' }
   ];
 
+  if (d.tds !== undefined) params.push({ key: 'tds', label: 'TDS', value: d.tds, unit: 'mg/L', pass: checks.tds, standard: '≤ 500 mg/L' });
+  if (d.tss !== undefined) params.push({ key: 'tss', label: 'TSS', value: d.tss, unit: 'mg/L', pass: checks.tss, standard: '≤ 50 mg/L' });
+  if (d.oil !== undefined) params.push({ key: 'oil', label: 'Oil & Grease', value: d.oil, unit: 'mg/L', pass: checks.oil, standard: '≤ 5 mg/L' });
+
   const grid = document.getElementById('param-grid');
   grid.innerHTML = params.map(p => `
     <div class="param-card ${p.key === 'temp' ? 'full-width' : ''}">
