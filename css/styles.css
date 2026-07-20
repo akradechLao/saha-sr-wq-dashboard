@@ -325,6 +325,7 @@ body {
 .sidebar-header {
   padding: 14px 16px;
   border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
 }
 
 .sidebar-header h2 {
@@ -445,52 +446,69 @@ body {
 
 /* ============ DETAIL PANEL ============ */
 .detail-panel {
-  background: var(--bg-card);
-  border-top: 2px solid var(--accent-gold);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   transition: var(--transition);
 }
 
 .detail-panel.hidden { display: none; }
 
+.sidebar.has-detail .factory-list { display: none; }
+.sidebar.has-detail .sidebar-header { display: none; }
+
 .detail-panel-header {
-  padding: 12px 20px;
+  padding: 10px 14px;
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.detail-panel-header .detail-header-left {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
 .detail-panel-header h2 {
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   color: var(--accent-yellow);
   font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .detail-panel-header .industry-tag {
-  font-size: 0.7rem;
-  padding: 3px 10px;
-  border-radius: 12px;
+  font-size: 0.62rem;
+  padding: 2px 8px;
+  border-radius: 10px;
   background: rgba(212, 160, 23, 0.15);
   color: var(--accent-gold);
   border: 1px solid rgba(212, 160, 23, 0.3);
+  white-space: nowrap;
 }
 
 .detail-panel-header .close-btn {
-  margin-left: auto;
   background: none;
   border: 1px solid var(--border);
   color: var(--text-secondary);
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   border-radius: 6px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   transition: var(--transition);
+  flex-shrink: 0;
 }
 
 .detail-panel-header .close-btn:hover {
@@ -499,37 +517,25 @@ body {
   color: var(--fail);
 }
 
-.detail-content {
-  display: grid;
-  grid-template-columns: 320px 1fr;
-  gap: 0;
-  height: 260px;
-}
-
-.detail-info {
-  padding: 14px 20px;
-  border-right: 1px solid var(--border);
-  overflow-y: auto;
-}
-
-.detail-info .name-th {
-  font-size: 0.75rem;
+.detail-name-th {
+  font-size: 0.68rem;
   color: var(--text-muted);
-  margin-bottom: 12px;
+  padding: 6px 14px 0;
 }
 
 .param-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 6px;
+  gap: 5px;
+  padding: 8px 14px;
+  flex-shrink: 0;
 }
 
 .param-card {
-  padding: 8px 10px;
+  padding: 6px 8px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border);
   background: var(--bg-primary);
-  transition: background 0.3s ease;
 }
 
 .param-card.full-width {
@@ -537,15 +543,15 @@ body {
 }
 
 .param-label {
-  font-size: 0.65rem;
+  font-size: 0.58rem;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-bottom: 3px;
+  margin-bottom: 2px;
 }
 
 .param-value {
-  font-size: 1.05rem;
+  font-size: 0.85rem;
   font-weight: 700;
 }
 
@@ -553,36 +559,40 @@ body {
 .param-value.fail { color: var(--fail); }
 
 .param-unit {
-  font-size: 0.68rem;
+  font-size: 0.6rem;
   color: var(--text-secondary);
   font-weight: 400;
   margin-left: 2px;
 }
 
 .param-status {
-  font-size: 0.62rem;
-  margin-top: 2px;
+  font-size: 0.55rem;
+  margin-top: 1px;
 }
 
 .param-status.pass { color: var(--pass); }
 .param-status.fail { color: var(--fail); }
 
 .detail-chart {
-  padding: 14px 20px;
+  flex: 1;
+  padding: 8px 14px 10px;
   display: flex;
   flex-direction: column;
+  min-height: 0;
 }
 
 .detail-chart h3 {
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   color: var(--text-secondary);
-  margin-bottom: 8px;
+  margin-bottom: 4px;
   font-weight: 600;
+  flex-shrink: 0;
 }
 
 .chart-container {
   flex: 1;
   position: relative;
+  min-height: 0;
 }
 
 .chart-container canvas {
@@ -808,21 +818,6 @@ body {
     display: block;
   }
 
-  .detail-content {
-    grid-template-columns: 1fr;
-    height: auto;
-  }
-
-  .detail-info {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-    max-height: 200px;
-  }
-
-  .detail-chart {
-    min-height: 200px;
-  }
-
   .map-legend {
     bottom: 80px;
     left: 12px;
@@ -856,28 +851,6 @@ body {
 
   .map-toggle {
     display: none;
-  }
-
-  .detail-content {
-    grid-template-columns: 1fr;
-    height: auto;
-  }
-
-  .param-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 4px;
-  }
-
-  .param-card {
-    padding: 6px 8px;
-  }
-
-  .param-value {
-    font-size: 0.92rem;
-  }
-
-  .detail-chart {
-    min-height: 180px;
   }
 }
 

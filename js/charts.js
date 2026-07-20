@@ -123,11 +123,11 @@ function renderTrendChart(factory) {
           align: 'start',
           labels: {
             color: colors.text,
-            font: { size: 10, family: 'Segoe UI, system-ui, sans-serif' },
-            padding: 10,
+            font: { size: 9, family: 'Segoe UI, system-ui, sans-serif' },
+            padding: 6,
             usePointStyle: true,
-            pointStyleWidth: 8,
-            boxHeight: 6
+            pointStyleWidth: 6,
+            boxHeight: 5
           }
         },
         tooltip: {

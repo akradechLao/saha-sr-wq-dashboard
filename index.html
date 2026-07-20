@@ -77,13 +77,32 @@
     <!-- SIDEBAR -->
     <div class="sidebar" id="sidebar">
       <div class="sidebar-header">
-        <h2>รายชื่อโรงงาน</h2>
-        <div class="search-wrapper">
+        <h2 id="sidebar-title">รายชื่อโรงงาน</h2>
+        <div class="search-wrapper" id="search-wrapper">
           <span class="search-icon">🔍</span>
           <input type="text" id="search-factory" placeholder="ค้นหาโรงงาน...">
         </div>
       </div>
       <div class="factory-list" id="factory-list"></div>
+
+      <!-- DETAIL PANEL (inside sidebar) -->
+      <div id="detail-panel" class="detail-panel hidden">
+        <div class="detail-panel-header">
+          <div class="detail-header-left">
+            <h2 id="detail-name">—</h2>
+            <span class="industry-tag" id="detail-industry">—</span>
+          </div>
+          <button class="close-btn" id="close-detail">✕</button>
+        </div>
+        <div class="detail-name-th" id="detail-name-th">—</div>
+        <div class="param-grid" id="param-grid"></div>
+        <div class="detail-chart">
+          <h3>แนวโน้ม 7 วัน</h3>
+          <div class="chart-container">
+            <canvas id="trend-chart"></canvas>
+          </div>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -93,27 +112,6 @@
 
   <!-- ============ SIDEBAR TOGGLE (MOBILE) ============ -->
   <button class="sidebar-toggle" id="sidebar-toggle">🏭</button>
-
-  <!-- ============ DETAIL PANEL ============ -->
-  <div id="detail-panel" class="detail-panel hidden">
-    <div class="detail-panel-header">
-      <h2 id="detail-name">—</h2>
-      <span class="industry-tag" id="detail-industry">—</span>
-      <button class="close-btn" id="close-detail">✕</button>
-    </div>
-    <div class="detail-content">
-      <div class="detail-info">
-        <div class="name-th" id="detail-name-th">—</div>
-        <div class="param-grid" id="param-grid"></div>
-      </div>
-      <div class="detail-chart">
-        <h3>แนวโน้มค่าคุณภาพน้ำเสีย 7 วันย้อนหลัง</h3>
-        <div class="chart-container">
-          <canvas id="trend-chart"></canvas>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- ============ SCRIPTS ============ -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>

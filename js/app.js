@@ -170,7 +170,9 @@ function getFilteredFactories() {
 /* ============ DETAIL PANEL ============ */
 function showDetail(factory) {
   const panel = document.getElementById('detail-panel');
+  const sidebar = document.getElementById('sidebar');
   panel.classList.remove('hidden');
+  sidebar.classList.add('has-detail');
 
   document.getElementById('detail-name').textContent = factory.name;
   document.getElementById('detail-name-th').textContent = `${factory.nameTh} — ${factory.industry}`;
@@ -210,7 +212,9 @@ function renderParamGrid(factory) {
 
 function closeDetail() {
   const panel = document.getElementById('detail-panel');
+  const sidebar = document.getElementById('sidebar');
   panel.classList.add('hidden');
+  sidebar.classList.remove('has-detail');
   selectedFactoryId = null;
   resetHighlights();
   renderFactoryList(MOCK_DATA);
