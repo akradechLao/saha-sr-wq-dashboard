@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard คุณภาพน้ำเสีย — สวนอุตสาหกรรมสหพัฒน์ ศรีราชา</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ============ HEADER ============ -->
+  <header class="dashboard-header">
+    <div class="header-brand">
+      <div class="header-icon">💧</div>
+      <div class="header-text">
+        <h1>คุณภาพน้ำเสียออกจากโรงงาน</h1>
+        <p>สวนอุตสาหกรรมสหพัฒน์ ศรีราชา จ.ชลบุรี</p>
+      </div>
+    </div>
+
+    <div class="summary-stats">
+      <div class="stat-card">
+        <div class="stat-label">โรงงานทั้งหมด</div>
+        <div class="stat-value" id="total-count">15</div>
+      </div>
+      <div class="stat-card pass">
+        <div class="stat-label">ผ่านเกณฑ์</div>
+        <div class="stat-value" id="pass-count">—</div>
+      </div>
+      <div class="stat-card fail">
+        <div class="stat-label">ไม่ผ่านเกณฑ์</div>
+        <div class="stat-value" id="fail-count">—</div>
+      </div>
+    </div>
+
+    <div class="header-time">
+      <div>ข้อมูล ณ วัน</div>
+      <div class="time-value" id="current-date">—</div>
+    </div>
+  </header>
+
+  <!-- ============ MAIN CONTENT ============ -->
+  <div class="main-container">
+
+    <!-- MAP -->
+    <div class="map-section">
+      <div id="map"></div>
+      <div class="map-legend">
+        <h4>สัญลักษณ์</h4>
+        <div class="legend-item">
+          <div class="legend-dot pass"></div>
+          <span>ผ่านเกณฑ์มาตรฐาน</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot fail"></div>
+          <span>ไม่ผ่านเกณฑ์มาตรฐาน</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-line"></div>
+          <span>เขตแดนสวนอุตสาหกรรม</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <h2>รายชื่อโรงงาน</h2>
+        <div class="search-wrapper">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="search-factory" placeholder="ค้นหาโรงงาน...">
+        </div>
+      </div>
+      <div class="factory-list" id="factory-list"></div>
+    </div>
+
+  </div>
+
+  <!-- ============ DETAIL PANEL ============ -->
+  <div id="detail-panel" class="detail-panel hidden">
+    <div class="detail-panel-header">
+      <h2 id="detail-name">—</h2>
+      <span class="industry-tag" id="detail-industry">—</span>
+      <button class="close-btn" id="close-detail">✕</button>
+    </div>
+    <div class="detail-content">
+      <div class="detail-info">
+        <div class="name-th" id="detail-name-th">—</div>
+        <div class="param-grid" id="param-grid"></div>
+      </div>
+      <div class="detail-chart">
+        <h3>แนวโน้มค่าคุณภาพน้ำเสีย 7 วันย้อนหลัง</h3>
+        <div class="chart-container">
+          <canvas id="trend-chart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SCRIPTS ============ -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="data/mock-data.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
