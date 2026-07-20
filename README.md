@@ -54,6 +54,8 @@ https://akradechLao.github.io/saha-sr-wq-dashboard/
 
 ## ข้อมูลโรงงาน (15 แห่ง)
 
+ตรวจสอบจาก SPI Official Website: industrial-park.spi.co.th
+
 | # | โรงงาน | อุตสาหกรรม |
 |---|--------|-----------|
 | 1 | Thai Samsung Electronics | อิเล็กทรอนิกส์ |
@@ -61,15 +63,15 @@ https://akradechLao.github.io/saha-sr-wq-dashboard/
 | 3 | Sahacogen (Chonburi) | โรงไฟฟ้า |
 | 4 | Saha Seiren | ชิ้นส่วนยานยนต์ |
 | 5 | Asahi Kasei Spunbond (Thailand) | ผ้าไม่ถักทอ |
-| 6 | Wacoal (Thailand) | ชุดชั้นใน/เสื้อผ้า |
-| 7 | TopTrend Manufacturing | สินค้าอุปโภคบริโภค |
-| 8 | Molten Asia Polymer Products | พลาสติก/โพลิเมอร์ |
-| 9 | Toray Carbon Magic (Thailand) | คาร์บอนไฟเบอร์ |
-| 10 | Kenmin Foods (Thailand) | อาหาร |
-| 11 | Thai President Foods (MAMA) | อาหาร (บะหมี่กึ่งสำเร็จรูป) |
-| 12 | Nissin Foods (Thailand) | อาหาร (บะหมี่สำเร็จรูป) |
-| 13 | S&J International Enterprises | เครื่องสำอาง |
-| 14 | Thai Arai | ชิ้นส่วนพลาสติก |
+| 6 | TopTrend Manufacturing | สินค้าอุปโภคบริโภค |
+| 7 | Molten (Thailand) | พลาสติก/โพลิเมอร์ |
+| 8 | Kenmin Foods (Thailand) | อาหาร |
+| 9 | Thai President Foods | บะหมี่กึ่งสำเร็จรูป (มาม่า) |
+| 10 | Nissin Foods (Thailand) | บะหมี่สำเร็จรูป |
+| 11 | S&J International Enterprises | เครื่องสำอาง |
+| 12 | Thai Arai | ชิ้นส่วนพลาสติก |
+| 13 | Racha Ushino | ผ้าขนหนู |
+| 14 | Thai Lotte | ขนมหวาน/อาหารว่าง |
 | 15 | SPI Office & Outlet | สำนักงาน |
 
 ## License
