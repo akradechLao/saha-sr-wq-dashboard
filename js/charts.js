@@ -1,5 +1,19 @@
 let trendChart = null;
 
+function getChartColors() {
+  const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+  return {
+    text: isDark ? '#94a3b8' : '#6b7280',
+    textMuted: isDark ? '#64748b' : '#9ca3af',
+    grid: isDark ? 'rgba(30, 41, 59, 0.5)' : 'rgba(229, 231, 235, 0.8)',
+    tooltipBg: isDark ? 'rgba(17, 26, 58, 0.95)' : 'rgba(255, 255, 255, 0.98)',
+    tooltipTitle: isDark ? '#f5d061' : '#b8860b',
+    tooltipBody: isDark ? '#e8e8e8' : '#1a1a2e',
+    tooltipBorder: isDark ? '#d4a017' : '#b8860b',
+    pointBorder: isDark ? '#0a0e27' : '#ffffff'
+  };
+}
+
 function renderTrendChart(factory) {
   const ctx = document.getElementById('trend-chart');
   if (!ctx) return;
@@ -11,6 +25,7 @@ function renderTrendChart(factory) {
 
   const history = factory.history;
   const labels = history.map(h => h.dateShort);
+  const colors = getChartColors();
 
   const datasets = [
     {
@@ -24,7 +39,7 @@ function renderTrendChart(factory) {
       pointRadius: 3,
       pointHoverRadius: 6,
       pointBackgroundColor: '#d4a017',
-      pointBorderColor: '#0a0e27',
+      pointBorderColor: colors.pointBorder,
       pointBorderWidth: 2,
       yAxisID: 'y'
     },
@@ -39,7 +54,7 @@ function renderTrendChart(factory) {
       pointRadius: 3,
       pointHoverRadius: 6,
       pointBackgroundColor: '#3b82f6',
-      pointBorderColor: '#0a0e27',
+      pointBorderColor: colors.pointBorder,
       pointBorderWidth: 2,
       yAxisID: 'y1'
     },
@@ -54,7 +69,7 @@ function renderTrendChart(factory) {
       pointRadius: 3,
       pointHoverRadius: 6,
       pointBackgroundColor: '#22c55e',
-      pointBorderColor: '#0a0e27',
+      pointBorderColor: colors.pointBorder,
       pointBorderWidth: 2,
       yAxisID: 'y'
     },
@@ -69,7 +84,7 @@ function renderTrendChart(factory) {
       pointRadius: 3,
       pointHoverRadius: 6,
       pointBackgroundColor: '#a855f7',
-      pointBorderColor: '#0a0e27',
+      pointBorderColor: colors.pointBorder,
       pointBorderWidth: 2,
       yAxisID: 'y'
     },
@@ -85,13 +100,11 @@ function renderTrendChart(factory) {
       pointRadius: 3,
       pointHoverRadius: 6,
       pointBackgroundColor: '#ef4444',
-      pointBorderColor: '#0a0e27',
+      pointBorderColor: colors.pointBorder,
       pointBorderWidth: 2,
       yAxisID: 'y1'
     }
   ];
-
-  const annotations = getStandardLines(factory);
 
   trendChart = new Chart(ctx, {
     type: 'line',
@@ -99,6 +112,7 @@ function renderTrendChart(factory) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      animation: { duration: 500 },
       interaction: {
         mode: 'index',
         intersect: false
@@ -108,19 +122,19 @@ function renderTrendChart(factory) {
           position: 'top',
           align: 'start',
           labels: {
-            color: '#94a3b8',
-            font: { size: 10.5, family: 'Segoe UI, system-ui, sans-serif' },
-            padding: 12,
+            color: colors.text,
+            font: { size: 10, family: 'Segoe UI, system-ui, sans-serif' },
+            padding: 10,
             usePointStyle: true,
             pointStyleWidth: 8,
             boxHeight: 6
           }
         },
         tooltip: {
-          backgroundColor: 'rgba(17, 26, 58, 0.95)',
-          titleColor: '#f5d061',
-          bodyColor: '#e8e8e8',
-          borderColor: '#d4a017',
+          backgroundColor: colors.tooltipBg,
+          titleColor: colors.tooltipTitle,
+          bodyColor: colors.tooltipBody,
+          borderColor: colors.tooltipBorder,
           borderWidth: 1,
           cornerRadius: 8,
           padding: 12,
@@ -141,11 +155,11 @@ function renderTrendChart(factory) {
       scales: {
         x: {
           ticks: {
-            color: '#64748b',
-            font: { size: 10.5 }
+            color: colors.textMuted,
+            font: { size: 10 }
           },
           grid: {
-            color: 'rgba(30, 41, 59, 0.5)',
+            color: colors.grid,
             drawBorder: false
           }
         },
@@ -154,15 +168,15 @@ function renderTrendChart(factory) {
           title: {
             display: true,
             text: 'BOD / DO / pH',
-            color: '#64748b',
-            font: { size: 10.5 }
+            color: colors.textMuted,
+            font: { size: 10 }
           },
           ticks: {
-            color: '#64748b',
-            font: { size: 10.5 }
+            color: colors.textMuted,
+            font: { size: 10 }
           },
           grid: {
-            color: 'rgba(30, 41, 59, 0.5)',
+            color: colors.grid,
             drawBorder: false
           }
         },
@@ -171,12 +185,12 @@ function renderTrendChart(factory) {
           title: {
             display: true,
             text: 'COD / Temperature',
-            color: '#64748b',
-            font: { size: 10.5 }
+            color: colors.textMuted,
+            font: { size: 10 }
           },
           ticks: {
-            color: '#64748b',
-            font: { size: 10.5 }
+            color: colors.textMuted,
+            font: { size: 10 }
           },
           grid: {
             drawOnChartArea: false
@@ -185,8 +199,4 @@ function renderTrendChart(factory) {
       }
     }
   });
-}
-
-function getStandardLines(factory) {
-  return {};
 }

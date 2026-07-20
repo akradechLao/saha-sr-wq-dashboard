@@ -1,5 +1,24 @@
 let map;
 let factoryPolygons = {};
+let currentTileLayer = null;
+let currentTileType = 'street';
+
+const TILE_LAYERS = {
+  street: {
+    url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    options: {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 19
+    }
+  },
+  satellite: {
+    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    options: {
+      attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+      maxZoom: 18
+    }
+  }
+};
 
 function initMap() {
   map = L.map('map', {
@@ -9,12 +28,20 @@ function initMap() {
     attributionControl: true
   });
 
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
-    maxZoom: 19,
-    subdomains: 'abcd'
-  }).addTo(map);
+  setTileLayer('street');
+  drawEstateBoundary();
+}
 
+function setTileLayer(type) {
+  if (currentTileLayer) {
+    map.removeLayer(currentTileLayer);
+  }
+  currentTileType = type;
+  const tile = TILE_LAYERS[type];
+  currentTileLayer = L.tileLayer(tile.url, tile.options).addTo(map);
+}
+
+function drawEstateBoundary() {
   const estateBoundary = L.polygon([
     [13.0960, 100.9540],
     [13.0960, 100.9820],
@@ -24,7 +51,7 @@ function initMap() {
     color: '#d4a017',
     weight: 2,
     fillColor: '#d4a017',
-    fillOpacity: 0.03,
+    fillOpacity: 0.04,
     dashArray: '8, 12',
     interactive: false
   }).addTo(map);
@@ -66,7 +93,7 @@ function addFactoryPolygon(factory) {
   const popupHTML = buildPopupHTML(factory);
   polygon.bindPopup(popupHTML, {
     maxWidth: 300,
-    minWidth: 260,
+    minWidth: 240,
     closeButton: true,
     autoPan: true,
     autoPanPadding: [40, 40]
@@ -109,8 +136,8 @@ function buildPopupHTML(factory) {
       <div class="popup-params">
         ${paramsHTML}
       </div>
-      <div style="margin-top:10px;padding-top:8px;border-top:1px solid #1e293b;text-align:center;">
-        <span style="font-size:0.72rem;color:${allPass ? '#22c55e' : '#ef4444'};font-weight:600;">
+      <div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border);text-align:center;">
+        <span style="font-size:0.72rem;color:${allPass ? 'var(--pass)' : 'var(--fail)'};font-weight:600;">
           ${allPass ? '✓ ผ่านเกณฑ์มาตรฐานทั้งหมด' : '✗ มีค่าไม่ผ่านเกณฑ์'}
         </span>
       </div>
@@ -146,7 +173,8 @@ function highlightFactory(id) {
   const selected = factoryPolygons[id];
   if (selected) {
     selected.setStyle({ color: '#f5d061', fillColor: '#f5d061', weight: 3, fillOpacity: 0.4 });
-    map.setView([selected.getBounds().getCenter().lat, selected.getBounds().getCenter().lng], 16, { animate: true });
+    const center = selected.getBounds().getCenter();
+    map.setView([center.lat, center.lng], 16, { animate: true });
   }
 }
 
@@ -160,4 +188,10 @@ function resetHighlights() {
       poly.setStyle({ color: color, fillColor: color, weight: 2, fillOpacity: pass ? 0.25 : 0.35 });
     }
   });
+}
+
+function invalidateMapSize() {
+  if (map) {
+    setTimeout(() => map.invalidateSize(), 100);
+  }
 }

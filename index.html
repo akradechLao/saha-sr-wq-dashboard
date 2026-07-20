@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="th" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,9 +34,20 @@
       </div>
     </div>
 
-    <div class="header-time">
-      <div>ข้อมูล ณ วัน</div>
-      <div class="time-value" id="current-date">—</div>
+    <div class="header-actions">
+      <div class="map-toggle">
+        <button class="map-toggle-btn active" data-tile="street">แผนที่</button>
+        <button class="map-toggle-btn" data-tile="satellite">ดาวเทียม</button>
+      </div>
+
+      <div class="theme-toggle" id="theme-toggle" title="สลับธีม">
+        <div class="toggle-thumb">🌙</div>
+      </div>
+
+      <div class="header-time">
+        <div>ข้อมูล ณ วัน</div>
+        <div class="time-value" id="current-date">—</div>
+      </div>
     </div>
   </header>
 
@@ -64,7 +75,7 @@
     </div>
 
     <!-- SIDEBAR -->
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <h2>รายชื่อโรงงาน</h2>
         <div class="search-wrapper">
@@ -76,6 +87,12 @@
     </div>
 
   </div>
+
+  <!-- ============ SIDEBAR OVERLAY (MOBILE) ============ -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- ============ SIDEBAR TOGGLE (MOBILE) ============ -->
+  <button class="sidebar-toggle" id="sidebar-toggle">🏭</button>
 
   <!-- ============ DETAIL PANEL ============ -->
   <div id="detail-panel" class="detail-panel hidden">
