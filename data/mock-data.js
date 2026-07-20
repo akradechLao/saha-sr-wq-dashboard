@@ -130,33 +130,33 @@ const MOCK_DATA = [
   },
   {
     id: 11,
-    name: 'Hana Microelectronics',
-    nameTh: 'ฮานาไมโครอิเล็กทรอนิกส์',
-    industry: 'อิเล็กทรอนิกส์',
-    lat: 13.0930,
-    lng: 100.9620,
-    current: { bod: 5.5, cod: 22.4, do: 6.2, ph: 7.2, temp: 30.0 },
-    history: generateHistory(5.5, 22.4, 6.2, 7.2, 30.0)
+    name: 'Thai President Foods (MAMA)',
+    nameTh: 'ไทยเพรซิเดนท์ฟูดส์ (มาม่า)',
+    industry: 'อาหาร (บะหมี่กึ่งสำเร็จรูป)',
+    lat: 13.0948,
+    lng: 100.9580,
+    current: { bod: 11.2, cod: 48.5, do: 4.2, ph: 7.3, temp: 32.5 },
+    history: generateHistory(11.2, 48.5, 4.2, 7.3, 32.5)
   },
   {
     id: 12,
-    name: 'Pandora Production',
-    nameTh: 'แพนดอร่า โปรดักชั่น',
-    industry: 'เครื่องประดับ',
-    lat: 13.0945,
-    lng: 100.9610,
-    current: { bod: 3.8, cod: 14.5, do: 6.9, ph: 7.1, temp: 29.8 },
-    history: generateHistory(3.8, 14.5, 6.9, 7.1, 29.8)
+    name: 'Nissin Foods (Thailand)',
+    nameTh: 'นิสชิน ฟู้ดส์ (ไทยแลนด์)',
+    industry: 'อาหาร (บะหมี่สำเร็จรูป)',
+    lat: 13.0955,
+    lng: 100.9595,
+    current: { bod: 10.8, cod: 45.2, do: 4.5, ph: 7.2, temp: 31.8 },
+    history: generateHistory(10.8, 45.2, 4.5, 7.2, 31.8)
   },
   {
     id: 13,
-    name: 'Le Creuset Distribution (Thailand)',
-    nameTh: 'เลอ ครูเซ่ ดิสทริบิวชั่น (ประเทศไทย)',
-    industry: 'จัดจำหน่าย',
-    lat: 13.0920,
-    lng: 100.9600,
-    current: { bod: 2.1, cod: 8.5, do: 7.2, ph: 7.0, temp: 29.2 },
-    history: generateHistory(2.1, 8.5, 7.2, 7.0, 29.2)
+    name: 'Thai Lotte',
+    nameTh: 'ไทยลอตเต้',
+    industry: 'ขนมหวาน/อาหารว่าง',
+    lat: 13.0940,
+    lng: 100.9570,
+    current: { bod: 9.5, cod: 38.8, do: 5.0, ph: 7.1, temp: 31.2 },
+    history: generateHistory(9.5, 38.8, 5.0, 7.1, 31.2)
   },
   {
     id: 14,

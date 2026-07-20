@@ -66,9 +66,9 @@ https://akradechLao.github.io/saha-sr-wq-dashboard/
 | 8 | Molten Asia Polymer Products | พลาสติก/โพลิเมอร์ |
 | 9 | Toray Carbon Magic (Thailand) | คาร์บอนไฟเบอร์ |
 | 10 | Kenmin Foods (Thailand) | อาหาร |
-| 11 | Hana Microelectronics | อิเล็กทรอนิกส์ |
-| 12 | Pandora Production | เครื่องประดับ |
-| 13 | Le Creuset Distribution (Thailand) | จัดจำหน่าย |
+| 11 | Thai President Foods (MAMA) | อาหาร (บะหมี่กึ่งสำเร็จรูป) |
+| 12 | Nissin Foods (Thailand) | อาหาร (บะหมี่สำเร็จรูป) |
+| 13 | Thai Lotte | ขนมหวาน/อาหารว่าง |
 | 14 | K.D. Heat Technology (Thailand) | เทคโนโลยีความร้อน |
 | 15 | SPI Office & Outlet | สำนักงาน |
 
