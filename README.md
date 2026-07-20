@@ -4,11 +4,12 @@
 
 ## ฟีเจอร์
 
-- **แผนที่โรงงาน** — Polygon สีทอง/เขียว/แดง บน Leaflet.js (dark theme)
+- **แผนที่โรงงาน** — Circle Marker สีเขียว/แดง บน Leaflet.js
 - **Hover Popup** — ชี้ที่โรงงาน → แสดงชื่อ + ค่าพารามิเตอร์น้ำเสีย
 - **Sidebar รายชื่อ** — รายชื่อ 15 โรงงาน + ค้นหา + สถานะผ่าน/ไม่ผ่าน
 - **กราฟแนวโน้ม** — Chart.js แสดงค่า BOD, COD, DO, pH, Temperature 7 วันย้อนหลัง
-- **ธีมสีหรูหรา** — น้ำเงินเข้ม + ทอง + เหลือง
+- **ธีมสว่าง/มืด** — สลับธีมได้ + บันทึก preference
+- **Responsive** — รองรับ Desktop, Tablet, Mobile
 
 ## พารามิเตอร์ที่แสดง
 
@@ -29,7 +30,7 @@ saha-sr-wq-dashboard/
 │   └── styles.css          ← ธีมสีเหลือง-ทอง-น้ำเงิน
 ├── js/
 │   ├── app.js              ← Controller หลัก
-│   ├── map.js              ← Leaflet map + polygon + popup
+│   ├── map.js              ← Leaflet map + circle markers
 │   └── charts.js           ← Chart.js trend lines
 ├── data/
 │   └── mock-data.js        ← ข้อมูลจำลอง 15 โรงงาน
@@ -56,20 +57,20 @@ https://akradechLao.github.io/saha-sr-wq-dashboard/
 | # | โรงงาน | อุตสาหกรรม |
 |---|--------|-----------|
 | 1 | Thai Samsung Electronics | อิเล็กทรอนิกส์ |
-| 2 | Lion Corporation (Thailand) | ผลิตภัณฑ์ทำความสะอาด |
-| 3 | Sahakogen (Chonburi) | โรงไฟฟ้า |
+| 2 | Lion (Thailand) | ผลิตภัณฑ์ทำความสะอาด |
+| 3 | Sahacogen (Chonburi) | โรงไฟฟ้า |
 | 4 | Saha Seiren | ชิ้นส่วนยานยนต์ |
-| 5 | Asahi Kasei Spunbond | ผ้าไม่ถักทอ |
-| 6 | Racha Ushino | ผ้าขนหนู |
+| 5 | Asahi Kasei Spunbond (Thailand) | ผ้าไม่ถักทอ |
+| 6 | Wacoal (Thailand) | ชุดชั้นใน/เสื้อผ้า |
 | 7 | TopTrend Manufacturing | สินค้าอุปโภคบริโภค |
-| 8 | Textile Prestige | เสื้อผ้าสำเร็จรูป |
-| 9 | Sankyu Leamchabang | โลจิสติกส์ |
-| 10 | Suea Fa Industry | สนับสนุนอุตสาหกรรม |
-| 11 | Enfant | เสื้อผ้าเด็ก |
-| 12 | PURE CARE BSC | เครื่องสำอาง |
-| 13 | SPI Office & Outlet | สำนักงาน |
-| 14 | Molten Asia Polymer | พลาสติก/โพลิเมอร์ |
-| 15 | Kenmin Foods | อาหาร |
+| 8 | Molten Asia Polymer Products | พลาสติก/โพลิเมอร์ |
+| 9 | Toray Carbon Magic (Thailand) | คาร์บอนไฟเบอร์ |
+| 10 | Kenmin Foods (Thailand) | อาหาร |
+| 11 | Hana Microelectronics | อิเล็กทรอนิกส์ |
+| 12 | Pandora Production | เครื่องประดับ |
+| 13 | Le Creuset Distribution (Thailand) | จัดจำหน่าย |
+| 14 | K.D. Heat Technology (Thailand) | เทคโนโลยีความร้อน |
+| 15 | SPI Office & Outlet | สำนักงาน |
 
 ## License
 

@@ -31,7 +31,7 @@ const MOCK_DATA = [
   {
     id: 1,
     name: 'Thai Samsung Electronics',
-    nameTh: 'ไทยซัมซุงอิเลคทรอนิคส์',
+    nameTh: 'ไทยซัมซุง อิเลคโทรนิคส์',
     industry: 'อิเล็กทรอนิกส์',
     lat: 13.09498,
     lng: 100.96776,
@@ -40,7 +40,7 @@ const MOCK_DATA = [
   },
   {
     id: 2,
-    name: 'Lion Corporation (Thailand)',
+    name: 'Lion (Thailand)',
     nameTh: 'ไลอ้อน (ประเทศไทย)',
     industry: 'ผลิตภัณฑ์ทำความสะอาด',
     lat: 13.0997,
@@ -50,7 +50,7 @@ const MOCK_DATA = [
   },
   {
     id: 3,
-    name: 'Sahakogen (Chonburi)',
+    name: 'Sahacogen (Chonburi)',
     nameTh: 'สหโคเจน (ชลบุรี)',
     industry: 'โรงไฟฟ้า',
     lat: 13.0988,
@@ -70,7 +70,7 @@ const MOCK_DATA = [
   },
   {
     id: 5,
-    name: 'Asahi Kasei Spunbond',
+    name: 'Asahi Kasei Spunbond (Thailand)',
     nameTh: 'อาซาฮีเคเซ่ (ประเทศไทย)',
     industry: 'ผ้าไม่ถักทอ',
     lat: 13.0965,
@@ -80,13 +80,13 @@ const MOCK_DATA = [
   },
   {
     id: 6,
-    name: 'Racha Ushino',
-    nameTh: 'ราชาอูชิโน',
-    industry: 'ผ้าขนหนู',
-    lat: 13.0985,
-    lng: 100.9635,
-    current: { bod: 11.8, cod: 45.6, do: 4.8, ph: 7.2, temp: 31.9 },
-    history: generateHistory(11.8, 45.6, 4.8, 7.2, 31.9)
+    name: 'Wacoal (Thailand)',
+    nameTh: 'ไทยวาโก้',
+    industry: 'ชุดชั้นใน/เสื้อผ้า',
+    lat: 13.1005,
+    lng: 100.9660,
+    current: { bod: 7.8, cod: 28.3, do: 5.9, ph: 7.1, temp: 30.8 },
+    history: generateHistory(7.8, 28.3, 5.9, 7.1, 30.8)
   },
   {
     id: 7,
@@ -100,68 +100,8 @@ const MOCK_DATA = [
   },
   {
     id: 8,
-    name: 'Textile Prestige',
-    nameTh: 'เท็กซ์ไทล์เพรสทีจ',
-    industry: 'เสื้อผ้าสำเร็จรูป',
-    lat: 13.0975,
-    lng: 100.9655,
-    current: { bod: 18.6, cod: 88.9, do: 2.8, ph: 8.2, temp: 35.4 },
-    history: generateHistory(18.6, 88.9, 2.8, 8.2, 35.4)
-  },
-  {
-    id: 9,
-    name: 'Sankyu Leamchabang',
-    nameTh: 'ซังคิว แหลมฉบัง',
-    industry: 'โลจิสติกส์',
-    lat: 13.0750,
-    lng: 100.9150,
-    current: { bod: 5.3, cod: 18.7, do: 6.5, ph: 7.0, temp: 29.8 },
-    history: generateHistory(5.3, 18.7, 6.5, 7.0, 29.8)
-  },
-  {
-    id: 10,
-    name: 'Suea Fa Industry',
-    nameTh: 'ซื่อฟ้าอุตสาหกรรม',
-    industry: 'สนับสนุนอุตสาหกรรม',
-    lat: 13.0990,
-    lng: 100.9650,
-    current: { bod: 14.2, cod: 62.5, do: 3.5, ph: 7.6, temp: 34.2 },
-    history: generateHistory(14.2, 62.5, 3.5, 7.6, 34.2)
-  },
-  {
-    id: 11,
-    name: 'Enfant',
-    nameTh: 'อองฟองต์',
-    industry: 'เสื้อผ้าเด็ก',
-    lat: 13.1005,
-    lng: 100.9660,
-    current: { bod: 7.8, cod: 28.3, do: 5.9, ph: 7.1, temp: 30.8 },
-    history: generateHistory(7.8, 28.3, 5.9, 7.1, 30.8)
-  },
-  {
-    id: 12,
-    name: 'PURE CARE BSC',
-    nameTh: 'เพียวแคร์ บีเอสซี',
-    industry: 'เครื่องสำอาง',
-    lat: 13.1000,
-    lng: 100.9655,
-    current: { bod: 6.4, cod: 24.1, do: 6.2, ph: 7.0, temp: 30.2 },
-    history: generateHistory(6.4, 24.1, 6.2, 7.0, 30.2)
-  },
-  {
-    id: 13,
-    name: 'SPI Office & Outlet',
-    nameTh: 'สำนักงานสหพัฒนาอินเตอร์โฮลดิ้ง',
-    industry: 'สำนักงาน',
-    lat: 13.1008,
-    lng: 100.9661,
-    current: { bod: 3.2, cod: 12.8, do: 7.0, ph: 7.2, temp: 29.5 },
-    history: generateHistory(3.2, 12.8, 7.0, 7.2, 29.5)
-  },
-  {
-    id: 14,
-    name: 'Molten Asia Polymer',
-    nameTh: 'มอลเท่น เอเชีย โพลิเมอร์',
+    name: 'Molten Asia Polymer Products',
+    nameTh: 'มอลเท่น เอเชีย โพลิเมอร์ โปรดักส์',
     industry: 'พลาสติก/โพลิเมอร์',
     lat: 13.1010,
     lng: 100.9645,
@@ -169,13 +109,73 @@ const MOCK_DATA = [
     history: generateHistory(16.8, 78.4, 3.0, 6.8, 36.1)
   },
   {
-    id: 15,
-    name: 'Kenmin Foods',
-    nameTh: 'เค็นมิน ฟู้ดส์',
+    id: 9,
+    name: 'Toray Carbon Magic (Thailand)',
+    nameTh: 'คาร์บอนเมจิก (ประเทศไทย)',
+    industry: 'คาร์บอนไฟเบอร์',
+    lat: 13.0955,
+    lng: 100.9630,
+    current: { bod: 4.2, cod: 15.8, do: 6.8, ph: 7.0, temp: 29.5 },
+    history: generateHistory(4.2, 15.8, 6.8, 7.0, 29.5)
+  },
+  {
+    id: 10,
+    name: 'Kenmin Foods (Thailand)',
+    nameTh: 'เค็นมิน ฟู้ดส์ (ประเทศไทย)',
     industry: 'อาหาร',
     lat: 13.1005,
     lng: 100.9640,
     current: { bod: 13.5, cod: 55.2, do: 4.0, ph: 7.5, temp: 33.0 },
     history: generateHistory(13.5, 55.2, 4.0, 7.5, 33.0)
+  },
+  {
+    id: 11,
+    name: 'Hana Microelectronics',
+    nameTh: 'ฮานาไมโครอิเล็กทรอนิกส์',
+    industry: 'อิเล็กทรอนิกส์',
+    lat: 13.0930,
+    lng: 100.9620,
+    current: { bod: 5.5, cod: 22.4, do: 6.2, ph: 7.2, temp: 30.0 },
+    history: generateHistory(5.5, 22.4, 6.2, 7.2, 30.0)
+  },
+  {
+    id: 12,
+    name: 'Pandora Production',
+    nameTh: 'แพนดอร่า โปรดักชั่น',
+    industry: 'เครื่องประดับ',
+    lat: 13.0945,
+    lng: 100.9610,
+    current: { bod: 3.8, cod: 14.5, do: 6.9, ph: 7.1, temp: 29.8 },
+    history: generateHistory(3.8, 14.5, 6.9, 7.1, 29.8)
+  },
+  {
+    id: 13,
+    name: 'Le Creuset Distribution (Thailand)',
+    nameTh: 'เลอ ครูเซ่ ดิสทริบิวชั่น (ประเทศไทย)',
+    industry: 'จัดจำหน่าย',
+    lat: 13.0920,
+    lng: 100.9600,
+    current: { bod: 2.1, cod: 8.5, do: 7.2, ph: 7.0, temp: 29.2 },
+    history: generateHistory(2.1, 8.5, 7.2, 7.0, 29.2)
+  },
+  {
+    id: 14,
+    name: 'K.D. Heat Technology (Thailand)',
+    nameTh: 'คีนดี ฮีท เทคโนโลยี (ประเทศไทย)',
+    industry: 'เทคโนโลยีความร้อน',
+    lat: 13.0915,
+    lng: 100.9585,
+    current: { bod: 6.2, cod: 28.9, do: 5.5, ph: 7.3, temp: 31.5 },
+    history: generateHistory(6.2, 28.9, 5.5, 7.3, 31.5)
+  },
+  {
+    id: 15,
+    name: 'SPI Office & Outlet',
+    nameTh: 'สำนักงานสหพัฒนาอินเตอร์โฮลดิ้ง',
+    industry: 'สำนักงาน',
+    lat: 13.1008,
+    lng: 100.9661,
+    current: { bod: 3.2, cod: 12.8, do: 7.0, ph: 7.2, temp: 29.5 },
+    history: generateHistory(3.2, 12.8, 7.0, 7.2, 29.5)
   }
 ];
