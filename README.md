@@ -68,8 +68,8 @@ https://akradechLao.github.io/saha-sr-wq-dashboard/
 | 10 | Kenmin Foods (Thailand) | อาหาร |
 | 11 | Thai President Foods (MAMA) | อาหาร (บะหมี่กึ่งสำเร็จรูป) |
 | 12 | Nissin Foods (Thailand) | อาหาร (บะหมี่สำเร็จรูป) |
-| 13 | Thai Lotte | ขนมหวาน/อาหารว่าง |
-| 14 | K.D. Heat Technology (Thailand) | เทคโนโลยีความร้อน |
+| 13 | S&J International Enterprises | เครื่องสำอาง |
+| 14 | Thai Arai | ชิ้นส่วนพลาสติก |
 | 15 | SPI Office & Outlet | สำนักงาน |
 
 ## License

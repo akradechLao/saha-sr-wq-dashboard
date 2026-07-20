@@ -150,23 +150,23 @@ const MOCK_DATA = [
   },
   {
     id: 13,
-    name: 'Thai Lotte',
-    nameTh: 'ไทยลอตเต้',
-    industry: 'ขนมหวาน/อาหารว่าง',
-    lat: 13.0940,
-    lng: 100.9570,
-    current: { bod: 9.5, cod: 38.8, do: 5.0, ph: 7.1, temp: 31.2 },
-    history: generateHistory(9.5, 38.8, 5.0, 7.1, 31.2)
+    name: 'S&J International Enterprises',
+    nameTh: 'เอสแอนด์เจ อินเตอร์เนชั่นแนลเอนเตอร์ไพรส์',
+    industry: 'เครื่องสำอาง',
+    lat: 13.0935,
+    lng: 100.9565,
+    current: { bod: 5.8, cod: 22.4, do: 6.0, ph: 7.0, temp: 30.5 },
+    history: generateHistory(5.8, 22.4, 6.0, 7.0, 30.5)
   },
   {
     id: 14,
-    name: 'K.D. Heat Technology (Thailand)',
-    nameTh: 'คีนดี ฮีท เทคโนโลยี (ประเทศไทย)',
-    industry: 'เทคโนโลยีความร้อน',
-    lat: 13.0915,
-    lng: 100.9585,
-    current: { bod: 6.2, cod: 28.9, do: 5.5, ph: 7.3, temp: 31.5 },
-    history: generateHistory(6.2, 28.9, 5.5, 7.3, 31.5)
+    name: 'Thai Arai',
+    nameTh: 'ไทยอาราอิ',
+    industry: 'ชิ้นส่วนพลาสติก',
+    lat: 13.0942,
+    lng: 100.9575,
+    current: { bod: 7.5, cod: 32.8, do: 5.5, ph: 7.2, temp: 31.8 },
+    history: generateHistory(7.5, 32.8, 5.5, 7.2, 31.8)
   },
   {
     id: 15,
