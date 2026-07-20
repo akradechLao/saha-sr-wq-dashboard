@@ -69,9 +69,9 @@ function addFactoryMarker(factory) {
   const glowColor = pass ? 'rgba(34,197,94,0.4)' : 'rgba(239,68,68,0.4)';
 
   const marker = L.circleMarker([factory.lat, factory.lng], {
-    radius: 5,
+    radius: 2.5,
     color: color,
-    weight: 1.5,
+    weight: 1,
     fillColor: color,
     fillOpacity: 0.7,
     className: 'factory-circle'
@@ -85,12 +85,12 @@ function addFactoryMarker(factory) {
   });
 
   marker.on('mouseover', function () {
-    this.setStyle({ radius: 7, weight: 2, fillOpacity: 0.85 });
+    this.setStyle({ radius: 3.5, weight: 1.5, fillOpacity: 0.85 });
     this.openTooltip();
   });
 
   marker.on('mouseout', function () {
-    this.setStyle({ radius: 5, weight: 1.5, fillOpacity: 0.7 });
+    this.setStyle({ radius: 2.5, weight: 1, fillOpacity: 0.7 });
   });
 
   const popupHTML = buildPopupHTML(factory);
@@ -169,13 +169,13 @@ function highlightFactory(id) {
     if (factory) {
       const pass = isPass(factory.current);
       const color = pass ? '#22c55e' : '#ef4444';
-      m.setStyle({ color, fillColor: color, radius: 5, weight: 1.5, fillOpacity: 0.7 });
+      m.setStyle({ color, fillColor: color, radius: 2.5, weight: 1, fillOpacity: 0.7 });
     }
   });
 
   const selected = factoryMarkers[id];
   if (selected) {
-    selected.setStyle({ color: '#f5d061', fillColor: '#f5d061', radius: 8, weight: 2, fillOpacity: 0.9 });
+    selected.setStyle({ color: '#f5d061', fillColor: '#f5d061', radius: 4, weight: 1.5, fillOpacity: 0.9 });
     const ll = selected.getLatLng();
     map.setView([ll.lat, ll.lng], 16, { animate: true });
   }
@@ -188,7 +188,7 @@ function resetHighlights() {
     if (factory) {
       const pass = isPass(factory.current);
       const color = pass ? '#22c55e' : '#ef4444';
-      m.setStyle({ color, fillColor: color, radius: 5, weight: 1.5, fillOpacity: 0.7 });
+      m.setStyle({ color, fillColor: color, radius: 2.5, weight: 1, fillOpacity: 0.7 });
     }
   });
 }
