@@ -56,7 +56,7 @@ function drawEstateBoundary() {
     interactive: false
   }).addTo(map);
 
-  estateBoundary.bindTooltip('สวนอุตสาหกรรมสหพัฒน์ ศรีราชา', {
+  estateBoundary.bindTooltip('สวนอุตสาหกรรมเครือสหพัฒน์ ศรีราชา', {
     permanent: true,
     direction: 'center',
     className: 'estate-label'
