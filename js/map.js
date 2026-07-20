@@ -1,5 +1,5 @@
 let map;
-let factoryPolygons = {};
+let factoryMarkers = {};
 let currentTileLayer = null;
 let currentTileType = 'street';
 
@@ -63,35 +63,38 @@ function drawEstateBoundary() {
   });
 }
 
-function addFactoryPolygon(factory) {
+function addFactoryMarker(factory) {
   const pass = isPass(factory.current);
   const color = pass ? '#22c55e' : '#ef4444';
-  const fillOpacity = pass ? 0.25 : 0.35;
+  const glowColor = pass ? 'rgba(34,197,94,0.4)' : 'rgba(239,68,68,0.4)';
 
-  const polygon = L.polygon(factory.polygon, {
+  const marker = L.circleMarker([factory.lat, factory.lng], {
+    radius: 10,
     color: color,
-    weight: 2,
+    weight: 2.5,
     fillColor: color,
-    fillOpacity: fillOpacity
+    fillOpacity: 0.7,
+    className: 'factory-circle'
   }).addTo(map);
 
-  polygon.bindTooltip(factory.name, {
+  marker.bindTooltip(factory.name, {
     sticky: true,
     className: 'factory-tooltip',
     direction: 'top',
-    offset: [0, -10]
+    offset: [0, -12]
   });
 
-  polygon.on('mouseover', function () {
-    this.setStyle({ weight: 3, fillOpacity: fillOpacity + 0.15 });
+  marker.on('mouseover', function () {
+    this.setStyle({ radius: 13, weight: 3, fillOpacity: 0.85 });
+    this.openTooltip();
   });
 
-  polygon.on('mouseout', function () {
-    this.setStyle({ weight: 2, fillOpacity: fillOpacity });
+  marker.on('mouseout', function () {
+    this.setStyle({ radius: 10, weight: 2.5, fillOpacity: 0.7 });
   });
 
   const popupHTML = buildPopupHTML(factory);
-  polygon.bindPopup(popupHTML, {
+  marker.bindPopup(popupHTML, {
     maxWidth: 300,
     minWidth: 240,
     closeButton: true,
@@ -99,8 +102,8 @@ function addFactoryPolygon(factory) {
     autoPanPadding: [40, 40]
   });
 
-  polygon.factoryId = factory.id;
-  factoryPolygons[factory.id] = polygon;
+  marker.factoryId = factory.id;
+  factoryMarkers[factory.id] = marker;
 }
 
 function buildPopupHTML(factory) {
@@ -108,11 +111,11 @@ function buildPopupHTML(factory) {
   const checks = getParamChecks(d);
 
   const rows = [
-    { label: 'BOD', value: d.bod, unit: 'mg/L', pass: checks.bod, ref: '≤ 20' },
-    { label: 'COD', value: d.cod, unit: 'mg/L', pass: checks.cod, ref: '≤ 120' },
-    { label: 'DO',  value: d.do,  unit: 'mg/L', pass: checks.do,  ref: '≥ 2' },
-    { label: 'pH',  value: d.ph,  unit: '-',    pass: checks.ph,  ref: '6.0–9.0' },
-    { label: 'Temp', value: d.temp, unit: '°C', pass: checks.temp, ref: '≤ 40' }
+    { label: 'BOD', value: d.bod, unit: 'mg/L', pass: checks.bod },
+    { label: 'COD', value: d.cod, unit: 'mg/L', pass: checks.cod },
+    { label: 'DO',  value: d.do,  unit: 'mg/L', pass: checks.do },
+    { label: 'pH',  value: d.ph,  unit: '-',    pass: checks.ph },
+    { label: 'Temp', value: d.temp, unit: '°C', pass: checks.temp }
   ];
 
   const paramsHTML = rows.map(r => `
@@ -160,32 +163,32 @@ function getParamChecks(d) {
 }
 
 function highlightFactory(id) {
-  Object.keys(factoryPolygons).forEach(key => {
-    const poly = factoryPolygons[key];
+  Object.keys(factoryMarkers).forEach(key => {
+    const m = factoryMarkers[key];
     const factory = MOCK_DATA.find(f => f.id === parseInt(key));
     if (factory) {
       const pass = isPass(factory.current);
       const color = pass ? '#22c55e' : '#ef4444';
-      poly.setStyle({ color: color, fillColor: color, weight: 2, fillOpacity: pass ? 0.25 : 0.35 });
+      m.setStyle({ color, fillColor: color, radius: 10, weight: 2.5, fillOpacity: 0.7 });
     }
   });
 
-  const selected = factoryPolygons[id];
+  const selected = factoryMarkers[id];
   if (selected) {
-    selected.setStyle({ color: '#f5d061', fillColor: '#f5d061', weight: 3, fillOpacity: 0.4 });
-    const center = selected.getBounds().getCenter();
-    map.setView([center.lat, center.lng], 16, { animate: true });
+    selected.setStyle({ color: '#f5d061', fillColor: '#f5d061', radius: 14, weight: 3, fillOpacity: 0.9 });
+    const ll = selected.getLatLng();
+    map.setView([ll.lat, ll.lng], 16, { animate: true });
   }
 }
 
 function resetHighlights() {
-  Object.keys(factoryPolygons).forEach(key => {
-    const poly = factoryPolygons[key];
+  Object.keys(factoryMarkers).forEach(key => {
+    const m = factoryMarkers[key];
     const factory = MOCK_DATA.find(f => f.id === parseInt(key));
     if (factory) {
       const pass = isPass(factory.current);
       const color = pass ? '#22c55e' : '#ef4444';
-      poly.setStyle({ color: color, fillColor: color, weight: 2, fillOpacity: pass ? 0.25 : 0.35 });
+      m.setStyle({ color, fillColor: color, radius: 10, weight: 2.5, fillOpacity: 0.7 });
     }
   });
 }

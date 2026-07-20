@@ -4,7 +4,7 @@ function initApp() {
   initMap();
 
   MOCK_DATA.forEach(factory => {
-    addFactoryPolygon(factory);
+    addFactoryMarker(factory);
   });
 
   renderFactoryList(MOCK_DATA);
@@ -148,8 +148,8 @@ function selectFactory(id) {
   highlightFactory(id);
   showDetail(factory);
 
-  if (factoryPolygons[id]) {
-    factoryPolygons[id].openPopup();
+  if (factoryMarkers[id]) {
+    factoryMarkers[id].openPopup();
   }
 
   if (window.innerWidth <= 900) {

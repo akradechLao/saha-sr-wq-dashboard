@@ -880,3 +880,12 @@ body {
     min-height: 180px;
   }
 }
+
+/* ============ CIRCLE MARKER GLOW ============ */
+.leaflet-interactive.factory-circle {
+  transition: all 0.2s ease;
+}
+
+.leaflet-interactive.factory-circle:hover {
+  filter: drop-shadow(0 0 8px currentColor);
+}
