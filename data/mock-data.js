@@ -74,9 +74,8 @@ const MOCK_DATA = [
     industry: 'สิ่งทอ',
     address: '622/3-4 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20280',
     lat: 13.0990, lng: 100.9580,
-    monitor: ['ph','tds','tss','cod','bod','oil'],
-    current: { bod: 11.8, cod: 48.5, do: 4.0, ph: 7.3, temp: 32.0, tds: 420, tss: 28, oil: 3.2 },
-    history: generateHistory(11.8, 48.5, 4.0, 7.3, 32.0, 420, 28, 3.2)
+    current: { bod: 11.8, cod: 48.5, do: 4.0, ph: 7.3, temp: 32.0 },
+    history: generateHistory(11.8, 48.5, 4.0, 7.3, 32.0)
   },
   {
     id: 5,
@@ -175,8 +174,9 @@ const MOCK_DATA = [
     industry: 'อิเล็กทรอนิกส์',
     address: '313 หมู่ 1 ถ.สุขาภิบาล 8 ต.บึง อ.ศรีราชา จ.ชลบุรี 20230',
     lat: 13.0950, lng: 100.9678,
-    current: { bod: 8.2, cod: 32.5, do: 5.8, ph: 7.1, temp: 31.2 },
-    history: generateHistory(8.2, 32.5, 5.8, 7.1, 31.2)
+    monitor: ['ph','tds','tss','cod','bod'],
+    current: { bod: 8.2, cod: 32.5, do: 5.8, ph: 7.1, temp: 31.2, tds: 310, tss: 20 },
+    history: generateHistory(8.2, 32.5, 5.8, 7.1, 31.2, 310, 20)
   },
   {
     id: 15,
@@ -185,8 +185,9 @@ const MOCK_DATA = [
     industry: 'อาหาร (มาม่า)',
     address: '601 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
     lat: 13.0948, lng: 100.9580,
-    current: { bod: 11.2, cod: 48.5, do: 4.2, ph: 7.3, temp: 32.5 },
-    history: generateHistory(11.2, 48.5, 4.2, 7.3, 32.5)
+    monitor: ['ph','tds','tss','cod','bod','oil'],
+    current: { bod: 11.2, cod: 48.5, do: 4.2, ph: 7.3, temp: 32.5, tds: 400, tss: 32, oil: 2.8 },
+    history: generateHistory(11.2, 48.5, 4.2, 7.3, 32.5, 400, 32, 2.8)
   },
   {
     id: 16,
@@ -326,9 +327,8 @@ const MOCK_DATA = [
     industry: 'ผ้าไม่ถักทอ',
     address: 'ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
     lat: 13.0965, lng: 100.9650,
-    monitor: ['ph','tds','tss','cod','bod'],
-    current: { bod: 9.7, cod: 38.4, do: 5.2, ph: 7.0, temp: 30.5, tds: 350, tss: 30 },
-    history: generateHistory(9.7, 38.4, 5.2, 7.0, 30.5, 350, 30)
+    current: { bod: 9.7, cod: 38.4, do: 5.2, ph: 7.0, temp: 30.5 },
+    history: generateHistory(9.7, 38.4, 5.2, 7.0, 30.5)
   },
   {
     id: 30,
@@ -507,8 +507,9 @@ const MOCK_DATA = [
     industry: 'เส้นใยสแปนเด็กซ์',
     address: '919 หมู่ 11 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
     lat: 13.0958, lng: 100.9630,
-    current: { bod: 8.5, cod: 35.8, do: 5.0, ph: 7.3, temp: 31.8 },
-    history: generateHistory(8.5, 35.8, 5.0, 7.3, 31.8)
+    monitor: ['ph','tds','tss','cod','bod'],
+    current: { bod: 8.5, cod: 35.8, do: 5.0, ph: 7.3, temp: 31.8, tds: 380, tss: 28 },
+    history: generateHistory(8.5, 35.8, 5.0, 7.3, 31.8, 380, 28)
   },
   {
     id: 48,
@@ -517,9 +518,8 @@ const MOCK_DATA = [
     industry: 'ชิ้นส่วนพลาสติก',
     address: '623/1-2 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
     lat: 13.0942, lng: 100.9575,
-    monitor: ['ph','tds','tss','cod','bod'],
-    current: { bod: 7.5, cod: 32.8, do: 5.5, ph: 7.2, temp: 31.8, tds: 320, tss: 22 },
-    history: generateHistory(7.5, 32.8, 5.5, 7.2, 31.8, 320, 22)
+    current: { bod: 7.5, cod: 32.8, do: 5.5, ph: 7.2, temp: 31.8 },
+    history: generateHistory(7.5, 32.8, 5.5, 7.2, 31.8)
   },
   {
     id: 49,
@@ -528,9 +528,8 @@ const MOCK_DATA = [
     industry: 'เสื้อผ้าสำเร็จรูป',
     address: '600/3 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
     lat: 13.0995, lng: 100.9570,
-    monitor: ['ph','tds','tss','cod','bod'],
-    current: { bod: 14.5, cod: 62.8, do: 3.5, ph: 7.6, temp: 33.8, tds: 450, tss: 42 },
-    history: generateHistory(14.5, 62.8, 3.5, 7.6, 33.8, 450, 42)
+    current: { bod: 14.5, cod: 62.8, do: 3.5, ph: 7.6, temp: 33.8 },
+    history: generateHistory(14.5, 62.8, 3.5, 7.6, 33.8)
   },
   {
     id: 50,
@@ -650,9 +649,8 @@ const MOCK_DATA = [
     industry: 'โรงไฟฟ้า',
     address: '636 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
     lat: 13.0988, lng: 100.9606,
-    monitor: ['ph','tds','tss','cod','bod'],
-    current: { bod: 22.1, cod: 125.3, do: 1.8, ph: 6.2, temp: 38.7, tds: 520, tss: 48 },
-    history: generateHistory(22.1, 125.3, 1.8, 6.2, 38.7, 520, 48)
+    current: { bod: 22.1, cod: 125.3, do: 1.8, ph: 6.2, temp: 38.7 },
+    history: generateHistory(22.1, 125.3, 1.8, 6.2, 38.7)
   },
   {
     id: 62,
@@ -681,9 +679,8 @@ const MOCK_DATA = [
     industry: 'อาหารทะเล',
     address: '666/2 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
     lat: 13.1008, lng: 100.9648,
-    monitor: ['ph','tds','tss','cod','bod'],
-    current: { bod: 15.5, cod: 68.2, do: 3.0, ph: 7.5, temp: 34.0, tds: 480, tss: 40 },
-    history: generateHistory(15.5, 68.2, 3.0, 7.5, 34.0, 480, 40)
+    current: { bod: 15.5, cod: 68.2, do: 3.0, ph: 7.5, temp: 34.0 },
+    history: generateHistory(15.5, 68.2, 3.0, 7.5, 34.0)
   },
   {
     id: 65,
@@ -692,7 +689,30 @@ const MOCK_DATA = [
     industry: 'ชิ้นส่วนยานยนต์',
     address: '592 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
     lat: 13.0975, lng: 100.9645,
-    current: { bod: 12.4, cod: 52.8, do: 4.5, ph: 7.3, temp: 32.8 },
-    history: generateHistory(12.4, 52.8, 4.5, 7.3, 32.8)
+    monitor: ['ph','tds','tss','cod','bod'],
+    current: { bod: 12.4, cod: 52.8, do: 4.5, ph: 7.3, temp: 32.8, tds: 440, tss: 35 },
+    history: generateHistory(12.4, 52.8, 4.5, 7.3, 32.8, 440, 35)
+  },
+  {
+    id: 66,
+    name: 'Thai Asahi',
+    nameTh: 'ไทยอาซาฮี',
+    industry: 'อาหาร',
+    address: '628/1 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
+    lat: 13.0978, lng: 100.9615,
+    monitor: ['ph','tds','tss','cod','bod'],
+    current: { bod: 10.2, cod: 42.5, do: 4.8, ph: 7.2, temp: 32.0, tds: 390, tss: 30 },
+    history: generateHistory(10.2, 42.5, 4.8, 7.2, 32.0, 390, 30)
+  },
+  {
+    id: 67,
+    name: 'Sahachol Interpack',
+    nameTh: 'สหชลอ อินเตอร์แพ็ค',
+    industry: 'บรรจุภัณฑ์',
+    address: '633 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
+    lat: 13.0982, lng: 100.9628,
+    monitor: ['ph','tds','tss','cod','bod'],
+    current: { bod: 9.8, cod: 38.2, do: 5.0, ph: 7.1, temp: 31.5, tds: 360, tss: 25 },
+    history: generateHistory(9.8, 38.2, 5.0, 7.1, 31.5, 360, 25)
   }
 ];
