@@ -62,10 +62,10 @@ const MOCK_DATA = [
   },
   {
     id: 4,
-    name: 'Toyota Textile Thailand',
-    nameTh: 'โตโย เท็กซ์ไทล์ ไทย',
+    name: 'Toyo Textile Thai',
+    nameTh: 'โตโย เท็กซ์ไทล์ไทย',
     industry: 'สิ่งทอ',
-    address: '622/3-4 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
+    address: '622/3-4 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20280',
     lat: 13.0990, lng: 100.9580,
     current: { bod: 11.8, cod: 48.5, do: 4.0, ph: 7.3, temp: 32.0 },
     history: generateHistory(11.8, 48.5, 4.0, 7.3, 32.0)
