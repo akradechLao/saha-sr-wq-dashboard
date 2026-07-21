@@ -132,6 +132,20 @@ https://akradechLao.github.io/saha-sr-wq-dashboard/
 - กรมควบคุมมลพิษ: เกณฑ์มาตรฐานน้ำทิ้งจากโรงงานอุตสาหกรรม
 - OpenStreetMap + ArcGIS: แผนที่
 
+## ไฟล์รายชื่อโรงงาน (CSV)
+
+ดาวน์โหลดไฟล์: [`data/factory-list.csv`](data/factory-list.csv)
+
+### วิธีเปิดใน Excel (ให้อ่านภาษาไทยได้)
+
+1. เปิด Excel → ไฟล์ใหม่
+2. ไปที่ **ข้อมูล** → **รับข้อมูลภายนอก** → **จากไฟล์ข้อความ**
+3. เลือกไฟล์ `factory-list.csv`
+4. ในหน้าต่าง Import Wizard เลือก **Delimited** → ถัดไป
+5. เลือก **Comma** เป็น delimiter
+6. เลือก **File origin: 65001: Unicode (UTF-8)**
+7. คลิก **Finish** → **OK**
+
 ## License
 
 MIT
