@@ -651,8 +651,8 @@ const MOCK_DATA = [
     industry: 'โรงไฟฟ้า',
     address: '636 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
     lat: 13.0988, lng: 100.9606,
-    current: { bod: 22.1, cod: 125.3, do: 1.8, ph: 6.2, temp: 38.7 },
-    history: generateHistory(22.1, 125.3, 1.8, 6.2, 38.7)
+    current: { bod: 15.2, cod: 95.8, do: 3.5, ph: 7.2, temp: 35.5 },
+    history: generateHistory(15.2, 95.8, 3.5, 7.2, 35.5)
   },
   {
     id: 62,
