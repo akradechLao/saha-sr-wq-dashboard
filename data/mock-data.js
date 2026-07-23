@@ -627,8 +627,8 @@ const MOCK_DATA = [
     name: 'S&J International Enterprises',
     nameTh: 'เอสแอนด์เจ อินเตอร์เนชั่นแนลเอนเตอร์ไพรส์',
     industry: 'เครื่องสำอาง',
-    address: '600/4 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0935, lng: 100.9565,
+    address: 'ซ.หมู่บ้านศรีราชาแลนด์การ์ด ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20110',
+    lat: 13.0964, lng: 100.9625,
     monitor: ['ph','tds','tss','cod','bod','oil'],
     current: { bod: 5.8, cod: 22.4, do: 6.0, ph: 7.0, temp: 30.5, tds: 280, tss: 18, oil: 1.5 },
     history: generateHistory(5.8, 22.4, 6.0, 7.0, 30.5, 280, 18, 1.5)
