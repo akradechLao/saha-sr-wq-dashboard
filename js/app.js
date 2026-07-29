@@ -1,13 +1,14 @@
 let selectedFactoryId = null;
+const displayFactories = MOCK_DATA.filter(f => f.hasData !== false);
 
 function initApp() {
   initMap();
 
-  MOCK_DATA.forEach(factory => {
+  displayFactories.forEach(factory => {
     addFactoryMarker(factory);
   });
 
-  renderFactoryList(MOCK_DATA);
+  renderFactoryList(displayFactories);
   updateSummary();
   updateCurrentDate();
   loadThemePreference();
@@ -82,10 +83,10 @@ function updateCurrentDate() {
 
 /* ============ SUMMARY ============ */
 function updateSummary() {
-  const passCount = MOCK_DATA.filter(f => isPass(f.current)).length;
-  const failCount = MOCK_DATA.length - passCount;
+  const passCount = displayFactories.filter(f => isPass(f.current)).length;
+  const failCount = displayFactories.length - passCount;
 
-  document.getElementById('total-count').textContent = MOCK_DATA.length;
+  document.getElementById('total-count').textContent = displayFactories.length;
   document.getElementById('pass-count').textContent = passCount;
   document.getElementById('fail-count').textContent = failCount;
 }
@@ -130,11 +131,11 @@ function handleSearch(e) {
   const term = e.target.value.toLowerCase().trim();
 
   if (!term) {
-    renderFactoryList(MOCK_DATA);
+    renderFactoryList(displayFactories);
     return;
   }
 
-  const filtered = MOCK_DATA.filter(f =>
+  const filtered = displayFactories.filter(f =>
     f.name.toLowerCase().includes(term) ||
     f.nameTh.includes(term) ||
     f.industry.includes(term)
@@ -163,8 +164,8 @@ function selectFactory(id) {
 
 function getFilteredFactories() {
   const term = (document.getElementById('search-factory').value || '').toLowerCase().trim();
-  if (!term) return MOCK_DATA;
-  return MOCK_DATA.filter(f =>
+  if (!term) return displayFactories;
+  return displayFactories.filter(f =>
     f.name.toLowerCase().includes(term) ||
     f.nameTh.includes(term) ||
     f.industry.includes(term)
@@ -236,7 +237,7 @@ function closeDetail() {
   sidebar.classList.remove('has-detail');
   selectedFactoryId = null;
   resetHighlights();
-  renderFactoryList(MOCK_DATA);
+  renderFactoryList(displayFactories);
   invalidateMapSize();
 }
 
