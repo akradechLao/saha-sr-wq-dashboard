@@ -30,6 +30,7 @@ function initMap() {
 
   setTileLayer('street');
   drawEstateBoundary();
+  initCoordinatePicker();
 }
 
 function setTileLayer(type) {
@@ -198,4 +199,69 @@ function invalidateMapSize() {
   if (map) {
     setTimeout(() => map.invalidateSize(), 100);
   }
+}
+
+/* ============ COORDINATE PICKER ============ */
+let coordPickerMarker = null;
+
+function initCoordinatePicker() {
+  map.on('click', function(e) {
+    const { lat, lng } = e.latlng;
+
+    if (coordPickerMarker) {
+      map.removeLayer(coordPickerMarker);
+    }
+
+    coordPickerMarker = L.circleMarker([lat, lng], {
+      radius: 6,
+      color: '#f5d061',
+      fillColor: '#f5d061',
+      fillOpacity: 0.9,
+      weight: 2
+    }).addTo(map);
+
+    const factory = selectedFactoryId ? MOCK_DATA.find(f => f.id === selectedFactoryId) : null;
+
+    let html = `<div class="coord-picker-content">
+      <div class="coord-label">พิกัดที่คลิก</div>
+      <div class="coord-values">
+        <span class="coord-item">lat: ${lat.toFixed(6)}</span>
+        <span class="coord-item">lng: ${lng.toFixed(6)}</span>
+      </div>`;
+
+    if (factory) {
+      html += `<div class="coord-divider"></div>
+        <div class="coord-label">โรงงาน: ${factory.name}</div>
+        <div class="coord-values">
+          <span class="coord-item old">เดิม: ${factory.lat}, ${factory.lng}</span>
+        </div>
+        <div class="coord-code">lat: ${lat.toFixed(6)}, lng: ${lng.toFixed(6)}</div>
+        <button class="coord-copy-btn" onclick="copyCoord('${lat.toFixed(6)}, ${lng.toFixed(6)}')">คัดลอกพิกัด</button>`;
+    } else {
+      html += `<button class="coord-copy-btn" onclick="copyCoord('${lat.toFixed(6)}, ${lng.toFixed(6)}')">คัดลอกพิกัด</button>`;
+    }
+
+    html += `</div>`;
+
+    coordPickerMarker.bindPopup(html, {
+      maxWidth: 280,
+      minWidth: 200,
+      closeButton: true,
+      className: 'coord-picker-popup'
+    }).openPopup();
+  });
+}
+
+function copyCoord(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.coord-copy-btn');
+    if (btn) {
+      btn.textContent = 'คัดลอกแล้ว!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'คัดลอกพิกัด';
+        btn.classList.remove('copied');
+      }, 1500);
+    }
+  });
 }

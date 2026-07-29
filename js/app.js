@@ -183,6 +183,11 @@ function showDetail(factory) {
   document.getElementById('detail-name-th').textContent = `${factory.nameTh} — ${factory.industry}`;
   document.getElementById('detail-industry').textContent = factory.industry;
 
+  const coordEl = document.getElementById('detail-coords');
+  if (coordEl) {
+    coordEl.textContent = `พิกัด: ${factory.lat}, ${factory.lng}`;
+  }
+
   const photoEl = document.getElementById('detail-photo');
   if (photoEl) {
     if (factory.photo) {

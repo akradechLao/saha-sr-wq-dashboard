@@ -937,3 +937,79 @@ body {
 .leaflet-interactive.factory-circle:hover {
   filter: drop-shadow(0 0 8px currentColor);
 }
+
+/* ============ COORDINATE PICKER ============ */
+.coord-picker-content {
+  font-family: 'Segoe UI', sans-serif;
+  padding: 4px;
+}
+
+.coord-label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.coord-values {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 6px;
+}
+
+.coord-item {
+  font-size: 0.78rem;
+  font-family: 'Courier New', monospace;
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+  padding: 3px 6px;
+  border-radius: 4px;
+}
+
+.coord-item.old {
+  color: var(--text-muted);
+  text-decoration: line-through;
+  font-size: 0.7rem;
+}
+
+.coord-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 6px 0;
+}
+
+.coord-code {
+  font-size: 0.72rem;
+  font-family: 'Courier New', monospace;
+  background: #1a2744;
+  color: var(--accent-yellow);
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin: 6px 0;
+  text-align: center;
+}
+
+.coord-copy-btn {
+  width: 100%;
+  padding: 6px 10px;
+  border: 1px solid var(--accent-gold);
+  background: transparent;
+  color: var(--accent-gold);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.coord-copy-btn:hover {
+  background: var(--accent-gold);
+  color: #000;
+}
+
+.coord-copy-btn.copied {
+  background: var(--pass);
+  border-color: var(--pass);
+  color: #fff;
+}
