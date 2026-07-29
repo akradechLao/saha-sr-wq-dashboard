@@ -257,6 +257,8 @@ body {
 .map-section {
   position: relative;
   background: var(--bg-secondary);
+  min-height: 0;
+  overflow: hidden;
 }
 
 #map {
