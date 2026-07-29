@@ -317,7 +317,7 @@ const MOCK_DATA = [
 ,
   {
     id: 58,
-    name: 'Racha Ushino',
+    name: 'Raja Uchino',
     nameTh: 'ราชาอูชิโน',
     industry: 'ผ้าขนหนู',
     address: '630 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
