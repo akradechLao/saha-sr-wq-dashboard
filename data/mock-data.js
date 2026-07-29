@@ -360,7 +360,7 @@ const MOCK_DATA = [
 ,
   {
     id: 60,
-    name: 'Sahachon Phuet Pha',
+    name: 'Sahachol Food Supplies',
     nameTh: 'สหชลผลพืช',
     industry: 'อาหาร',
     address: '600/1 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
