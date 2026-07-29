@@ -98,17 +98,29 @@ function drawEstateBoundary() {
   // ขอบเขตจะเพิ่มใหม่เมื่อได้พิกัดที่ตรงกับผังจริง
 }
 
+function createFactoryIcon(color) {
+  return L.divIcon({
+    className: 'factory-icon-marker',
+    html: `<svg width="24" height="28" viewBox="0 0 24 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 0C12 0 8 4 8 8V12H6V8C6 4 2 0 2 0L0 4V14H4V10H6V14H10V10H12V14H16V10H18V14H22V4L20 0C20 0 16 4 16 8V12H14V8C14 4 12 0 12 0Z" fill="${color}"/>
+      <rect x="2" y="14" width="20" height="12" rx="2" fill="${color}"/>
+      <rect x="5" y="17" width="4" height="3" rx="1" fill="#0a0e27"/>
+      <rect x="15" y="17" width="4" height="3" rx="1" fill="#0a0e27"/>
+      <rect x="5" y="22" width="4" height="3" rx="1" fill="#0a0e27"/>
+      <rect x="15" y="22" width="4" height="3" rx="1" fill="#0a0e27"/>
+    </svg>`,
+    iconSize: [24, 28],
+    iconAnchor: [12, 28],
+    popupAnchor: [0, -28]
+  });
+}
+
 function addFactoryMarker(factory) {
   const pass = isPass(factory.current);
   const color = pass ? '#22c55e' : '#ef4444';
 
-  const marker = L.circleMarker([factory.lat, factory.lng], {
-    radius: 2.5,
-    color: color,
-    weight: 1,
-    fillColor: color,
-    fillOpacity: 0.7,
-    className: 'factory-circle'
+  const marker = L.marker([factory.lat, factory.lng], {
+    icon: createFactoryIcon(color)
   }).addTo(map);
 
   marker.bindTooltip(factory.name, {
@@ -222,13 +234,15 @@ function highlightFactory(id) {
     if (factory) {
       const pass = isPass(factory.current);
       const color = pass ? '#22c55e' : '#ef4444';
-      m.setStyle({ color, fillColor: color, radius: 2.5, weight: 1, fillOpacity: 0.7 });
+      m.setIcon(createFactoryIcon(color));
+      m.getElement()?.classList.remove('selected');
     }
   });
 
   const selected = factoryMarkers[id];
   if (selected) {
-    selected.setStyle({ color: '#06b6d4', fillColor: '#06b6d4', radius: 4, weight: 1.5, fillOpacity: 0.9 });
+    selected.setIcon(createFactoryIcon('#06b6d4'));
+    selected.getElement()?.classList.add('selected');
     const ll = selected.getLatLng();
     map.setView([ll.lat, ll.lng], 16, { animate: true });
   }
@@ -241,7 +255,8 @@ function resetHighlights() {
     if (factory) {
       const pass = isPass(factory.current);
       const color = pass ? '#22c55e' : '#ef4444';
-      m.setStyle({ color, fillColor: color, radius: 2.5, weight: 1, fillOpacity: 0.7 });
+      m.setIcon(createFactoryIcon(color));
+      m.getElement()?.classList.remove('selected');
     }
   });
 }
