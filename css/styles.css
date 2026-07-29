@@ -934,12 +934,14 @@ body {
   background: transparent !important;
   border: none !important;
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, filter 0.2s ease;
+  cursor: pointer;
 }
 
 .factory-icon-marker:hover {
-  transform: scale(1.2) translateY(-4px);
-  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+  transform: scale(1.4) translateY(-6px);
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.6));
+  z-index: 9999 !important;
 }
 
 .factory-icon-marker.selected {
