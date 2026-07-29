@@ -202,12 +202,14 @@ function selectFactory(id) {
   if (!factory) return;
 
   renderFactoryList(getFilteredFactories());
-  highlightFactory(id);
   showDetail(factory);
+  highlightFactory(id);
 
-  if (factoryMarkers[id]) {
-    factoryMarkers[id].openPopup();
-  }
+  setTimeout(() => {
+    if (factoryMarkers[id]) {
+      factoryMarkers[id].openPopup();
+    }
+  }, 100);
 
   if (window.innerWidth <= 900) {
     closeSidebar();

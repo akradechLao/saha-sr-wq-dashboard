@@ -161,11 +161,11 @@ function buildPopupHTML(factory) {
   const checks = getParamChecks(d);
 
   const rows = [
-    { label: 'BOD', value: d.bod, unit: 'mg/L', pass: checks.bod, standard: '≤ 120' },
-    { label: 'COD', value: d.cod, unit: 'mg/L', pass: checks.cod, standard: '≤ 500' },
-    { label: 'DO',  value: d.do,  unit: 'mg/L', pass: checks.do, standard: '≥ 2' },
-    { label: 'pH',  value: d.ph,  unit: '-',    pass: checks.ph, standard: '5.5–9.0' },
-    { label: 'Temp', value: d.temp, unit: '°C', pass: checks.temp, standard: '≤ 45' }
+    { label: 'BOD',  value: d.bod,  unit: 'mg/L', pass: checks.bod,  standard: '≤ 120' },
+    { label: 'COD',  value: d.cod,  unit: 'mg/L', pass: checks.cod,  standard: '≤ 500' },
+    { label: 'DO',   value: d.do,   unit: 'mg/L', pass: checks.do,   standard: '≥ 2' },
+    { label: 'pH',   value: d.ph,   unit: '',     pass: checks.ph,   standard: '5.5–9.0' },
+    { label: 'Temp', value: d.temp, unit: '°C',   pass: checks.temp, standard: '≤ 45' }
   ];
 
   if (d.tds !== undefined) rows.push({ label: 'TDS', value: d.tds, unit: 'mg/L', pass: checks.tds, standard: '≤ 3000' });
@@ -174,7 +174,10 @@ function buildPopupHTML(factory) {
 
   const paramsHTML = rows.map(r => `
     <div class="popup-param">
-      <span class="param-name">${r.label}</span>
+      <div class="popup-param-left">
+        <span class="popup-param-label">${r.label}</span>
+        <span class="popup-param-standard">(${r.standard} ${r.unit})</span>
+      </div>
       <span class="param-val ${r.pass ? 'pass' : 'fail'}">
         ${r.value} ${r.unit}
         <span class="param-check">${r.pass ? '✓' : '✗'}</span>
@@ -193,7 +196,8 @@ function buildPopupHTML(factory) {
       ${photoHTML}
       <div class="popup-header">
         <h3>${factory.name}</h3>
-        <div class="popup-type">${factory.nameTh} — ${factory.industry}</div>
+        <div class="popup-type">${factory.nameTh}</div>
+        <span class="popup-industry-tag">${factory.industry}</span>
       </div>
       <div class="popup-params">
         ${paramsHTML}
@@ -202,6 +206,9 @@ function buildPopupHTML(factory) {
         <span style="font-size:0.72rem;color:${allPass ? 'var(--pass)' : 'var(--fail)'};font-weight:600;">
           ${allPass ? '✓ ผ่านเกณฑ์มาตรฐานทั้งหมด' : '✗ มีค่าไม่ผ่านเกณฑ์'}
         </span>
+      </div>
+      <div style="margin-top:8px;text-align:center;">
+        <button onclick="selectFactory(${factory.id})" class="popup-detail-btn">📊 ดูข้อมูลเต็ม</button>
       </div>
     </div>
   `;
