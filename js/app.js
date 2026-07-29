@@ -240,9 +240,9 @@ function showDetail(factory) {
   // แสดงเดือน/ปี ของผลตรวจวัด
   const dateLabel = document.getElementById('detail-date-label');
   if (dateLabel && factory.current && factory.monthlyData && factory.monthlyData.BOD) {
-    const monthNames = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+    const fullMonthNames = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
     const lastIdx = factory.monthlyData.BOD.length - 1;
-    const dateText = `📊 ผลตรวจวัด ณ เดือน${monthNames[lastIdx]} 2569`;
+    const dateText = `📊 ผลตรวจวัด ณ เดือน${fullMonthNames[lastIdx]} 2569`;
     dateLabel.textContent = dateText;
     dateLabel.style.display = 'block';
   } else if (dateLabel) {
