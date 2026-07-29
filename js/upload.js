@@ -28,26 +28,15 @@ const dropzone = document.getElementById('upload-dropzone');
 const fileInput = document.getElementById('upload-file-input');
 
 dropzone.addEventListener('click', () => fileInput.click());
-
-dropzone.addEventListener('dragover', (e) => {
-  e.preventDefault();
-  dropzone.classList.add('dragover');
-});
-
-dropzone.addEventListener('dragleave', () => {
-  dropzone.classList.remove('dragover');
-});
-
+dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
+dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
 dropzone.addEventListener('drop', (e) => {
   e.preventDefault();
   dropzone.classList.remove('dragover');
-  const file = e.dataTransfer.files[0];
-  if (file) handleFileUpload(file);
+  if (e.dataTransfer.files[0]) handleFileUpload(e.dataTransfer.files[0]);
 });
-
 fileInput.addEventListener('change', (e) => {
-  const file = e.target.files[0];
-  if (file) handleFileUpload(file);
+  if (e.target.files[0]) handleFileUpload(e.target.files[0]);
 });
 
 function handleFileUpload(file) {
@@ -56,9 +45,6 @@ function handleFileUpload(file) {
     showUploadError('กรุณาใส่ปี พ.ศ. ก่อนเลือกไฟล์');
     return;
   }
-
-  const year = parseInt(yearInput);
-
   if (!file.name.match(/\.xlsx?$/i)) {
     showUploadError('กรุณาเลือกไฟล์ .xlsx หรือ .xls เท่านั้น');
     return;
@@ -72,7 +58,7 @@ function handleFileUpload(file) {
     try {
       const data = new Uint8Array(e.target.result);
       const workbook = XLSX.read(data, { type: 'array' });
-      parseExcelFile(workbook, year, file.name);
+      parseExcelFile(workbook, parseInt(yearInput), file.name);
     } catch (err) {
       showUploadError('ไม่สามารถอ่านไฟล์ได้: ' + err.message);
       document.getElementById('upload-step-1').classList.remove('hidden');
@@ -88,60 +74,48 @@ function showUploadError(msg) {
   el.classList.remove('hidden');
 }
 
-function parseExcelFile(workbook, year, fileName) {
-  const monthMap = { 'ม.ค.': 0, 'ก.พ.': 1, 'มี.ค.': 2, 'เม.ย.': 3, 'พ.ค.': 4, 'มิ.ย.': 5, 'ก.ค.': 6, 'ส.ค.': 7, 'ก.ย.': 8, 'ต.ค.': 9, 'พ.ย.': 10, 'ธ.ค.': 11 };
+function parseMonthLabel(label) {
+  if (!label) return null;
+  const s = String(label).trim();
+  const m = [
+    { re: /ม\.ค\.|jan/i, v: 0 }, { re: /ก\.พ\.|feb/i, v: 1 }, { re: /มี\.ค\.|mar/i, v: 2 },
+    { re: /เม\.ย\.|apr/i, v: 3 }, { re: /พ\.ค\.|may/i, v: 4 }, { re: /มิ\.ย\.|jun/i, v: 5 },
+    { re: /ก\.ค\.|jul/i, v: 6 }, { re: /ส\.ค\.|aug/i, v: 7 }, { re: /ก\.ย\.|sep/i, v: 8 },
+    { re: /ต\.ค\.|oct/i, v: 9 }, { re: /พ\.ย\.|nov/i, v: 10 }, { re: /ธ\.ค\.|dec/i, v: 11 }
+  ];
+  for (const p of m) { if (p.re.test(s)) return p.v; }
+  return null;
+}
 
-  let allRows = [];
-  let headers = [];
+function parseExcelFile(workbook, year, fileName) {
+  const allRows = [];
 
   workbook.SheetNames.forEach(sheetName => {
     const sheet = workbook.Sheets[sheetName];
     const json = XLSX.utils.sheet_to_json(sheet, { header: 1 });
     if (json.length < 2) return;
 
-    const firstRow = json[0];
-    const headerRow = firstRow.map(h => String(h || '').trim());
+    const headerRow = json[0].map(h => String(h || '').trim());
+    let nameIdx = headerRow.findIndex(h => /โรงงาน|Factory|Name|ชื่อ|ชื่อโรงงาน/i.test(h));
 
-    const nameIdx = headerRow.findIndex(h => /โรงงาน|Factory|Name|ชื่อ/i.test(h));
-    if (nameIdx === -1) return;
+    // fallback: ถ้าหาไม่เจอ ลอง column แรก
+    if (nameIdx === -1) nameIdx = 0;
 
     for (let r = 1; r < json.length; r++) {
       const row = json[r];
       if (!row || !row[nameIdx]) continue;
-
-      const factoryName = String(row[nameIdx] || '').trim();
+      const factoryName = String(row[nameIdx]).trim();
       if (!factoryName) continue;
 
       const rowData = { name: factoryName, months: {} };
-
-      headerRow.forEach((h, ci) => {
-        if (ci === nameIdx) return;
-        const monthNum = parseMonthLabel(h);
-        if (monthNum !== null && row[ci] !== undefined) {
-          rowData.months[monthNum] = parseFloat(row[ci]) || 0;
+      for (let c = 0; c < row.length; c++) {
+        if (c === nameIdx) continue;
+        const monthNum = parseMonthLabel(headerRow[c]);
+        if (monthNum !== null && row[c] !== undefined && row[c] !== '') {
+          rowData.months[monthNum] = parseFloat(row[c]) || 0;
         }
-      });
-
-      allRows.push(rowData);
-    }
-
-    if (allRows.length === 0) {
-      for (let r = 1; r < json.length; r++) {
-        const row = json[r];
-        if (!row || !row[0]) continue;
-
-        const factoryName = String(row[0] || '').trim();
-        if (!factoryName) continue;
-
-        const rowData = { name: factoryName, months: {} };
-        for (let c = 1; c < row.length; c++) {
-          const monthNum = parseMonthLabel(headerRow[c]);
-          if (monthNum !== null && row[c] !== undefined) {
-            rowData.months[monthNum] = parseFloat(row[c]) || 0;
-          }
-        }
-        allRows.push(rowData);
       }
+      if (Object.keys(rowData.months).length > 0) allRows.push(rowData);
     }
   });
 
@@ -152,48 +126,53 @@ function parseExcelFile(workbook, year, fileName) {
     return;
   }
 
-  displayUploadResult(allRows, year, fileName);
+  generateFullCode(allRows, year, fileName);
 }
 
-function parseMonthLabel(label) {
-  if (!label) return null;
-  const s = String(label).trim();
-  const monthPatterns = [
-    { re: /ม\.ค\.|jan/i, m: 0 },
-    { re: /ก\.พ\.|feb/i, m: 1 },
-    { re: /มี\.ค\.|mar/i, m: 2 },
-    { re: /เม\.ย\.|apr/i, m: 3 },
-    { re: /พ\.ค\.|may/i, m: 4 },
-    { re: /มิ\.ย\.|jun/i, m: 5 },
-    { re: /ก\.ค\.|jul/i, m: 6 },
-    { re: /ส\.ค\.|aug/i, m: 7 },
-    { re: /ก\.ย\.|sep/i, m: 8 },
-    { re: /ต\.ค\.|oct/i, m: 9 },
-    { re: /พ\.ย\.|nov/i, m: 10 },
-    { re: /ธ\.ค\.|dec/i, m: 11 }
-  ];
-  for (const p of monthPatterns) {
-    if (p.re.test(s)) return p.m;
-  }
-  return null;
+function matchFactoryName(uploadName, mockName) {
+  if (!uploadName || !mockName) return false;
+  const a = uploadName.toLowerCase().replace(/[^a-z0-9\u0E00-\u0E7F]/g, '');
+  const b = mockName.toLowerCase().replace(/[^a-z0-9\u0E00-\u0E7F]/g, '');
+  if (a === b) return true;
+  if (a.includes(b) || b.includes(a)) return true;
+  return false;
 }
 
-function displayUploadResult(rows, year, fileName) {
+function generateFullCode(rows, year, fileName) {
   document.getElementById('upload-step-2').classList.add('hidden');
   document.getElementById('upload-step-3').classList.remove('hidden');
 
-  document.getElementById('upload-preview-count').textContent = `${rows.length} โรงงาน`;
-
-  let tableHTML = '<table><thead><tr><th>โรงงาน</th>';
+  // แสดง preview
   const monthNames = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
   const monthCount = Math.min(12, Math.max(...rows.map(r => Object.keys(r.months).length).filter(n => n > 0)) || 6);
-  for (let i = 0; i < monthCount; i++) {
-    tableHTML += `<th>${monthNames[i]}</th>`;
-  }
+
+  let tableHTML = `<div style="margin-bottom:8px;font-size:0.75rem;color:var(--text-secondary);">
+    ตรงกับ <strong id="upload-match-count" style="color:var(--pass);">0</strong> / ${rows.length} โรงงานใน MOCK_DATA
+    <span style="color:var(--text-muted);margin-left:8px;">(${fileName})</span>
+  </div>`;
+  tableHTML += '<table><thead><tr><th>โรงงานในไฟล์</th><th>จับคู่กับ</th>';
+  for (let i = 0; i < monthCount; i++) tableHTML += `<th>${monthNames[i]}</th>`;
   tableHTML += '</tr></thead><tbody>';
 
+  let matchCount = 0;
+  const matchedFactoryIds = new Set();
+
   rows.forEach(row => {
-    tableHTML += `<tr><td style="white-space:nowrap;font-weight:600;">${row.name}</td>`;
+    // หา factory ที่ตรงกันใน MOCK_DATA
+    let matched = null;
+    for (const f of MOCK_DATA) {
+      if (matchFactoryName(row.name, f.name) || matchFactoryName(row.name, f.nameTh)) {
+        matched = f;
+        break;
+      }
+    }
+
+    const isMatch = !!matched;
+    if (isMatch) matchCount++;
+
+    tableHTML += `<tr style="${isMatch ? '' : 'opacity:0.5;'}">`;
+    tableHTML += `<td style="font-weight:600;">${row.name}</td>`;
+    tableHTML += `<td style="font-size:0.7rem;color:${isMatch ? 'var(--pass)' : 'var(--fail)'};">${isMatch ? matched.name : '❌ ไม่พบ'}</td>`;
     for (let i = 0; i < monthCount; i++) {
       const val = row.months[i] !== undefined ? row.months[i] : '-';
       tableHTML += `<td>${val}</td>`;
@@ -203,46 +182,96 @@ function displayUploadResult(rows, year, fileName) {
   tableHTML += '</tbody></table>';
 
   document.getElementById('upload-preview-table').innerHTML = tableHTML;
+  document.getElementById('upload-match-count').textContent = matchCount;
 
-  const code = generateMockDataCode(rows, year);
-  document.getElementById('upload-code-output').value = code;
-}
+  // Generate full mock-data.js code
+  const yearShort = String(year - 543).slice(-2);
+  const field = `monthlyData_${year}`;
 
-function generateMockDataCode(rows, year) {
-  const lines = [];
-  lines.push(`// ===== ข้อมูลย้อนหลัง ปี ${year} (${year - 543}) =====`);
-  lines.push(`// ไฟล์ต้นฉบับ: stat${String(year - 543).slice(-2)}.xlsx`);
-  lines.push(`// เพิ่มลงในแต่ละ factory object ใน MOCK_DATA:`);
-  lines.push('');
+  let code = `// ===== MOCK_DATA — คุณภาพน้ำเสีย สวนอุตสาหกรรมเครือสหพัฒน์ ศรีราชา =====\n`;
+  code += `// อัพเดตอัตโนมัติเมื่อ ${new Date().toLocaleDateString('th-TH')} — ข้อมูลย้อนหลังปี ${year} จากไฟล์ ${fileName}\n\n`;
+  code += `const STANDARDS = {\n`;
+  code += `  bod:  { max: 120, unit: 'mg/L', label: 'BOD',        method: 'Standard Methods 5210B' },\n`;
+  code += `  cod:  { max: 500, unit: 'mg/L', label: 'COD',        method: 'Standard Methods 5220D' },\n`;
+  code += `  do:   { min: 2,   unit: 'mg/L', label: 'DO',         method: 'Electrode Method 4500-O' },\n`;
+  code += `  ph:   { min: 5.5, max: 9, unit: '-', label: 'pH',     method: 'Electrode Method 4500-H' },\n`;
+  code += `  temp: { max: 45,  unit: '°C',   label: 'Temperature', method: 'Thermometric' },\n`;
+  code += `  tds:  { max: 3000, unit: 'mg/L', label: 'TDS',        method: 'Conductivity Method' },\n`;
+  code += `  tss:  { max: 200, unit: 'mg/L', label: 'TSS',        method: 'Standard Methods 2540D' },\n`;
+  code += `  oil:  { max: 10,  unit: 'mg/L', label: 'Oil & Grease', method: 'IR Spectrophotometry' }\n};\n\n`;
+  code += `const MOCK_DATA = [\n`;
 
-  rows.forEach(row => {
-    const bom = [], cod = [], ss = [], ph = [], temp = [];
-    const monthCount = Math.max(...Object.keys(row.months).map(Number).filter(n => !isNaN(n))) + 1;
+  let isFirst = true;
+  MOCK_DATA.forEach(factory => {
+    if (!isFirst) code += `,\n`;
+    isFirst = false;
 
-    for (let i = 0; i < monthCount; i++) {
-      const v = row.months[i];
-      bom.push(v !== undefined ? v : 'null');
+    // หาข้อมูลที่ตรงกัน
+    let matchedRow = null;
+    for (const row of rows) {
+      if (matchFactoryName(row.name, factory.name) || matchFactoryName(row.name, factory.nameTh)) {
+        matchedRow = row;
+        break;
+      }
     }
 
-    lines.push(`// ${row.name}`);
-    lines.push(`monthlyData_${year}: {`);
-    lines.push(`  BOD: [${bom.join(', ')}]`);
-    lines.push(`},`);
-    lines.push('');
+    code += `  {\n`;
+    code += `    id: ${factory.id},\n`;
+    code += `    name: '${factory.name}',\n`;
+    code += `    nameTh: '${factory.nameTh}',\n`;
+    code += `    industry: '${factory.industry}',\n`;
+    if (factory.address) code += `    address: '${factory.address}',\n`;
+    if (factory.lat !== undefined) code += `    lat: ${factory.lat}, lng: ${factory.lng},\n`;
+    if (factory.photo) code += `    photo: '${factory.photo}',\n`;
+    if (factory.hasData === false) code += `    hasData: false,\n`;
+
+    // เขียน monthlyData ปัจจุบัน
+    if (factory.current) {
+      const c = factory.current;
+      code += `    current: { bod: ${c.bod}, cod: ${c.cod}, do: ${c.do}, ph: ${c.ph}, temp: ${c.temp}`;
+      if (c.tds !== undefined) code += `, tds: ${c.tds}`;
+      if (c.tss !== undefined) code += `, tss: ${c.tss}`;
+      if (c.oil !== undefined) code += `, oil: ${c.oil}`;
+      code += ` },\n`;
+    }
+
+    // เขียน monthlyData ปัจจุบัน (ปี 2569)
+    if (factory.monthlyData) {
+      code += `    monthlyData: ${JSON.stringify(factory.monthlyData, null, 6).replace(/\n/g, '\n      ')},\n`;
+    }
+
+    // เพิ่ม monthlyData ย้อนหลัง ถ้ามีข้อมูลที่ตรงกัน
+    if (matchedRow) {
+      const monthCount = Math.max(...Object.keys(matchedRow.months).map(Number).filter(n => !isNaN(n))) + 1;
+      const vals = [];
+      for (let i = 0; i < monthCount; i++) {
+        vals.push(matchedRow.months[i] !== undefined ? matchedRow.months[i] : 'null');
+      }
+      code += `    ${field}: [${vals.join(', ')}],\n`;
+    }
+
+    // ถ้า factory เดิมมี monthlyData_YYYY อื่นอยู่แล้ว ให้เก็บไว้
+    // (ไม่ต้องทำ เพราะข้อมูลเดิมอยู่ใน mock-data.js ต้นฉบับอยู่แล้ว)
+
+    code += `  }`;
   });
 
-  return lines.join('\n');
+  code += `\n];\n`;
+
+  document.getElementById('upload-code-output').value = code;
+  document.getElementById('upload-code-output').rows = 20;
 }
 
 function copyUploadCode() {
   const textarea = document.getElementById('upload-code-output');
   textarea.select();
+  textarea.setSelectionRange(0, 999999);
   navigator.clipboard.writeText(textarea.value).then(() => {
     const btn = document.querySelector('.upload-copy-btn');
     btn.textContent = '✓ คัดลอกแล้ว!';
     btn.classList.add('copied');
     setTimeout(() => {
-      btn.textContent = '📋 คัดลอกโค้ด';
+      btn.textContent = '📋 คัดลอกโค้ดทั้งหมด';
       btn.classList.remove('copied');
     }, 2000);
   });
@@ -251,30 +280,19 @@ function copyUploadCode() {
 function saveUploadedData() {
   try {
     const code = document.getElementById('upload-code-output').value;
-    const yearMatch = code.match(/ปี (\d+)/);
-    if (!yearMatch) return;
-
-    const year = yearMatch[1];
-    const saved = JSON.parse(localStorage.getItem(UPLOAD_STORAGE_KEY) || '{}');
-    saved[year] = { code, savedAt: new Date().toISOString() };
-    localStorage.setItem(UPLOAD_STORAGE_KEY, JSON.stringify(saved));
+    const blob = new Blob([code], { type: 'text/javascript' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'mock-data.js';
+    a.click();
+    URL.revokeObjectURL(url);
 
     const btn = document.querySelector('.upload-save-local-btn');
     const orig = btn.textContent;
-    btn.textContent = '✓ บันทึกแล้ว!';
-    btn.style.background = 'var(--pass)';
-    setTimeout(() => {
-      btn.textContent = orig;
-    }, 2000);
+    btn.textContent = '✓ ดาวน์โหลดแล้ว!';
+    setTimeout(() => { btn.textContent = orig; }, 2000);
   } catch (e) {
     alert('เกิดข้อผิดพลาด: ' + e.message);
-  }
-}
-
-function loadHistoricalData() {
-  try {
-    return JSON.parse(localStorage.getItem(UPLOAD_STORAGE_KEY) || '{}');
-  } catch (e) {
-    return {};
   }
 }

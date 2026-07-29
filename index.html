@@ -198,12 +198,14 @@
           </div>
           <div class="upload-preview-table" id="upload-preview-table"></div>
           <div class="upload-code-section">
-            <label style="font-size:0.72rem;color:var(--text-secondary);display:block;margin-bottom:4px;">โค้ดสำหรับเพิ่มใน mock-data.js</label>
-            <textarea id="upload-code-output" readonly rows="8"
+            <label style="font-size:0.72rem;color:var(--text-secondary);display:block;margin-bottom:4px;">
+              โค้ด mock-data.js ทั้งไฟล์ — กดคัดลอกแล้วไปแทนที่ไฟล์เดิม
+            </label>
+            <textarea id="upload-code-output" readonly rows="12"
               style="width:100%;padding:8px;border:1px solid var(--border);border-radius:6px;background:var(--bg-primary);color:var(--accent-yellow);font-family:'Courier New',monospace;font-size:0.7rem;resize:vertical;outline:none;box-sizing:border-box;"></textarea>
             <div class="upload-actions">
-              <button class="upload-copy-btn" onclick="copyUploadCode()">📋 คัดลอกโค้ด</button>
-              <button class="upload-save-local-btn" onclick="saveUploadedData()">💾 บันทึกลง browser</button>
+              <button class="upload-copy-btn" onclick="copyUploadCode()">📋 คัดลอกโค้ดทั้งหมด</button>
+              <button class="upload-save-local-btn" onclick="saveUploadedData()">⬇ ดาวน์โหลด mock-data.js</button>
             </div>
           </div>
         </div>

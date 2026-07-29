@@ -94,6 +94,29 @@ function renderTrendChart(factory) {
   if (!ctx) return;
   const data = buildChartData(factory);
   if (!data) return;
+
+  // เพิ่มข้อมูลย้อนหลังถ้ามี
+  const hist = getHistoricalMonths ? getHistoricalMonths(factory.name) : null;
+  if (hist) {
+    const years = Object.keys(hist).sort();
+    years.forEach(year => {
+      const md = hist[year];
+      if (!md) return;
+      const yearLabel = year;
+      const monthNames = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+      const monthCount = Math.max(...Object.keys(md).map(Number).filter(n => !isNaN(n))) + 1;
+      const labels = [];
+      for (let i = 0; i < monthCount; i++) {
+        labels.push(`${monthNames[i]} ${yearLabel}`);
+      }
+      data.labels = labels.concat(data.labels);
+
+      if (md.BOD) data.datasets.forEach(ds => {
+        if (ds.label === 'BOD') ds.data = Object.values(md).concat(ds.data);
+      });
+    });
+  }
+
   trendChart = new Chart(ctx, createChartConfig(data, 9));
 }
 
