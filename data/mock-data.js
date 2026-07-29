@@ -373,7 +373,7 @@ const MOCK_DATA = [
     id: 64,
     name: 'Saha Sewa',
     nameTh: 'สหเซวา',
-    industry: 'อาหารทะเล',
+    industry: 'ผลิตภัณฑ์พลาสติก',
     address: '666/2 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
     lat: 13.1008, lng: 100.9648,
     photo: 'data/photos/Saha Sewa.jpg',
