@@ -1013,3 +1013,184 @@ body {
   border-color: var(--pass);
   color: #fff;
 }
+
+/* ============ ADMIN ============ */
+.admin-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border-light);
+  background: var(--bg-card);
+  color: var(--text-muted);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-btn:hover {
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+}
+
+.admin-btn.active {
+  border-color: var(--accent-gold);
+  background: var(--accent-gold);
+  color: #000;
+}
+
+/* Admin Login Modal */
+.admin-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-modal-overlay.hidden {
+  display: none;
+}
+
+.admin-modal {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  padding: 28px 32px;
+  width: 320px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+  text-align: center;
+}
+
+.admin-modal h3 {
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+}
+
+.admin-modal p {
+  margin: 0 0 16px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.admin-modal input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  text-align: center;
+  letter-spacing: 4px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.admin-modal input:focus {
+  border-color: var(--accent-gold);
+}
+
+.admin-modal-error {
+  color: var(--fail);
+  font-size: 0.75rem;
+  margin-top: 8px;
+}
+
+.admin-modal-error.hidden {
+  display: none;
+}
+
+.admin-modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.admin-modal-cancel, .admin-modal-ok {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: var(--transition);
+}
+
+.admin-modal-cancel {
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-light);
+}
+
+.admin-modal-cancel:hover {
+  background: var(--bg-card-hover);
+}
+
+.admin-modal-ok {
+  background: var(--accent-gold);
+  color: #000;
+}
+
+.admin-modal-ok:hover {
+  opacity: 0.9;
+}
+
+/* Admin Bar */
+.admin-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(135deg, #b8860b, #d4a017);
+  color: #000;
+  padding: 6px 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  z-index: 1500;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.admin-bar.hidden {
+  display: none;
+}
+
+.admin-logout-btn {
+  padding: 3px 12px;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 4px;
+  background: rgba(0,0,0,0.1);
+  color: #000;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.admin-logout-btn:hover {
+  background: rgba(0,0,0,0.25);
+}
+
+/* Admin-only elements */
+body:not(.admin-mode) .coord-picker-enabled {
+  display: none;
+}
+
+body:not(.admin-mode) #detail-coords {
+  display: none;
+}
+
+body:not(.admin-mode) .coord-picker-popup {
+  display: none;
+}

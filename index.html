@@ -48,8 +48,30 @@
         <div>ข้อมูล ณ วัน</div>
         <div class="time-value" id="current-date">—</div>
       </div>
+
+      <button class="admin-btn" id="admin-btn" title="เข้าสู่ระบบ Admin">⚙</button>
     </div>
   </header>
+
+  <!-- ============ ADMIN LOGIN MODAL ============ -->
+  <div class="admin-modal-overlay hidden" id="admin-modal-overlay">
+    <div class="admin-modal">
+      <h3>🔐 เข้าสู่ระบบ Admin</h3>
+      <p>กรุณาใส่รหัสผ่านเพื่อเข้าสู่โหมดแก้ไข</p>
+      <input type="password" id="admin-password" placeholder="รหัสผ่าน" autocomplete="off">
+      <div class="admin-modal-error hidden" id="admin-login-error">รหัสผ่านไม่ถูกต้อง</div>
+      <div class="admin-modal-actions">
+        <button class="admin-modal-cancel" id="admin-login-cancel">ยกเลิก</button>
+        <button class="admin-modal-ok" id="admin-login-ok">เข้าสู่ระบบ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ ADMIN BAR ============ -->
+  <div class="admin-bar hidden" id="admin-bar">
+    <span>🔧 โหมด Admin — คลิกโรงงานแล้วคลิกแผนที่เพื่อแก้พิกัด</span>
+    <button class="admin-logout-btn" id="admin-logout-btn">ออกจากระบบ</button>
+  </div>
 
   <!-- ============ MAIN CONTENT ============ -->
   <div class="main-container">

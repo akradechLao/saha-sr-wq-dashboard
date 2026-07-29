@@ -203,9 +203,24 @@ function invalidateMapSize() {
 
 /* ============ COORDINATE PICKER ============ */
 let coordPickerMarker = null;
+let coordPickerEnabled = false;
+
+function enableCoordinatePicker() {
+  coordPickerEnabled = true;
+}
+
+function disableCoordinatePicker() {
+  coordPickerEnabled = false;
+  if (coordPickerMarker) {
+    map.removeLayer(coordPickerMarker);
+    coordPickerMarker = null;
+  }
+}
 
 function initCoordinatePicker() {
   map.on('click', function(e) {
+    if (!coordPickerEnabled || !isAdmin) return;
+
     const { lat, lng } = e.latlng;
 
     if (coordPickerMarker) {
