@@ -299,13 +299,18 @@ function renderChartSummary(factory, containerId) {
   if (!checks.tss) failed.push(`TSS ${d.tss} mg/L (เกณฑ์ ≤ 200)`);
   if (!checks.oil) failed.push(`FOG ${d.oil} mg/L (เกณฑ์ ≤ 10)`);
 
+  const dl = factory.belowDL || {};
+  const dlParams = Object.keys(dl).filter(p => dl[p] && dl[p].some(Boolean));
+
   if (failed.length === 0) {
     el.className = 'chart-summary pass';
-    el.innerHTML = '<div class="summary-title">✓ ผ่านกฎหมายทุกรายการ</div>';
+    el.innerHTML = '<div class="summary-title">✓ ผ่านกฎหมายทุกรายการ</div>' +
+      (dlParams.length ? '<div class="summary-detail" style="color:#94a3b8;margin-top:4px">◇ = ต่ำกว่า Detection Limit (' + dlParams.join(', ') + ')</div>' : '');
   } else {
     el.className = 'chart-summary fail';
     el.innerHTML = `<div class="summary-title">✗ มี ${failed.length} รายการเกินมาตรฐาน</div>
-      <div class="summary-detail">${failed.join(' · ')}</div>`;
+      <div class="summary-detail">${failed.join(' · ')}</div>` +
+      (dlParams.length ? '<div class="summary-detail" style="color:#94a3b8;margin-top:4px">◇ = ต่ำกว่า Detection Limit (' + dlParams.join(', ') + ')</div>' : '');
   }
 }
 

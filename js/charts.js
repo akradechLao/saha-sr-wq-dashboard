@@ -15,23 +15,65 @@ function getChartColors() {
   };
 }
 
+const DL_DISPLAY = { BOD: 2, COD: 40, TDS: 3000, TSS: 200, FOG: 10 };
+
+function processDatasetWithDL(label, rawData, belowDL, baseConfig, colors) {
+  const dlLimit = DL_DISPLAY[label];
+  const hasDL = belowDL && belowDL[label];
+  const pointBg = [];
+  const pointBorder = [];
+  const pointStyles = [];
+  const tooltipLabels = [];
+  const processedData = [];
+
+  for (let i = 0; i < rawData.length; i++) {
+    const val = rawData[i];
+    const isDL = hasDL && hasDL[i];
+    if (isDL && dlLimit) {
+      processedData.push(dlLimit / 2);
+      pointBg.push('transparent');
+      pointBorder.push(baseConfig.borderColor);
+      pointStyles.push('rectRot');
+      tooltipLabels.push(`< ${dlLimit}`);
+    } else {
+      processedData.push(val);
+      pointBg.push(baseConfig.borderColor);
+      pointBorder.push(colors.pointBorder);
+      pointStyles.push('circle');
+      tooltipLabels.push(String(val));
+    }
+  }
+
+  return {
+    ...baseConfig,
+    data: processedData,
+    pointBackgroundColor: pointBg,
+    pointBorderColor: pointBorder,
+    pointStyle: pointStyles,
+    _tooltipLabels: tooltipLabels,
+    _dlFlags: hasDL || []
+  };
+}
+
 function buildChartData(factory) {
   const md = factory.monthlyData;
   if (!md || !md.BOD) return null;
 
   const colors = getChartColors();
   const labels = MONTH_LABELS.slice(0, md.BOD.length);
+  const dl = factory.belowDL || {};
 
-  const datasets = [
-    { label: 'BOD', data: md.BOD, borderColor: '#d4a017', backgroundColor: 'rgba(212, 160, 23, 0.08)', borderWidth: 2, tension: 0.35, fill: true, pointRadius: 3, pointHoverRadius: 6, pointBackgroundColor: '#d4a017', pointBorderColor: colors.pointBorder, pointBorderWidth: 1.5, yAxisID: 'y' },
-    { label: 'COD', data: md.COD, borderColor: '#3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.06)', borderWidth: 2, tension: 0.35, fill: false, pointRadius: 3, pointHoverRadius: 6, pointBackgroundColor: '#3b82f6', pointBorderColor: colors.pointBorder, pointBorderWidth: 1.5, yAxisID: 'y1' }
-  ];
+  const rawDefs = [
+    { label: 'BOD', raw: md.BOD, borderColor: '#d4a017', backgroundColor: 'rgba(212, 160, 23, 0.08)', borderWidth: 2, tension: 0.35, fill: true, pointRadius: 3, pointHoverRadius: 6, yAxisID: 'y' },
+    { label: 'COD', raw: md.COD, borderColor: '#3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.06)', borderWidth: 2, tension: 0.35, fill: false, pointRadius: 3, pointHoverRadius: 6, yAxisID: 'y1' },
+    md.SS ? { label: 'SS', raw: md.SS, borderColor: '#f97316', borderWidth: 1.5, tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 5, yAxisID: 'y', borderDash: [4, 2] } : null,
+    md.pH ? { label: 'pH', raw: md.pH, borderColor: '#a855f7', backgroundColor: 'rgba(168, 85, 247, 0.06)', borderWidth: 2, tension: 0.35, fill: false, pointRadius: 3, pointHoverRadius: 5, yAxisID: 'y3', hidden: true } : null,
+    md.Temp ? { label: 'Temp', raw: md.Temp, borderColor: '#ef4444', backgroundColor: 'rgba(239, 68, 68, 0.06)', borderWidth: 2, borderDash: [5, 3], tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 5, yAxisID: 'y1' } : null,
+    md.TDS ? { label: 'TDS', raw: md.TDS, borderColor: '#06b6d4', borderWidth: 1.5, tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 4, yAxisID: 'y2', borderDash: [3, 2] } : null,
+    md.FOG ? { label: 'FOG', raw: md.FOG, borderColor: '#84cc16', borderWidth: 1.5, tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 4, yAxisID: 'y2', borderDash: [2, 2] } : null,
+  ].filter(Boolean);
 
-  if (md.SS) datasets.push({ label: 'SS', data: md.SS, borderColor: '#f97316', borderWidth: 1.5, tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#f97316', pointBorderColor: colors.pointBorder, pointBorderWidth: 1, yAxisID: 'y', borderDash: [4, 2] });
-  if (md.pH) datasets.push({ label: 'pH', data: md.pH, borderColor: '#a855f7', backgroundColor: 'rgba(168, 85, 247, 0.06)', borderWidth: 2, tension: 0.35, fill: false, pointRadius: 3, pointHoverRadius: 5, pointBackgroundColor: '#a855f7', pointBorderColor: colors.pointBorder, pointBorderWidth: 1.5, yAxisID: 'y3', hidden: true });
-  if (md.Temp) datasets.push({ label: 'Temp', data: md.Temp, borderColor: '#ef4444', backgroundColor: 'rgba(239, 68, 68, 0.06)', borderWidth: 2, borderDash: [5, 3], tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ef4444', pointBorderColor: colors.pointBorder, pointBorderWidth: 1.5, yAxisID: 'y1' });
-  if (md.TDS) datasets.push({ label: 'TDS', data: md.TDS, borderColor: '#06b6d4', borderWidth: 1.5, tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 4, pointBackgroundColor: '#06b6d4', pointBorderColor: colors.pointBorder, pointBorderWidth: 1, yAxisID: 'y2', borderDash: [3, 2] });
-  if (md.FOG) datasets.push({ label: 'FOG', data: md.FOG, borderColor: '#84cc16', borderWidth: 1.5, tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 4, pointBackgroundColor: '#84cc16', pointBorderColor: colors.pointBorder, pointBorderWidth: 1, yAxisID: 'y2', borderDash: [2, 2] });
+  const datasets = rawDefs.map(def => processDatasetWithDL(def.label, def.raw, dl, def, colors));
 
   return { labels, datasets, colors };
 }
@@ -73,7 +115,12 @@ function createChartConfig(data, fontSize) {
           bodySpacing: fs < 11 ? 6 : 8,
           callbacks: {
             title: function (items) { const y = typeof DATA_YEAR !== 'undefined' ? DATA_YEAR : 2569; return `เดือน ${items[0].label} ${y}`; },
-            label: function (context) { return `  ${context.dataset.label}: ${context.parsed.y}`; }
+            label: function (context) {
+              const dlLabels = context.dataset._tooltipLabels;
+              const val = dlLabels ? dlLabels[context.dataIndex] : context.parsed.y;
+              const isDL = context.dataset._dlFlags && context.dataset._dlFlags[context.dataIndex];
+              return `  ${context.dataset.label}: ${val}${isDL ? ' (ต่ำกว่า DL)' : ''}`;
+            }
           }
         }
       },

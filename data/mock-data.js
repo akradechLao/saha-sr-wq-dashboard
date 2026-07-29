@@ -36,6 +36,7 @@ const MOCK_DATA = [
       Temp: [29.0, 29.0, 33.0, 32.0, 34.0, 35.0],
       Surfactant: [0.2, 0.2, 0.2, 0.2, 0.2, 0.2],
     }
+    belowDL: { COD: [false,false,false,false,true,true], TDS: [false,true,true,false,false,true] },
   }
 ,
   {
@@ -56,6 +57,7 @@ const MOCK_DATA = [
       TDS: [652.0, 840.0, 640.0, 1406.0, 820.0, 601.0],
       Temp: [30.0, 29.0, 32.0, 34.0, 34.0, 34.0],
     }
+    belowDL: { BOD: [true,true,true,true,true,true], COD: [true,true,true,true,true,true], TDS: [true,true,true,true,false,true] },
   }
 ,
   {
@@ -78,6 +80,7 @@ const MOCK_DATA = [
       Temp: [28.0, 28.0, 29.0, 30.0, 34.0, 30.0],
       Surfactant: [0.2, 0.2, 0.2, 0.71, 0.2, 0.2],
     }
+    belowDL: { COD: [false,false,false,false,false,true], TDS: [false,false,true,false,false,true] },
   }
 ,
   {
@@ -238,6 +241,7 @@ const MOCK_DATA = [
       'Cr6+': [0.025, 0.025, 0.025, 0.025, 0.025, 0.025],
       Pb: [0.015, 0.015, 0.015, 0.015, 0.015, 0.015],
     }
+    belowDL: { COD: [true,false,false,false,false,false] },
   }
 ,
   {
@@ -308,6 +312,7 @@ const MOCK_DATA = [
       TDS: [1572.0, 1912.0, 1544.0, 1092.0, 1324.0, 1572.0],
       Temp: [31.0, 28.0, 33.0, 29.0, 32.0, 31.0],
     }
+    belowDL: { BOD: [false,false,false,false,false,true], COD: [false,false,false,false,false,true], TDS: [false,false,false,false,false,true] },
   }
 ,
   {
@@ -355,6 +360,7 @@ const MOCK_DATA = [
       Temp: [30.0, 28.0, 33.0, 32.0, 34.0, 33.0],
       Chloride: [852.0, 835.0, 792.0, 736.0, 720.0, 905.0],
     }
+    belowDL: { BOD: [false,true,true,false,true,false], COD: [false,true,true,true,true,false], TDS: [true,true,false,true,false,true] },
   }
 ,
   {
@@ -400,6 +406,7 @@ const MOCK_DATA = [
       TDS: [588.0, 440.0, 772.0, 706.0, 592.0, 602.0],
       Temp: [31.0, 28.0, 35.0, 34.0, 30.0, 34.0],
     }
+    belowDL: { BOD: [false,false,true,true,false,true], COD: [true,true,true,true,true,true], TDS: [false,true,true,false,false,true] },
   }
 ,
   {
