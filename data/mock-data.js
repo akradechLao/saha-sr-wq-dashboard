@@ -1,28 +1,3 @@
-function generateHistory(bod, cod, doVal, ph, temp, tds, tss, oil) {
-  const days = [];
-  const now = new Date();
-  const dayNames = ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.'];
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date(now);
-    d.setDate(d.getDate() - i);
-    const entry = {
-      date: d.toISOString().split('T')[0],
-      dateShort: `${d.getDate()}/${d.getMonth() + 1}`,
-      dayName: dayNames[d.getDay()],
-      bod: +(bod + (Math.random() - 0.5) * 6).toFixed(1),
-      cod: +(cod + (Math.random() - 0.5) * 20).toFixed(1),
-      do: +(doVal + (Math.random() - 0.5) * 2).toFixed(1),
-      ph: +(ph + (Math.random() - 0.5) * 1).toFixed(1),
-      temp: +(temp + (Math.random() - 0.5) * 3).toFixed(1)
-    };
-    if (tds !== undefined) entry.tds = +(tds + (Math.random() - 0.5) * 100).toFixed(0);
-    if (tss !== undefined) entry.tss = +(tss + (Math.random() - 0.5) * 30).toFixed(0);
-    if (oil !== undefined) entry.oil = +(oil + (Math.random() - 0.5) * 2).toFixed(1);
-    days.push(entry);
-  }
-  return days;
-}
-
 const STANDARDS = {
   bod:  { max: 120, unit: 'mg/L', label: 'BOD',        method: 'Standard Methods 5210B' },
   cod:  { max: 500, unit: 'mg/L', label: 'COD',        method: 'Standard Methods 5220D' },

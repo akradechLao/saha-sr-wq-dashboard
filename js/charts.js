@@ -1,4 +1,5 @@
 let trendChart = null;
+const MONTH_LABELS = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.'];
 
 function getChartColors() {
   const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
@@ -23,22 +24,23 @@ function renderTrendChart(factory) {
     trendChart = null;
   }
 
-  const history = factory.history;
-  const labels = history.map(h => h.dateShort);
+  const md = factory.monthlyData;
+  if (!md || !md.BOD) return;
+
   const colors = getChartColors();
-  const hasOil = history[0].oil !== undefined;
+  const labels = MONTH_LABELS.slice(0, md.BOD.length);
 
   const datasets = [
     {
       label: 'BOD',
-      data: history.map(h => h.bod),
+      data: md.BOD,
       borderColor: '#d4a017',
       backgroundColor: 'rgba(212, 160, 23, 0.08)',
       borderWidth: 2,
       tension: 0.35,
       fill: true,
-      pointRadius: 2,
-      pointHoverRadius: 5,
+      pointRadius: 3,
+      pointHoverRadius: 6,
       pointBackgroundColor: '#d4a017',
       pointBorderColor: colors.pointBorder,
       pointBorderWidth: 1.5,
@@ -46,52 +48,62 @@ function renderTrendChart(factory) {
     },
     {
       label: 'COD',
-      data: history.map(h => h.cod),
+      data: md.COD,
       borderColor: '#3b82f6',
       backgroundColor: 'rgba(59, 130, 246, 0.06)',
       borderWidth: 2,
       tension: 0.35,
       fill: false,
-      pointRadius: 2,
-      pointHoverRadius: 5,
+      pointRadius: 3,
+      pointHoverRadius: 6,
       pointBackgroundColor: '#3b82f6',
       pointBorderColor: colors.pointBorder,
       pointBorderWidth: 1.5,
       yAxisID: 'y1'
-    },
-    {
-      label: 'DO',
-      data: history.map(h => h.do),
-      borderColor: '#22c55e',
-      backgroundColor: 'rgba(34, 197, 94, 0.06)',
-      borderWidth: 2,
+    }
+  ];
+
+  if (md.SS) {
+    datasets.push({
+      label: 'SS',
+      data: md.SS,
+      borderColor: '#f97316',
+      borderWidth: 1.5,
       tension: 0.35,
       fill: false,
       pointRadius: 2,
       pointHoverRadius: 5,
-      pointBackgroundColor: '#22c55e',
+      pointBackgroundColor: '#f97316',
       pointBorderColor: colors.pointBorder,
-      pointBorderWidth: 1.5,
-      yAxisID: 'y'
-    },
-    {
+      pointBorderWidth: 1,
+      yAxisID: 'y',
+      borderDash: [4, 2]
+    });
+  }
+
+  if (md.pH) {
+    datasets.push({
       label: 'pH',
-      data: history.map(h => h.ph),
+      data: md.pH,
       borderColor: '#a855f7',
       backgroundColor: 'rgba(168, 85, 247, 0.06)',
       borderWidth: 2,
       tension: 0.35,
       fill: false,
-      pointRadius: 2,
+      pointRadius: 3,
       pointHoverRadius: 5,
       pointBackgroundColor: '#a855f7',
       pointBorderColor: colors.pointBorder,
       pointBorderWidth: 1.5,
-      yAxisID: 'y'
-    },
-    {
+      yAxisID: 'y3',
+      hidden: true
+    });
+  }
+
+  if (md.Temp) {
+    datasets.push({
       label: 'Temp',
-      data: history.map(h => h.temp),
+      data: md.Temp,
       borderColor: '#ef4444',
       backgroundColor: 'rgba(239, 68, 68, 0.06)',
       borderWidth: 2,
@@ -104,13 +116,13 @@ function renderTrendChart(factory) {
       pointBorderColor: colors.pointBorder,
       pointBorderWidth: 1.5,
       yAxisID: 'y1'
-    }
-  ];
+    });
+  }
 
-  if (history[0].tds !== undefined) {
+  if (md.TDS) {
     datasets.push({
       label: 'TDS',
-      data: history.map(h => h.tds),
+      data: md.TDS,
       borderColor: '#06b6d4',
       borderWidth: 1.5,
       tension: 0.35,
@@ -125,28 +137,10 @@ function renderTrendChart(factory) {
     });
   }
 
-  if (history[0].tss !== undefined) {
+  if (md.FOG) {
     datasets.push({
-      label: 'TSS',
-      data: history.map(h => h.tss),
-      borderColor: '#f97316',
-      borderWidth: 1.5,
-      tension: 0.35,
-      fill: false,
-      pointRadius: 2,
-      pointHoverRadius: 4,
-      pointBackgroundColor: '#f97316',
-      pointBorderColor: colors.pointBorder,
-      pointBorderWidth: 1,
-      yAxisID: 'y2',
-      borderDash: [6, 3]
-    });
-  }
-
-  if (hasOil) {
-    datasets.push({
-      label: 'Oil',
-      data: history.map(h => h.oil),
+      label: 'FOG',
+      data: md.FOG,
       borderColor: '#84cc16',
       borderWidth: 1.5,
       tension: 0.35,
@@ -197,7 +191,7 @@ function renderTrendChart(factory) {
           bodySpacing: 6,
           callbacks: {
             title: function (items) {
-              return `วันที่ ${items[0].label}`;
+              return `เดือน ${items[0].label} 2569`;
             },
             label: function (context) {
               const label = context.dataset.label || '';
@@ -222,7 +216,7 @@ function renderTrendChart(factory) {
           position: 'left',
           title: {
             display: true,
-            text: 'BOD / DO / pH',
+            text: 'BOD / SS',
             color: colors.textMuted,
             font: { size: 10 }
           },
@@ -254,6 +248,19 @@ function renderTrendChart(factory) {
         y2: {
           display: false,
           position: 'right',
+          ticks: {
+            color: colors.textMuted,
+            font: { size: 9 }
+          },
+          grid: {
+            drawOnChartArea: false
+          }
+        },
+        y3: {
+          display: false,
+          position: 'left',
+          min: 4,
+          max: 10,
           ticks: {
             color: colors.textMuted,
             font: { size: 9 }
