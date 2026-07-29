@@ -309,7 +309,7 @@ const MOCK_DATA = [
     industry: 'ผ้าขนหนู',
     address: '630 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
     lat: 13.0985, lng: 100.9635,
-    photo: 'data/photos/Raja Uchino.jpg',
+    photo: 'data/photos/Racha Ushino.jpg',
     current: { bod: 1.0, cod: 20.0, do: 5.0, ph: 8.2, temp: 31.0, tds: 1572.0, tss: 7.0, oil: 1.5 },
     history: generateHistory(1.0, 20.0, 5.0, 8.2, 31.0, 1572.0, 7.0, 1.5),
     monthlyData: {
