@@ -18,7 +18,9 @@ const MOCK_DATA = [
     nameTh: 'ยามาฮัทสึ (ประเทศไทย)',
     industry: 'เครื่องสำอาง / ยาย้อมผม',
     address: '600/48 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.1002, lng: 100.956,
+    // Yamahatsu (Thailand)
+    lat: 13.096408, lng: 100.961462,
+    //lat: 13.1002, lng: 100.956,
     photo: 'data/photos/Yamahatsu (Thailand).jpg',
     current: { bod: 6.9, cod: 20.0, do: 5.0, ph: 7.4, temp: 35.0, tds: 394.0, tss: 2.5, oil: 1.5 },
     monthlyData: {
@@ -82,7 +84,9 @@ const MOCK_DATA = [
     nameTh: 'ไทยเพรซิเดนท์ฟูดส์',
     industry: 'อาหาร (มาม่า)',
     address: '601 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0948, lng: 100.958,
+    // Thai President Foods
+    lat: 13.099394, lng: 100.965497,
+    //lat: 13.0948, lng: 100.958,
     photo: 'data/photos/Thai President Foods.jpg',
     current: { bod: 10.6, cod: 58.0, do: 5.0, ph: 7.9, temp: 31.0, tds: 988.0, tss: 8.0, oil: 1.5 },
     monthlyData: {
@@ -102,7 +106,9 @@ const MOCK_DATA = [
     nameTh: 'โอสถ อินเตอร์แลบบอราทอรีส์',
     industry: 'ยาและเวชภัณฑ์',
     address: '600/9 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0992, lng: 100.9572,
+    // Osot Inter laboratories
+    lat: 13.094646, lng: 100.962119,
+    //lat: 13.0992, lng: 100.9572,
     photo: 'data/photos/Osot Inter laboratories.jpg',
     current: { bod: 2.8, cod: 58.0, do: 5.0, ph: 7.8, temp: 31.0, tds: 1344.0, tss: 38.0 },
     monthlyData: {
@@ -121,7 +127,9 @@ const MOCK_DATA = [
     nameTh: 'มอลเทน (ไทยแลนด์)',
     industry: 'พลาสติก',
     address: '666 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.101, lng: 100.9645,
+    // Molten (Thailand)
+    lat: 13.090057, lng: 100.958564,
+    //lat: 13.101, lng: 100.9645,
     photo: 'data/photos/Molten (Thailand).jpg',
     current: { bod: 1.0, cod: 20.0, do: 5.0, ph: 7.0, temp: 30.0, tds: 410.0, tss: 2.5, oil: 1.5 },
     monthlyData: {
@@ -143,7 +151,9 @@ const MOCK_DATA = [
     nameTh: 'ไลอ้อน (ประเทศไทย)',
     industry: 'ผลิตภัณฑ์ทำความสะอาด',
     address: '602 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0997, lng: 100.9553,
+    // Lion (Thailand)
+    lat: 13.101495, lng: 100.956905,
+    //lat: 13.0997, lng: 100.9553,
     photo: 'data/photos/Lion (Thailand).jpg',
     current: { bod: 9.1, cod: 51.0, do: 5.0, ph: 6.4, temp: 26.0, tds: 1104.0, tss: 9.0, oil: 1.5 },
     monthlyData: {
@@ -164,7 +174,9 @@ const MOCK_DATA = [
     nameTh: 'เคนมินฟู้ดส์ (ไทยแลนด์)',
     industry: 'อาหาร',
     address: '600/45 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.1005, lng: 100.964,
+    // Kenmin Foods (Thailand)
+    lat: 13.100232, lng: 100.962449,
+    //lat: 13.1005, lng: 100.964,
     photo: 'data/photos/Kenmin Foods (Thailand).jpg',
     current: { bod: 6.1, cod: 45.0, do: 5.0, ph: 7.1, temp: 32.0, tds: 2212.0, tss: 9.0, oil: 1.5 },
     monthlyData: {
@@ -184,7 +196,9 @@ const MOCK_DATA = [
     nameTh: 'จาโนเม่ (ประเทศไทย)',
     industry: 'จักรเย็บผ้า',
     address: '312 หมู่ 1 ถ.สุขาภิบาล 8 ต.บึง อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0918, lng: 100.9645,
+    // Janome (Thailand)
+    lat: 13.09465, lng: 100.965087,
+    //lat: 13.0918, lng: 100.9645,
     photo: 'data/photos/Janome (Thailand).jpg',
     current: { bod: 11.9, cod: 90.0, do: 5.0, ph: 7.9, temp: 30.0, tds: 2680.0, tss: 2.5, oil: 1.5 },
     monthlyData: {
@@ -205,7 +219,9 @@ const MOCK_DATA = [
     nameTh: 'ไทยโคบาชิ',
     industry: 'ชิ้นส่วนโลหะ',
     address: '670-672 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0972, lng: 100.9598,
+    // Thai Kobashi
+    lat: 13.094271, lng: 100.962167,
+    //lat: 13.0972, lng: 100.9598,
     photo: 'data/photos/Thai Kobashi.jpg',
     current: { bod: 1.0, cod: 48.0, do: 5.0, ph: 6.8, temp: 32.0, tds: 482.0, tss: 20.0, oil: 1.5 },
     monthlyData: {
@@ -228,7 +244,9 @@ const MOCK_DATA = [
     nameTh: 'ไทยอาซาฮี คาเซอิ สแปนเด็กซ์',
     industry: 'เส้นใยสแปนเด็กซ์',
     address: '919 หมู่ 11 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0958, lng: 100.963,
+    // Thai Asahi Kasei Spandex
+    lat: 13.087106, lng: 100.95277,
+    //lat: 13.0958, lng: 100.963,
     photo: 'data/photos/Thai Asahi Kasei Spandex.jpg',
     current: { bod: 35.6, cod: 93.0, do: 5.0, ph: 7.6, temp: 40.0, tds: 688.0, tss: 38.0, oil: 1.5 },
     monthlyData: {
@@ -250,7 +268,9 @@ const MOCK_DATA = [
     nameTh: 'ไทยอาราอิ',
     industry: 'ชิ้นส่วนพลาสติก',
     address: '623/1-2 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0942, lng: 100.9575,
+    // Thai Arai
+    lat: 13.095947, lng: 100.960389,
+    //lat: 13.0942, lng: 100.9575,
     photo: 'data/photos/Thai Arai.jpg',
     current: { bod: 1.0, cod: 20.0, do: 5.0, ph: 7.3, temp: 32.0, tds: 1366.0, tss: 82.0, oil: 1.5 },
     monthlyData: {
@@ -271,7 +291,9 @@ const MOCK_DATA = [
     nameTh: 'ราชาอูชิโน',
     industry: 'ผ้าขนหนู',
     address: '630 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0985, lng: 100.9635,
+    // Raja Uchino
+    lat: 13.097829, lng: 100.958929,
+    //lat: 13.0985, lng: 100.9635,
     photo: 'data/photos/Raja Uchino.jpg',
     current: { bod: 1.0, cod: 20.0, do: 5.0, ph: 8.2, temp: 31.0, tds: 1572.0, tss: 7.0, oil: 1.5 },
     monthlyData: {
@@ -292,7 +314,9 @@ const MOCK_DATA = [
     nameTh: 'เอสแอนด์เจ อินเตอร์เนชั่นแนลเอนเตอร์ไพรส์',
     industry: 'เครื่องสำอาง',
     address: 'ซ.หมู่บ้านศรีราชาแลนด์การ์ด ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20110',
-    lat: 13.0964, lng: 100.9625,
+    // S&J International Enterprises
+    lat: 13.096032, lng: 100.962342,
+    //lat: 13.0964, lng: 100.9625,
     photo: 'data/photos/S&J International Enterprises.jpg',
     current: { bod: 6.2, cod: 64.0, do: 5.0, ph: 7.3, temp: 35.0, tds: 828.0, tss: 6.0, oil: 1.5 },
     monthlyData: {
@@ -313,7 +337,9 @@ const MOCK_DATA = [
     nameTh: 'สหชลผลพืช',
     industry: 'อาหาร',
     address: '600/1 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0995, lng: 100.9558,
+    // Sahachol Food Supplies
+    lat: 13.10044, lng: 100.961784,
+    //lat: 13.0995, lng: 100.9558,
     photo: 'data/photos/Sahachol Food Supplies.jpg',
     current: { bod: 2.2, cod: 20.0, do: 5.0, ph: 8.0, temp: 33.0, tds: 1640.0, tss: 12.0, oil: 1.5 },
     monthlyData: {
@@ -335,7 +361,9 @@ const MOCK_DATA = [
     nameTh: 'สหเซวา',
     industry: 'ผลิตภัณฑ์พลาสติก',
     address: '666/2 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.1008, lng: 100.9648,
+    // Saha Sewa
+    lat: 13.087993, lng: 100.957126,
+    //lat: 13.1008, lng: 100.9648,
     photo: 'data/photos/Saha Sewa.jpg',
     current: { bod: 45.0, cod: 161.0, do: 5.0, ph: 7.8, temp: 29.0, tds: 616.0, tss: 9.0, oil: 1.5 },
     monthlyData: {
@@ -355,7 +383,9 @@ const MOCK_DATA = [
     nameTh: 'สหเซเรน',
     industry: 'ผ้าหุ้มเบาะรถยนต์ / ถุงลมนิรภัย',
     address: '592 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0975, lng: 100.9645,
+    // Saha Seiren
+    lat: 13.087426, lng: 100.956053,
+    //lat: 13.0975, lng: 100.9645,
     photo: 'data/photos/Saha Seiren.jpg',
     current: { bod: 9.0, cod: 58.0, do: 5.0, ph: 7.2, temp: 34.0, tds: 602.0, tss: 6.0, oil: 1.5 },
     monthlyData: {
