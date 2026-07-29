@@ -72,7 +72,7 @@ function createChartConfig(data, fontSize) {
           titleFont: { weight: '600' },
           bodySpacing: fs < 11 ? 6 : 8,
           callbacks: {
-            title: function (items) { return `เดือน ${items[0].label} 2569`; },
+            title: function (items) { const y = typeof DATA_YEAR !== 'undefined' ? DATA_YEAR : 2569; return `เดือน ${items[0].label} ${y}`; },
             label: function (context) { return `  ${context.dataset.label}: ${context.parsed.y}`; }
           }
         }

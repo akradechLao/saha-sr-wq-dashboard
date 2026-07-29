@@ -9,6 +9,8 @@ const STANDARDS = {
   oil:  { max: 10,  unit: 'mg/L', label: 'Oil & Grease', method: 'IR Spectrophotometry' }
 };
 
+const DATA_YEAR = 2569;
+
 // ข้อมูลโรงงานจากผลวิเคราะห์คุณภาพน้ำ ปี 2569
 // แสดงเฉพาะโรงงานที่มีผลตรวจวัดจริง
 const MOCK_DATA = [

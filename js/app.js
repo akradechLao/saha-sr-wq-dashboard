@@ -242,7 +242,8 @@ function showDetail(factory) {
   if (dateLabel && factory.current && factory.monthlyData && factory.monthlyData.BOD) {
     const fullMonthNames = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
     const lastIdx = factory.monthlyData.BOD.length - 1;
-    const dateText = `📊 ผลตรวจวัด ณ เดือน${fullMonthNames[lastIdx]} 2569`;
+    const year = typeof DATA_YEAR !== 'undefined' ? DATA_YEAR : 2569;
+    const dateText = `📊 ผลตรวจวัด ณ เดือน${fullMonthNames[lastIdx]} ${year}`;
     dateLabel.textContent = dateText;
     dateLabel.style.display = 'block';
   } else if (dateLabel) {
