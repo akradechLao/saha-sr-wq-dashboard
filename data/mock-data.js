@@ -394,7 +394,7 @@ const MOCK_DATA = [
     id: 65,
     name: 'Saha Seiren',
     nameTh: 'สหเซเรน',
-    industry: 'ชิ้นส่วนยานยนต์',
+    industry: 'ผ้าหุ้มเบาะรถยนต์ / ถุงลมนิรภัย',
     address: '592 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
     lat: 13.0975, lng: 100.9645,
     photo: 'data/photos/Saha Seiren.jpg',
