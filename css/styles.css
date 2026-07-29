@@ -794,6 +794,107 @@ body {
   border-top-color: var(--accent-gold) !important;
 }
 
+/* ============ CHART OPEN BUTTON ============ */
+.chart-open-btn {
+  width: 100%;
+  padding: 8px 12px;
+  margin: 6px 0 0;
+  border: 1px dashed var(--accent-gold);
+  background: rgba(212, 160, 23, 0.06);
+  color: var(--accent-yellow);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 600;
+  transition: var(--transition);
+  text-align: center;
+}
+
+.chart-open-btn:hover {
+  background: rgba(212, 160, 23, 0.15);
+  border-style: solid;
+  transform: translateY(-1px);
+}
+
+/* ============ CHART MODAL ============ */
+.chart-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(6px);
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.chart-modal-overlay.hidden {
+  display: none;
+}
+
+.chart-modal {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 14px;
+  width: 100%;
+  max-width: 900px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.chart-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.chart-modal-header h3 {
+  font-size: 0.9rem;
+  color: var(--accent-yellow);
+  font-weight: 700;
+}
+
+.chart-modal-header .close-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.chart-modal-header .close-btn:hover {
+  background: var(--fail-bg);
+  border-color: var(--fail);
+  color: var(--fail);
+}
+
+.chart-modal-body {
+  flex: 1;
+  padding: 20px;
+  position: relative;
+  min-height: 0;
+}
+
+.chart-modal-body canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
 /* ============ MOBILE SIDEBAR TOGGLE ============ */
 .sidebar-toggle {
   display: none;
