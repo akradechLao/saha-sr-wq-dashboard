@@ -33,19 +33,21 @@ dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover
 dropzone.addEventListener('drop', (e) => {
   e.preventDefault();
   dropzone.classList.remove('dragover');
-  if (e.dataTransfer.files[0]) handleFileUpload(e.dataTransfer.files[0]);
+  if (e.dataTransfer.files.length > 0) handleFilesUpload(Array.from(e.dataTransfer.files));
 });
 fileInput.addEventListener('change', (e) => {
-  if (e.target.files[0]) handleFileUpload(e.target.files[0]);
+  if (e.target.files.length > 0) handleFilesUpload(Array.from(e.target.files));
 });
 
-function handleFileUpload(file) {
+function handleFilesUpload(files) {
   const yearInput = document.getElementById('upload-year').value.trim();
   if (!yearInput || isNaN(parseInt(yearInput))) {
     showUploadError('กรุณาใส่ปี พ.ศ. ก่อนเลือกไฟล์');
     return;
   }
-  if (!file.name.match(/\.xlsx?$/i)) {
+
+  const validFiles = files.filter(f => f.name.match(/\.xlsx?$/i));
+  if (validFiles.length === 0) {
     showUploadError('กรุณาเลือกไฟล์ .xlsx หรือ .xls เท่านั้น');
     return;
   }
@@ -53,19 +55,34 @@ function handleFileUpload(file) {
   document.getElementById('upload-step-1').classList.add('hidden');
   document.getElementById('upload-step-2').classList.remove('hidden');
 
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    try {
-      const data = new Uint8Array(e.target.result);
-      const workbook = XLSX.read(data, { type: 'array' });
-      parseExcelFile(workbook, parseInt(yearInput), file.name);
-    } catch (err) {
-      showUploadError('ไม่สามารถอ่านไฟล์ได้: ' + err.message);
-      document.getElementById('upload-step-1').classList.remove('hidden');
-      document.getElementById('upload-step-2').classList.add('hidden');
-    }
-  };
-  reader.readAsArrayBuffer(file);
+  const year = parseInt(yearInput);
+  const allRows = [];
+  let filesProcessed = 0;
+
+  validFiles.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const rows = parseExcelWorkbook(workbook, file.name);
+        allRows.push(...rows);
+      } catch (err) {
+        // ข้ามไฟล์ที่อ่านไม่ได้
+      }
+      filesProcessed++;
+      if (filesProcessed === validFiles.length) {
+        if (allRows.length === 0) {
+          showUploadError('ไม่พบข้อมูลโรงงานในไฟล์ทั้งหมด กรุณาตรวจสอบรูปแบบไฟล์');
+          document.getElementById('upload-step-1').classList.remove('hidden');
+          document.getElementById('upload-step-2').classList.add('hidden');
+          return;
+        }
+        generateFullCode(allRows, year, validFiles.map(f => f.name).join(', '));
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  });
 }
 
 function showUploadError(msg) {
@@ -87,7 +104,7 @@ function parseMonthLabel(label) {
   return null;
 }
 
-function parseExcelFile(workbook, year, fileName) {
+function parseExcelWorkbook(workbook, fileName) {
   const allRows = [];
 
   workbook.SheetNames.forEach(sheetName => {
@@ -119,14 +136,7 @@ function parseExcelFile(workbook, year, fileName) {
     }
   });
 
-  if (allRows.length === 0) {
-    showUploadError('ไม่พบข้อมูลโรงงานในไฟล์ กรุณาตรวจสอบรูปแบบไฟล์');
-    document.getElementById('upload-step-1').classList.remove('hidden');
-    document.getElementById('upload-step-2').classList.add('hidden');
-    return;
-  }
-
-  generateFullCode(allRows, year, fileName);
+  return allRows;
 }
 
 function matchFactoryName(uploadName, mockName) {
