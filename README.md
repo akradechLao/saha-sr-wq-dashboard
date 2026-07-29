@@ -8,7 +8,7 @@
 - **Circle Marker** — สีเขียว (ผ่าน) / แดง (ไม่ผ่าน) + glow effect
 - **Hover Popup** — ชี้ที่โรงงาน → แสดงชื่อ + ค่าพารามิเตอร์น้ำเสีย
 - **Sidebar รายชื่อ** — รายชื่อ 65 โรงงาน + ค้นหา + สถานะผ่าน/ไม่ผ่าน
-- **กราฟแนวโน้ม** — Chart.js แสดงค่า BOD, COD, DO, pH, Temperature 7 วันย้อนหลัง
+- **กราฟแนวโน้ม** — Chart.js แสดงค่า BOD, COD, DO, pH, Temperature รายเดือนย้อนหลัง (ม.ค.–มิ.ย. 2569)
 - **ธีมสว่าง/มืด** — สลับธีมได้ + บันทึก preference
 - **Responsive** — รองรับ Desktop, Tablet, Mobile
 
