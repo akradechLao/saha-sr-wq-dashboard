@@ -256,6 +256,7 @@ function showDetail(factory) {
   }
 
   renderParamGrid(factory);
+  renderTrendChart(factory);
 
   invalidateMapSize();
 }
@@ -298,28 +299,7 @@ function closeDetail() {
   selectedFactoryId = null;
   resetHighlights();
   renderFactoryList(displayFactories);
-  closeChartModal();
   invalidateMapSize();
 }
-
-/* ============ CHART MODAL ============ */
-function openChartModal() {
-  if (!selectedFactoryId) return;
-  const factory = MOCK_DATA.find(f => f.id === selectedFactoryId);
-  if (!factory) return;
-
-  document.getElementById('chart-modal-overlay').classList.remove('hidden');
-  document.getElementById('chart-modal-title').textContent = `📈 ${factory.name} — แนวโน้มค่ารายเดือนย้อนหลัง`;
-
-  setTimeout(() => renderTrendChart(factory), 50);
-}
-
-function closeChartModal() {
-  document.getElementById('chart-modal-overlay').classList.add('hidden');
-}
-
-document.getElementById('chart-modal-overlay').addEventListener('click', function(e) {
-  if (e.target === this) closeChartModal();
-});
 
 document.addEventListener('DOMContentLoaded', initApp);

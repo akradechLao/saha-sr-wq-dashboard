@@ -127,23 +127,15 @@
         <div class="detail-name-th" id="detail-name-th">—</div>
         <div class="detail-coords" id="detail-coords" style="font-size:0.75rem;color:var(--text-muted);font-family:monospace;padding:2px 0 6px;border-bottom:1px solid var(--border);margin-bottom:6px;"></div>
         <div class="param-grid" id="param-grid"></div>
-        <button class="chart-open-btn" id="chart-open-btn" onclick="openChartModal()">📈 ดูกราฟแนวโน้มค่ารายเดือน</button>
+        <div class="detail-chart">
+          <h3>📈 แนวโน้มค่ารายเดือนย้อนหลัง</h3>
+          <div class="chart-container">
+            <canvas id="trend-chart"></canvas>
+          </div>
+        </div>
       </div>
     </div>
 
-  </div>
-
-  <!-- ============ CHART MODAL ============ -->
-  <div class="chart-modal-overlay hidden" id="chart-modal-overlay">
-    <div class="chart-modal">
-      <div class="chart-modal-header">
-        <h3 id="chart-modal-title">📈 แนวโน้มค่ารายเดือนย้อนหลัง</h3>
-        <button class="close-btn" onclick="closeChartModal()">✕</button>
-      </div>
-      <div class="chart-modal-body">
-        <canvas id="trend-chart"></canvas>
-      </div>
-    </div>
   </div>
 
   <!-- ============ SIDEBAR OVERLAY (MOBILE) ============ -->

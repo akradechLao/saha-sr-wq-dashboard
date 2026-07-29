@@ -161,7 +161,7 @@ function renderTrendChart(factory) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      animation: { duration: 600 },
+      animation: { duration: 500 },
       interaction: {
         mode: 'index',
         intersect: false
@@ -172,11 +172,11 @@ function renderTrendChart(factory) {
           align: 'start',
           labels: {
             color: colors.text,
-            font: { size: 11, family: 'Segoe UI, system-ui, sans-serif' },
-            padding: 10,
+            font: { size: 9, family: 'Segoe UI, system-ui, sans-serif' },
+            padding: 6,
             usePointStyle: true,
-            pointStyleWidth: 8,
-            boxHeight: 7,
+            pointStyleWidth: 6,
+            boxHeight: 5,
             cursor: 'pointer'
           },
           onHover: function(e) {
@@ -190,10 +190,9 @@ function renderTrendChart(factory) {
           borderColor: colors.tooltipBorder,
           borderWidth: 1,
           cornerRadius: 8,
-          padding: 14,
-          titleFont: { weight: '600', size: 12 },
-          bodySpacing: 8,
-          bodyFont: { size: 11 },
+          padding: 12,
+          titleFont: { weight: '600' },
+          bodySpacing: 6,
           callbacks: {
             title: function (items) {
               return `เดือน ${items[0].label} 2569`;
@@ -210,7 +209,7 @@ function renderTrendChart(factory) {
         x: {
           ticks: {
             color: colors.textMuted,
-            font: { size: 12 }
+            font: { size: 10 }
           },
           grid: {
             color: colors.grid,
@@ -223,11 +222,11 @@ function renderTrendChart(factory) {
             display: true,
             text: 'BOD / SS',
             color: colors.textMuted,
-            font: { size: 11 }
+            font: { size: 10 }
           },
           ticks: {
             color: colors.textMuted,
-            font: { size: 11 }
+            font: { size: 10 }
           },
           grid: {
             color: colors.grid,
@@ -240,11 +239,11 @@ function renderTrendChart(factory) {
             display: true,
             text: 'COD / Temp',
             color: colors.textMuted,
-            font: { size: 11 }
+            font: { size: 10 }
           },
           ticks: {
             color: colors.textMuted,
-            font: { size: 11 }
+            font: { size: 10 }
           },
           grid: {
             drawOnChartArea: false
@@ -255,7 +254,7 @@ function renderTrendChart(factory) {
           position: 'right',
           ticks: {
             color: colors.textMuted,
-            font: { size: 10 }
+            font: { size: 9 }
           },
           grid: {
             drawOnChartArea: false
@@ -268,7 +267,7 @@ function renderTrendChart(factory) {
           max: 10,
           ticks: {
             color: colors.textMuted,
-            font: { size: 10 }
+            font: { size: 9 }
           },
           grid: {
             drawOnChartArea: false
