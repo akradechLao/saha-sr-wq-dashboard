@@ -20,7 +20,54 @@ const TILE_LAYERS = {
   }
 };
 
+/* ============ LOCALSTORAGE COORDS ============ */
+const STORAGE_KEY = 'wq-dashboard-coords';
+
+function loadSavedCoords() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    Object.keys(saved).forEach(id => {
+      const factory = MOCK_DATA.find(f => f.id === parseInt(id));
+      if (factory) {
+        factory.lat = saved[id].lat;
+        factory.lng = saved[id].lng;
+      }
+    });
+  } catch (e) {}
+}
+
+function saveCoordsToStorage(factoryId, lat, lng) {
+  const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+  saved[factoryId] = { lat, lng, savedAt: new Date().toISOString() };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
+}
+
+function getSavedCoords() {
+  return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+}
+
+function exportSavedCoords() {
+  const saved = getSavedCoords();
+  if (Object.keys(saved).length === 0) {
+    alert('ยังไม่มีพิกัดที่บันทึกไว้');
+    return;
+  }
+  let code = '';
+  Object.keys(saved).forEach(id => {
+    const f = MOCK_DATA.find(f => f.id === parseInt(id));
+    if (f) {
+      code += `// ${f.name}\nlat: ${saved[id].lat}, lng: ${saved[id].lng}\n\n`;
+    }
+  });
+  navigator.clipboard.writeText(code).then(() => {
+    alert('คัดลอกโค้ดพิกัดทั้งหมดแล้ว!\nนำไปวางใน mock-data.js แล้ว push');
+  });
+}
+
+/* ============ MAP INIT ============ */
 function initMap() {
+  loadSavedCoords();
+
   map = L.map('map', {
     center: [13.0980, 100.9630],
     zoom: 15,
@@ -49,7 +96,6 @@ function drawEstateBoundary() {
 function addFactoryMarker(factory) {
   const pass = isPass(factory.current);
   const color = pass ? '#22c55e' : '#ef4444';
-  const glowColor = pass ? 'rgba(34,197,94,0.4)' : 'rgba(239,68,68,0.4)';
 
   const marker = L.circleMarker([factory.lat, factory.lng], {
     radius: 2.5,
@@ -245,12 +291,14 @@ function initCoordinatePicker() {
       </div>`;
 
     if (factory) {
+      const hasSaved = getSavedCoords()[factory.id];
       html += `<div class="coord-divider"></div>
         <div class="coord-label">โรงงาน: ${factory.name}</div>
         <div class="coord-values">
           <span class="coord-item old">เดิม: ${factory.lat}, ${factory.lng}</span>
         </div>
         <div class="coord-code">lat: ${lat.toFixed(6)}, lng: ${lng.toFixed(6)}</div>
+        <button class="coord-save-btn" onclick="saveNewCoords(${factory.id}, ${lat.toFixed(6)}, ${lng.toFixed(6)})">💾 บันทึกพิกัดนี้</button>
         <button class="coord-copy-btn" onclick="copyCoord('${lat.toFixed(6)}, ${lng.toFixed(6)}')">คัดลอกพิกัด</button>`;
     } else {
       html += `<button class="coord-copy-btn" onclick="copyCoord('${lat.toFixed(6)}, ${lng.toFixed(6)}')">คัดลอกพิกัด</button>`;
@@ -265,6 +313,48 @@ function initCoordinatePicker() {
       className: 'coord-picker-popup'
     }).openPopup();
   });
+}
+
+function saveNewCoords(factoryId, lat, lng) {
+  saveCoordsToStorage(factoryId, lat, lng);
+
+  const factory = MOCK_DATA.find(f => f.id === factoryId);
+  if (factory) {
+    factory.lat = lat;
+    factory.lng = lng;
+
+    if (factoryMarkers[factoryId]) {
+      factoryMarkers[factoryId].setLatLng([lat, lng]);
+    }
+
+    const coordEl = document.getElementById('detail-coords');
+    if (coordEl && selectedFactoryId === factoryId) {
+      coordEl.innerHTML = `<strong>พิกัด:</strong> ${lat}, ${lng} <span style="color:var(--pass);font-size:0.7rem;">✓ บันทึกแล้ว</span>`;
+    }
+  }
+
+  if (coordPickerMarker) {
+    map.removeLayer(coordPickerMarker);
+    coordPickerMarker = null;
+  }
+
+  showSaveToast(factory ? factory.name : '');
+}
+
+function showSaveToast(name) {
+  const existing = document.querySelector('.save-toast');
+  if (existing) existing.remove();
+
+  const toast = document.createElement('div');
+  toast.className = 'save-toast';
+  toast.innerHTML = `✓ บันทึกพิกัด${name ? ' ' + name : ''}แล้ว`;
+  document.body.appendChild(toast);
+
+  setTimeout(() => toast.classList.add('show'), 10);
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 300);
+  }, 2000);
 }
 
 function copyCoord(text) {
