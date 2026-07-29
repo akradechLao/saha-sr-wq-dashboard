@@ -21,7 +21,6 @@ const MOCK_DATA = [
     lat: 13.1002, lng: 100.956,
     photo: 'data/photos/Yamahatsu (Thailand).jpg',
     current: { bod: 6.9, cod: 20.0, do: 5.0, ph: 7.4, temp: 35.0, tds: 394.0, tss: 2.5, oil: 1.5 },
-    history: generateHistory(6.9, 20.0, 5.0, 7.4, 35.0, 394.0, 2.5, 1.5),
     monthlyData: {
       BOD: [6.1, 8.6, 8.4, 8.6, 3.9, 6.9],
       COD: [48.0, 58.0, 54.0, 67.0, 20.0, 20.0],
@@ -44,7 +43,6 @@ const MOCK_DATA = [
     lat: 13.0995, lng: 100.9562,
     photo: 'data/photos/Thai Silicate Chemical.jpg',
     current: { bod: 1.0, cod: 20.0, do: 5.0, ph: 6.4, temp: 34.0, tds: 601.0, tss: 2.5, oil: 1.5 },
-    history: generateHistory(1.0, 20.0, 5.0, 6.4, 34.0, 601.0, 2.5, 1.5),
     monthlyData: {
       BOD: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
       COD: [20.0, 20.0, 20.0, 20.0, 20.0, 20.0],
@@ -65,7 +63,6 @@ const MOCK_DATA = [
     lat: 13.095, lng: 100.9678,
     photo: 'data/photos/Thai Samsung Electronics.jpg',
     current: { bod: 5.0, cod: 20.0, do: 5.0, ph: 7.0, temp: 30.0, tds: 212.0, tss: 2.5, oil: 1.5 },
-    history: generateHistory(5.0, 20.0, 5.0, 7.0, 30.0, 212.0, 2.5, 1.5),
     monthlyData: {
       BOD: [8.7, 11.3, 10.5, 7.9, 9.6, 5.0],
       COD: [94.0, 86.0, 88.0, 73.0, 109.0, 20.0],
@@ -88,7 +85,6 @@ const MOCK_DATA = [
     lat: 13.0948, lng: 100.958,
     photo: 'data/photos/Thai President Foods.jpg',
     current: { bod: 10.6, cod: 58.0, do: 5.0, ph: 7.9, temp: 31.0, tds: 988.0, tss: 8.0, oil: 1.5 },
-    history: generateHistory(10.6, 58.0, 5.0, 7.9, 31.0, 988.0, 8.0, 1.5),
     monthlyData: {
       BOD: [16.8, 27.1, 31.2, 13.9, 9.0, 10.6],
       COD: [143.0, 109.0, 266.0, 83.0, 73.0, 58.0],
@@ -109,7 +105,6 @@ const MOCK_DATA = [
     lat: 13.0992, lng: 100.9572,
     photo: 'data/photos/Osot Inter laboratories.jpg',
     current: { bod: 2.8, cod: 58.0, do: 5.0, ph: 7.8, temp: 31.0, tds: 1344.0, tss: 38.0 },
-    history: generateHistory(2.8, 58.0, 5.0, 7.8, 31.0, 1344.0, 38.0, undefined),
     monthlyData: {
       BOD: [1.0, 1.0, 1.0, 2.6, 1.0, 2.8],
       COD: [20.0, 20.0, 20.0, 58.0, 44.0, 58.0],
@@ -129,7 +124,6 @@ const MOCK_DATA = [
     lat: 13.101, lng: 100.9645,
     photo: 'data/photos/Molten (Thailand).jpg',
     current: { bod: 1.0, cod: 20.0, do: 5.0, ph: 7.0, temp: 30.0, tds: 410.0, tss: 2.5, oil: 1.5 },
-    history: generateHistory(1.0, 20.0, 5.0, 7.0, 30.0, 410.0, 2.5, 1.5),
     monthlyData: {
       BOD: [4.6, 1.0, 1.0, 1.0, 4.2, 1.0],
       COD: [20.0, 20.0, 20.0, 20.0, 20.0, 20.0],
@@ -152,7 +146,6 @@ const MOCK_DATA = [
     lat: 13.0997, lng: 100.9553,
     photo: 'data/photos/Lion (Thailand).jpg',
     current: { bod: 9.1, cod: 51.0, do: 5.0, ph: 6.4, temp: 26.0, tds: 1104.0, tss: 9.0, oil: 1.5 },
-    history: generateHistory(9.1, 51.0, 5.0, 6.4, 26.0, 1104.0, 9.0, 1.5),
     monthlyData: {
       BOD: [4.6, 3.8, 1.0, 6.1, 9.3, 9.1],
       COD: [45.0, 42.0, 20.0, 48.0, 50.0, 51.0],
@@ -174,7 +167,6 @@ const MOCK_DATA = [
     lat: 13.1005, lng: 100.964,
     photo: 'data/photos/Kenmin Foods (Thailand).jpg',
     current: { bod: 6.1, cod: 45.0, do: 5.0, ph: 7.1, temp: 32.0, tds: 2212.0, tss: 9.0, oil: 1.5 },
-    history: generateHistory(6.1, 45.0, 5.0, 7.1, 32.0, 2212.0, 9.0, 1.5),
     monthlyData: {
       BOD: [5.4, 11.5, 9.2, 8.9, 3.9, 6.1],
       COD: [20.0, 20.0, 20.0, 57.0, 41.0, 45.0],
@@ -195,7 +187,6 @@ const MOCK_DATA = [
     lat: 13.0918, lng: 100.9645,
     photo: 'data/photos/Janome (Thailand).jpg',
     current: { bod: 11.9, cod: 90.0, do: 5.0, ph: 7.9, temp: 30.0, tds: 2680.0, tss: 2.5, oil: 1.5 },
-    history: generateHistory(11.9, 90.0, 5.0, 7.9, 30.0, 2680.0, 2.5, 1.5),
     monthlyData: {
       BOD: [8.4, 9.6, 30.6, 28.4, 9.7, 11.9],
       COD: [63.0, 83.0, 86.0, 99.0, 78.0, 90.0],
@@ -217,7 +208,6 @@ const MOCK_DATA = [
     lat: 13.0972, lng: 100.9598,
     photo: 'data/photos/Thai Kobashi.jpg',
     current: { bod: 1.0, cod: 48.0, do: 5.0, ph: 6.8, temp: 32.0, tds: 482.0, tss: 20.0, oil: 1.5 },
-    history: generateHistory(1.0, 48.0, 5.0, 6.8, 32.0, 482.0, 20.0, 1.5),
     monthlyData: {
       BOD: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
       COD: [20.0, 20.0, 20.0, 45.0, 20.0, 48.0],
@@ -241,7 +231,6 @@ const MOCK_DATA = [
     lat: 13.0958, lng: 100.963,
     photo: 'data/photos/Thai Asahi Kasei Spandex.jpg',
     current: { bod: 35.6, cod: 93.0, do: 5.0, ph: 7.6, temp: 40.0, tds: 688.0, tss: 38.0, oil: 1.5 },
-    history: generateHistory(35.6, 93.0, 5.0, 7.6, 40.0, 688.0, 38.0, 1.5),
     monthlyData: {
       BOD: [26.5, 28.1, 43.8, 20.8, 22.1, 35.6],
       COD: [115.0, 42.0, 105.0, 43.0, 88.0, 93.0],
@@ -264,7 +253,6 @@ const MOCK_DATA = [
     lat: 13.0942, lng: 100.9575,
     photo: 'data/photos/Thai Arai.jpg',
     current: { bod: 1.0, cod: 20.0, do: 5.0, ph: 7.3, temp: 32.0, tds: 1366.0, tss: 82.0, oil: 1.5 },
-    history: generateHistory(1.0, 20.0, 5.0, 7.3, 32.0, 1366.0, 82.0, 1.5),
     monthlyData: {
       BOD: [4.6, 2.1, 3.0, 4.4, 1.0, 1.0],
       COD: [20.0, 20.0, 20.0, 20.0, 20.0, 20.0],
@@ -286,7 +274,6 @@ const MOCK_DATA = [
     lat: 13.0985, lng: 100.9635,
     photo: 'data/photos/Raja Uchino.jpg',
     current: { bod: 1.0, cod: 20.0, do: 5.0, ph: 8.2, temp: 31.0, tds: 1572.0, tss: 7.0, oil: 1.5 },
-    history: generateHistory(1.0, 20.0, 5.0, 8.2, 31.0, 1572.0, 7.0, 1.5),
     monthlyData: {
       BOD: [7.4, 10.2, 2.0, 14.7, 22.8, 1.0],
       COD: [127.0, 283.0, 86.0, 58.0, 72.0, 20.0],
@@ -308,7 +295,6 @@ const MOCK_DATA = [
     lat: 13.0964, lng: 100.9625,
     photo: 'data/photos/S&J International Enterprises.jpg',
     current: { bod: 6.2, cod: 64.0, do: 5.0, ph: 7.3, temp: 35.0, tds: 828.0, tss: 6.0, oil: 1.5 },
-    history: generateHistory(6.2, 64.0, 5.0, 7.3, 35.0, 828.0, 6.0, 1.5),
     monthlyData: {
       BOD: [2.0, 11.5, 37.2, 3.6, 142.0, 6.2],
       COD: [20.0, 54.0, 111.0, 54.0, 423.0, 64.0],
@@ -330,7 +316,6 @@ const MOCK_DATA = [
     lat: 13.0995, lng: 100.9558,
     photo: 'data/photos/Sahachol Food Supplies.jpg',
     current: { bod: 2.2, cod: 20.0, do: 5.0, ph: 8.0, temp: 33.0, tds: 1640.0, tss: 12.0, oil: 1.5 },
-    history: generateHistory(2.2, 20.0, 5.0, 8.0, 33.0, 1640.0, 12.0, 1.5),
     monthlyData: {
       BOD: [1.0, 1.0, 1.0, 2.7, 9.1, 2.2],
       COD: [20.0, 20.0, 20.0, 42.0, 65.0, 20.0],
@@ -353,7 +338,6 @@ const MOCK_DATA = [
     lat: 13.1008, lng: 100.9648,
     photo: 'data/photos/Saha Sewa.jpg',
     current: { bod: 45.0, cod: 161.0, do: 5.0, ph: 7.8, temp: 29.0, tds: 616.0, tss: 9.0, oil: 1.5 },
-    history: generateHistory(45.0, 161.0, 5.0, 7.8, 29.0, 616.0, 9.0, 1.5),
     monthlyData: {
       BOD: [46.1, 58.4, 54.8, 41.9, 11.9, 45.0],
       COD: [237.0, 208.0, 228.0, 157.0, 20.0, 161.0],
@@ -374,7 +358,6 @@ const MOCK_DATA = [
     lat: 13.0975, lng: 100.9645,
     photo: 'data/photos/Saha Seiren.jpg',
     current: { bod: 9.0, cod: 58.0, do: 5.0, ph: 7.2, temp: 34.0, tds: 602.0, tss: 6.0, oil: 1.5 },
-    history: generateHistory(9.0, 58.0, 5.0, 7.2, 34.0, 602.0, 6.0, 1.5),
     monthlyData: {
       BOD: [8.5, 1.0, 1.0, 6.4, 1.0, 9.0],
       COD: [51.0, 20.0, 20.0, 20.0, 20.0, 58.0],
