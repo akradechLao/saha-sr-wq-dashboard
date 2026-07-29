@@ -15,7 +15,7 @@ function getChartColors() {
   };
 }
 
-const DL_DISPLAY = { BOD: 2, COD: 40, TDS: 3000, TSS: 200, FOG: 10 };
+const DL_DISPLAY = { BOD: 2, COD: 40, TDS: 3000, TSS: 200, FOG: 3 };
 
 function processDatasetWithDL(label, rawData, belowDL, baseConfig, colors) {
   const dlLimit = DL_DISPLAY[label];
