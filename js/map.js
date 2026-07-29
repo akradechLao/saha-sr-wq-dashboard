@@ -25,15 +25,20 @@ const STORAGE_KEY = 'wq-dashboard-coords';
 
 function loadSavedCoords() {
   try {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const saved = JSON.parse(raw);
+    if (typeof saved !== 'object' || saved === null) return;
     Object.keys(saved).forEach(id => {
       const factory = MOCK_DATA.find(f => f.id === parseInt(id));
-      if (factory) {
+      if (factory && saved[id] && typeof saved[id].lat === 'number' && typeof saved[id].lng === 'number') {
         factory.lat = saved[id].lat;
         factory.lng = saved[id].lng;
       }
     });
-  } catch (e) {}
+  } catch (e) {
+    localStorage.removeItem(STORAGE_KEY);
+  }
 }
 
 function saveCoordsToStorage(factoryId, lat, lng) {
