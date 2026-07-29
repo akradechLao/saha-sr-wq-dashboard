@@ -239,16 +239,14 @@ function showDetail(factory) {
 
   // แสดงเดือน/ปี ของผลตรวจวัด
   const dateLabel = document.getElementById('detail-date-label');
-  if (factory.monthlyData && factory.monthlyData.BOD) {
+  if (dateLabel && factory.current && factory.monthlyData && factory.monthlyData.BOD) {
     const monthNames = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
     const lastIdx = factory.monthlyData.BOD.length - 1;
     const dateText = `📊 ผลตรวจวัด ณ เดือน${monthNames[lastIdx]} 2569`;
-    if (dateLabel) {
-      dateLabel.textContent = dateText;
-      dateLabel.style.display = 'block';
-    }
-  } else {
-    if (dateLabel) dateLabel.style.display = 'none';
+    dateLabel.textContent = dateText;
+    dateLabel.style.display = 'block';
+  } else if (dateLabel) {
+    dateLabel.style.display = 'none';
   }
 
   const coordEl = document.getElementById('detail-coords');
@@ -282,7 +280,10 @@ function showDetail(factory) {
 
 function renderChartSummary(factory, containerId) {
   const el = document.getElementById(containerId);
-  if (!el) return;
+  if (!el || !factory.current) {
+    if (el) el.innerHTML = '';
+    return;
+  }
 
   const d = factory.current;
   const checks = getParamChecks(d);

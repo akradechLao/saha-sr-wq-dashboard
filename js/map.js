@@ -219,6 +219,7 @@ function isPass(d) {
 }
 
 function getParamChecks(d) {
+  if (!d) return { bod: true, cod: true, do: true, ph: true, temp: true, tds: true, tss: true, oil: true };
   return {
     bod:  d.bod <= 120,
     cod:  d.cod <= 500,
