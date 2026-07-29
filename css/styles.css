@@ -763,24 +763,6 @@ body {
   margin-top: 4px;
 }
 
-.popup-detail-btn {
-  width: 100%;
-  padding: 6px 10px;
-  border: 1px solid var(--accent-gold);
-  background: transparent;
-  color: var(--accent-gold);
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  font-size: 0.72rem;
-  font-weight: 600;
-  transition: var(--transition);
-}
-
-.popup-detail-btn:hover {
-  background: var(--accent-gold);
-  color: #000;
-}
-
 .popup-param .param-val {
   font-weight: 700;
 }

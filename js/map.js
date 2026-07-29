@@ -207,9 +207,6 @@ function buildPopupHTML(factory) {
           ${allPass ? '✓ ผ่านเกณฑ์มาตรฐานทั้งหมด' : '✗ มีค่าไม่ผ่านเกณฑ์'}
         </span>
       </div>
-      <div style="margin-top:8px;text-align:center;">
-        <button onclick="selectFactory(${factory.id})" class="popup-detail-btn">📊 ดูข้อมูลเต็ม</button>
-      </div>
     </div>
   `;
 }
