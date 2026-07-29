@@ -695,9 +695,10 @@ body {
 
 /* ============ DATE LABEL ============ */
 .detail-date-label {
-  font-size: 0.68rem;
-  color: var(--text-muted);
-  padding: 4px 14px 2px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent-yellow);
+  padding: 6px 14px 4px;
   border-bottom: 1px solid var(--border);
   margin-bottom: 4px;
 }
