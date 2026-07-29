@@ -125,11 +125,13 @@
           <button class="close-btn" id="close-detail">✕</button>
         </div>
         <img id="detail-photo" class="detail-photo" src="" alt="" loading="lazy" style="display:none;">
+        <div id="detail-date-label" class="detail-date-label"></div>
         <div class="detail-name-th" id="detail-name-th">—</div>
         <div class="detail-coords" id="detail-coords" style="font-size:0.75rem;color:var(--text-muted);font-family:monospace;padding:2px 0 6px;border-bottom:1px solid var(--border);margin-bottom:6px;"></div>
         <div class="param-grid" id="param-grid"></div>
         <div class="detail-chart" id="detail-chart" onclick="expandChart()" style="cursor:pointer;">
           <h3>📈 แนวโน้มค่ารายเดือนย้อนหลัง <span style="font-size:0.55rem;color:var(--text-muted);font-weight:400;">(คลิกเพื่อขยาย)</span></h3>
+          <div id="chart-summary" class="chart-summary"></div>
           <div class="chart-container">
             <canvas id="trend-chart"></canvas>
           </div>
@@ -147,6 +149,7 @@
         <button class="close-btn" onclick="closeExpandChart()">✕</button>
       </div>
       <div class="chart-expand-body">
+        <div id="chart-expand-summary" class="chart-summary" style="margin-bottom:10px;"></div>
         <canvas id="trend-chart-expand"></canvas>
       </div>
     </div>

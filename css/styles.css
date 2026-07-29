@@ -662,6 +662,46 @@ body {
   height: 100% !important;
 }
 
+/* ============ CHART SUMMARY ============ */
+.chart-summary {
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 0.72rem;
+  line-height: 1.5;
+  flex-shrink: 0;
+}
+
+.chart-summary.pass {
+  background: var(--pass-bg);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  color: var(--pass);
+}
+
+.chart-summary.fail {
+  background: var(--fail-bg);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: var(--fail);
+}
+
+.chart-summary .summary-title {
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.chart-summary .summary-detail {
+  font-weight: 400;
+  opacity: 0.85;
+}
+
+/* ============ DATE LABEL ============ */
+.detail-date-label {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  padding: 4px 14px 2px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 4px;
+}
+
 /* ============ LEAFLET POPUP ============ */
 .leaflet-popup-content-wrapper {
   background: var(--bg-card) !important;

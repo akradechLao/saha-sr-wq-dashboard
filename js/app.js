@@ -237,6 +237,20 @@ function showDetail(factory) {
   document.getElementById('detail-name-th').textContent = `${factory.nameTh} — ${factory.industry}`;
   document.getElementById('detail-industry').textContent = factory.industry;
 
+  // แสดงเดือน/ปี ของผลตรวจวัด
+  const dateLabel = document.getElementById('detail-date-label');
+  if (factory.monthlyData && factory.monthlyData.BOD) {
+    const monthNames = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+    const lastIdx = factory.monthlyData.BOD.length - 1;
+    const dateText = `📊 ผลตรวจวัด ณ เดือน${monthNames[lastIdx]} 2569`;
+    if (dateLabel) {
+      dateLabel.textContent = dateText;
+      dateLabel.style.display = 'block';
+    }
+  } else {
+    if (dateLabel) dateLabel.style.display = 'none';
+  }
+
   const coordEl = document.getElementById('detail-coords');
   if (coordEl) {
     if (isAdmin) {
@@ -258,11 +272,43 @@ function showDetail(factory) {
   }
 
   renderParamGrid(factory);
+  renderChartSummary(factory, 'chart-summary');
   renderTrendChart(factory);
 
   setTimeout(() => {
     if (map) map.invalidateSize();
   }, 200);
+}
+
+function renderChartSummary(factory, containerId) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+
+  const d = factory.current;
+  const checks = getParamChecks(d);
+  const failed = [];
+
+  if (!checks.bod) failed.push(`BOD ${d.bod} mg/L (เกณฑ์ ≤ 120)`);
+  if (!checks.cod) failed.push(`COD ${d.cod} mg/L (เกณฑ์ ≤ 500)`);
+  if (!checks.do) failed.push(`DO ${d.do} mg/L (เกณฑ์ ≥ 2)`);
+  if (!checks.ph) failed.push(`pH ${d.ph} (เกณฑ์ 5.5–9.0)`);
+  if (!checks.temp) failed.push(`Temp ${d.temp}°C (เกณฑ์ ≤ 45)`);
+  if (!checks.tds) failed.push(`TDS ${d.tds} mg/L (เกณฑ์ ≤ 3000)`);
+  if (!checks.tss) failed.push(`TSS ${d.tss} mg/L (เกณฑ์ ≤ 200)`);
+  if (!checks.oil) failed.push(`FOG ${d.oil} mg/L (เกณฑ์ ≤ 10)`);
+
+  if (failed.length === 0) {
+    el.className = 'chart-summary pass';
+    el.innerHTML = '<div class="summary-title">✓ ผ่านกฎหมายทุกรายการ</div>';
+  } else {
+    el.className = 'chart-summary fail';
+    el.innerHTML = `<div class="summary-title">✗ มี ${failed.length} รายการเกินมาตรฐาน</div>
+      <div class="summary-detail">${failed.join(' · ')}</div>`;
+  }
+}
+
+function renderExpandChartSummary(factory) {
+  renderChartSummary(factory, 'chart-expand-summary');
 }
 
 function renderParamGrid(factory) {
@@ -317,6 +363,7 @@ function expandChart() {
   document.getElementById('chart-expand-overlay').classList.remove('hidden');
   document.getElementById('chart-expand-title').textContent = `📈 ${factory.name} — แนวโน้มค่ารายเดือนย้อนหลัง`;
 
+  renderExpandChartSummary(factory);
   setTimeout(() => renderExpandChart(factory), 50);
 }
 
