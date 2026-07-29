@@ -237,7 +237,7 @@ function highlightFactory(id) {
   if (selected) {
     selected.getElement()?.classList.add('selected');
     const ll = selected.getLatLng();
-    map.setView([ll.lat, ll.lng], 16, { animate: true });
+    map.panTo([ll.lat, ll.lng], { animate: true, duration: 0.5 });
   }
 }
 
