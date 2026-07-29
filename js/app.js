@@ -270,7 +270,7 @@ function showDetail(factory) {
   }
 
   renderParamGrid(factory);
-  renderChartSummary(factory, 'chart-summary');
+  try { renderChartSummary(factory, 'chart-summary'); } catch(e) {}
   renderTrendChart(factory);
 
   setTimeout(() => {
@@ -361,11 +361,17 @@ function expandChart() {
   const factory = MOCK_DATA.find(f => f.id === selectedFactoryId);
   if (!factory) return;
 
-  document.getElementById('chart-expand-overlay').classList.remove('hidden');
+  const overlay = document.getElementById('chart-expand-overlay');
+  if (!overlay) return;
+
+  overlay.classList.remove('hidden');
   document.getElementById('chart-expand-title').textContent = `📈 ${factory.name} — แนวโน้มค่ารายเดือนย้อนหลัง`;
 
-  renderExpandChartSummary(factory);
-  setTimeout(() => renderExpandChart(factory), 50);
+  try { renderExpandChartSummary(factory); } catch(e) { console.warn('summary err', e); }
+
+  setTimeout(() => {
+    try { renderExpandChart(factory); } catch(e) { console.warn('chart err', e); }
+  }, 100);
 }
 
 function closeExpandChart() {

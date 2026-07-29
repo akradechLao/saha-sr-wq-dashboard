@@ -131,12 +131,10 @@ function addFactoryMarker(factory) {
   });
 
   marker.on('mouseover', function () {
-    this.setStyle({ radius: 3.5, weight: 1.5, fillOpacity: 0.85 });
     this.openTooltip();
   });
 
   marker.on('mouseout', function () {
-    this.setStyle({ radius: 2.5, weight: 1, fillOpacity: 0.7 });
   });
 
   marker.on('click', function () {
