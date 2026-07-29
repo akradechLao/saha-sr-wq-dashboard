@@ -176,7 +176,11 @@ function renderTrendChart(factory) {
             padding: 10,
             usePointStyle: true,
             pointStyleWidth: 8,
-            boxHeight: 7
+            boxHeight: 7,
+            cursor: 'pointer'
+          },
+          onHover: function(e) {
+            e.native.target.style.cursor = 'pointer';
           }
         },
         tooltip: {

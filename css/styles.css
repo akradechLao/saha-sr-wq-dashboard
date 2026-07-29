@@ -895,6 +895,16 @@ body {
   height: 100% !important;
 }
 
+.chart-modal-body .chartjs-legend li {
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 0.2s;
+}
+
+.chart-modal-body .chartjs-legend li:hover {
+  opacity: 0.7;
+}
+
 /* ============ MOBILE SIDEBAR TOGGLE ============ */
 .sidebar-toggle {
   display: none;
