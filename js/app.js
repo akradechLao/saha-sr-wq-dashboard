@@ -257,6 +257,10 @@ function showDetail(factory) {
 
   renderParamGrid(factory);
   renderTrendChart(factory);
+
+  setTimeout(() => {
+    if (map) map.invalidateSize();
+  }, 200);
 }
 
 function renderParamGrid(factory) {

@@ -229,22 +229,31 @@ function getParamChecks(d) {
 
 function highlightFactory(id) {
   Object.keys(factoryMarkers).forEach(key => {
-    const m = factoryMarkers[key];
-    m.getElement()?.classList.remove('selected');
+    try {
+      const m = factoryMarkers[key];
+      const el = m.getElement();
+      if (el) el.classList.remove('selected');
+    } catch(e) {}
   });
 
   const selected = factoryMarkers[id];
   if (selected) {
-    selected.getElement()?.classList.add('selected');
+    try {
+      const el = selected.getElement();
+      if (el) el.classList.add('selected');
+    } catch(e) {}
     const ll = selected.getLatLng();
-    map.panTo([ll.lat, ll.lng], { animate: true, duration: 0.5 });
+    map.panTo([ll.lat, ll.lng], { animate: false });
   }
 }
 
 function resetHighlights() {
   Object.keys(factoryMarkers).forEach(key => {
-    const m = factoryMarkers[key];
-    m.getElement()?.classList.remove('selected');
+    try {
+      const m = factoryMarkers[key];
+      const el = m.getElement();
+      if (el) el.classList.remove('selected');
+    } catch(e) {}
   });
 }
 
