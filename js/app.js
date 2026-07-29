@@ -311,7 +311,7 @@ function openChartModal() {
   document.getElementById('chart-modal-overlay').classList.remove('hidden');
   document.getElementById('chart-modal-title').textContent = `📈 ${factory.name} — แนวโน้มค่ารายเดือนย้อนหลัง`;
 
-  renderTrendChart(factory);
+  setTimeout(() => renderTrendChart(factory), 50);
 }
 
 function closeChartModal() {
