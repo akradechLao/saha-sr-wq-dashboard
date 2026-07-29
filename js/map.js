@@ -230,18 +230,11 @@ function getParamChecks(d) {
 function highlightFactory(id) {
   Object.keys(factoryMarkers).forEach(key => {
     const m = factoryMarkers[key];
-    const factory = MOCK_DATA.find(f => f.id === parseInt(key));
-    if (factory) {
-      const pass = isPass(factory.current);
-      const color = pass ? '#22c55e' : '#ef4444';
-      m.setIcon(createFactoryIcon(color));
-      m.getElement()?.classList.remove('selected');
-    }
+    m.getElement()?.classList.remove('selected');
   });
 
   const selected = factoryMarkers[id];
   if (selected) {
-    selected.setIcon(createFactoryIcon('#06b6d4'));
     selected.getElement()?.classList.add('selected');
     const ll = selected.getLatLng();
     map.setView([ll.lat, ll.lng], 16, { animate: true });
@@ -251,13 +244,7 @@ function highlightFactory(id) {
 function resetHighlights() {
   Object.keys(factoryMarkers).forEach(key => {
     const m = factoryMarkers[key];
-    const factory = MOCK_DATA.find(f => f.id === parseInt(key));
-    if (factory) {
-      const pass = isPass(factory.current);
-      const color = pass ? '#22c55e' : '#ef4444';
-      m.setIcon(createFactoryIcon(color));
-      m.getElement()?.classList.remove('selected');
-    }
+    m.getElement()?.classList.remove('selected');
   });
 }
 
