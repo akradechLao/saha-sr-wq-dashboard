@@ -228,7 +228,7 @@ function highlightFactory(id) {
 
   const selected = factoryMarkers[id];
   if (selected) {
-    selected.setStyle({ color: '#f5d061', fillColor: '#f5d061', radius: 4, weight: 1.5, fillOpacity: 0.9 });
+    selected.setStyle({ color: '#06b6d4', fillColor: '#06b6d4', radius: 4, weight: 1.5, fillOpacity: 0.9 });
     const ll = selected.getLatLng();
     map.setView([ll.lat, ll.lng], 16, { animate: true });
   }
@@ -280,8 +280,8 @@ function initCoordinatePicker() {
 
     coordPickerMarker = L.circleMarker([lat, lng], {
       radius: 6,
-      color: '#f5d061',
-      fillColor: '#f5d061',
+      color: '#06b6d4',
+      fillColor: '#06b6d4',
       fillOpacity: 0.9,
       weight: 2
     }).addTo(map);
