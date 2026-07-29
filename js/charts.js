@@ -15,265 +15,93 @@ function getChartColors() {
   };
 }
 
-function renderTrendChart(factory) {
-  const ctx = document.getElementById('trend-chart');
-  if (!ctx) return;
-
-  if (trendChart) {
-    trendChart.destroy();
-    trendChart = null;
-  }
-
+function buildChartData(factory) {
   const md = factory.monthlyData;
-  if (!md || !md.BOD) return;
+  if (!md || !md.BOD) return null;
 
   const colors = getChartColors();
   const labels = MONTH_LABELS.slice(0, md.BOD.length);
 
   const datasets = [
-    {
-      label: 'BOD',
-      data: md.BOD,
-      borderColor: '#d4a017',
-      backgroundColor: 'rgba(212, 160, 23, 0.08)',
-      borderWidth: 2,
-      tension: 0.35,
-      fill: true,
-      pointRadius: 3,
-      pointHoverRadius: 6,
-      pointBackgroundColor: '#d4a017',
-      pointBorderColor: colors.pointBorder,
-      pointBorderWidth: 1.5,
-      yAxisID: 'y'
-    },
-    {
-      label: 'COD',
-      data: md.COD,
-      borderColor: '#3b82f6',
-      backgroundColor: 'rgba(59, 130, 246, 0.06)',
-      borderWidth: 2,
-      tension: 0.35,
-      fill: false,
-      pointRadius: 3,
-      pointHoverRadius: 6,
-      pointBackgroundColor: '#3b82f6',
-      pointBorderColor: colors.pointBorder,
-      pointBorderWidth: 1.5,
-      yAxisID: 'y1'
-    }
+    { label: 'BOD', data: md.BOD, borderColor: '#d4a017', backgroundColor: 'rgba(212, 160, 23, 0.08)', borderWidth: 2, tension: 0.35, fill: true, pointRadius: 3, pointHoverRadius: 6, pointBackgroundColor: '#d4a017', pointBorderColor: colors.pointBorder, pointBorderWidth: 1.5, yAxisID: 'y' },
+    { label: 'COD', data: md.COD, borderColor: '#3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.06)', borderWidth: 2, tension: 0.35, fill: false, pointRadius: 3, pointHoverRadius: 6, pointBackgroundColor: '#3b82f6', pointBorderColor: colors.pointBorder, pointBorderWidth: 1.5, yAxisID: 'y1' }
   ];
 
-  if (md.SS) {
-    datasets.push({
-      label: 'SS',
-      data: md.SS,
-      borderColor: '#f97316',
-      borderWidth: 1.5,
-      tension: 0.35,
-      fill: false,
-      pointRadius: 2,
-      pointHoverRadius: 5,
-      pointBackgroundColor: '#f97316',
-      pointBorderColor: colors.pointBorder,
-      pointBorderWidth: 1,
-      yAxisID: 'y',
-      borderDash: [4, 2]
-    });
-  }
+  if (md.SS) datasets.push({ label: 'SS', data: md.SS, borderColor: '#f97316', borderWidth: 1.5, tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#f97316', pointBorderColor: colors.pointBorder, pointBorderWidth: 1, yAxisID: 'y', borderDash: [4, 2] });
+  if (md.pH) datasets.push({ label: 'pH', data: md.pH, borderColor: '#a855f7', backgroundColor: 'rgba(168, 85, 247, 0.06)', borderWidth: 2, tension: 0.35, fill: false, pointRadius: 3, pointHoverRadius: 5, pointBackgroundColor: '#a855f7', pointBorderColor: colors.pointBorder, pointBorderWidth: 1.5, yAxisID: 'y3', hidden: true });
+  if (md.Temp) datasets.push({ label: 'Temp', data: md.Temp, borderColor: '#ef4444', backgroundColor: 'rgba(239, 68, 68, 0.06)', borderWidth: 2, borderDash: [5, 3], tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ef4444', pointBorderColor: colors.pointBorder, pointBorderWidth: 1.5, yAxisID: 'y1' });
+  if (md.TDS) datasets.push({ label: 'TDS', data: md.TDS, borderColor: '#06b6d4', borderWidth: 1.5, tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 4, pointBackgroundColor: '#06b6d4', pointBorderColor: colors.pointBorder, pointBorderWidth: 1, yAxisID: 'y2', borderDash: [3, 2] });
+  if (md.FOG) datasets.push({ label: 'FOG', data: md.FOG, borderColor: '#84cc16', borderWidth: 1.5, tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 4, pointBackgroundColor: '#84cc16', pointBorderColor: colors.pointBorder, pointBorderWidth: 1, yAxisID: 'y2', borderDash: [2, 2] });
 
-  if (md.pH) {
-    datasets.push({
-      label: 'pH',
-      data: md.pH,
-      borderColor: '#a855f7',
-      backgroundColor: 'rgba(168, 85, 247, 0.06)',
-      borderWidth: 2,
-      tension: 0.35,
-      fill: false,
-      pointRadius: 3,
-      pointHoverRadius: 5,
-      pointBackgroundColor: '#a855f7',
-      pointBorderColor: colors.pointBorder,
-      pointBorderWidth: 1.5,
-      yAxisID: 'y3',
-      hidden: true
-    });
-  }
+  return { labels, datasets, colors };
+}
 
-  if (md.Temp) {
-    datasets.push({
-      label: 'Temp',
-      data: md.Temp,
-      borderColor: '#ef4444',
-      backgroundColor: 'rgba(239, 68, 68, 0.06)',
-      borderWidth: 2,
-      borderDash: [5, 3],
-      tension: 0.35,
-      fill: false,
-      pointRadius: 2,
-      pointHoverRadius: 5,
-      pointBackgroundColor: '#ef4444',
-      pointBorderColor: colors.pointBorder,
-      pointBorderWidth: 1.5,
-      yAxisID: 'y1'
-    });
-  }
-
-  if (md.TDS) {
-    datasets.push({
-      label: 'TDS',
-      data: md.TDS,
-      borderColor: '#06b6d4',
-      borderWidth: 1.5,
-      tension: 0.35,
-      fill: false,
-      pointRadius: 2,
-      pointHoverRadius: 4,
-      pointBackgroundColor: '#06b6d4',
-      pointBorderColor: colors.pointBorder,
-      pointBorderWidth: 1,
-      yAxisID: 'y2',
-      borderDash: [3, 2]
-    });
-  }
-
-  if (md.FOG) {
-    datasets.push({
-      label: 'FOG',
-      data: md.FOG,
-      borderColor: '#84cc16',
-      borderWidth: 1.5,
-      tension: 0.35,
-      fill: false,
-      pointRadius: 2,
-      pointHoverRadius: 4,
-      pointBackgroundColor: '#84cc16',
-      pointBorderColor: colors.pointBorder,
-      pointBorderWidth: 1,
-      yAxisID: 'y2',
-      borderDash: [2, 2]
-    });
-  }
-
-  trendChart = new Chart(ctx, {
+function createChartConfig(data, fontSize) {
+  const fs = fontSize || 10;
+  return {
     type: 'line',
-    data: { labels, datasets },
+    data: { labels: data.labels, datasets: data.datasets },
     options: {
       responsive: true,
       maintainAspectRatio: false,
       animation: { duration: 500 },
-      interaction: {
-        mode: 'index',
-        intersect: false
-      },
+      interaction: { mode: 'index', intersect: false },
       plugins: {
         legend: {
           position: 'top',
           align: 'start',
           labels: {
-            color: colors.text,
-            font: { size: 9, family: 'Segoe UI, system-ui, sans-serif' },
-            padding: 6,
+            color: data.colors.text,
+            font: { size: fs, family: 'Segoe UI, system-ui, sans-serif' },
+            padding: fs < 11 ? 6 : 10,
             usePointStyle: true,
-            pointStyleWidth: 6,
-            boxHeight: 5,
+            pointStyleWidth: fs < 11 ? 6 : 8,
+            boxHeight: fs < 11 ? 5 : 7,
             cursor: 'pointer'
           },
-          onHover: function(e) {
-            e.native.target.style.cursor = 'pointer';
-          }
+          onHover: function(e) { e.native.target.style.cursor = 'pointer'; }
         },
         tooltip: {
-          backgroundColor: colors.tooltipBg,
-          titleColor: colors.tooltipTitle,
-          bodyColor: colors.tooltipBody,
-          borderColor: colors.tooltipBorder,
+          backgroundColor: data.colors.tooltipBg,
+          titleColor: data.colors.tooltipTitle,
+          bodyColor: data.colors.tooltipBody,
+          borderColor: data.colors.tooltipBorder,
           borderWidth: 1,
           cornerRadius: 8,
-          padding: 12,
+          padding: fs < 11 ? 12 : 14,
           titleFont: { weight: '600' },
-          bodySpacing: 6,
+          bodySpacing: fs < 11 ? 6 : 8,
           callbacks: {
-            title: function (items) {
-              return `เดือน ${items[0].label} 2569`;
-            },
-            label: function (context) {
-              const label = context.dataset.label || '';
-              const value = context.parsed.y;
-              return `  ${label}: ${value}`;
-            }
+            title: function (items) { return `เดือน ${items[0].label} 2569`; },
+            label: function (context) { return `  ${context.dataset.label}: ${context.parsed.y}`; }
           }
         }
       },
       scales: {
-        x: {
-          ticks: {
-            color: colors.textMuted,
-            font: { size: 10 }
-          },
-          grid: {
-            color: colors.grid,
-            drawBorder: false
-          }
-        },
-        y: {
-          position: 'left',
-          title: {
-            display: true,
-            text: 'BOD / SS',
-            color: colors.textMuted,
-            font: { size: 10 }
-          },
-          ticks: {
-            color: colors.textMuted,
-            font: { size: 10 }
-          },
-          grid: {
-            color: colors.grid,
-            drawBorder: false
-          }
-        },
-        y1: {
-          position: 'right',
-          title: {
-            display: true,
-            text: 'COD / Temp',
-            color: colors.textMuted,
-            font: { size: 10 }
-          },
-          ticks: {
-            color: colors.textMuted,
-            font: { size: 10 }
-          },
-          grid: {
-            drawOnChartArea: false
-          }
-        },
-        y2: {
-          display: false,
-          position: 'right',
-          ticks: {
-            color: colors.textMuted,
-            font: { size: 9 }
-          },
-          grid: {
-            drawOnChartArea: false
-          }
-        },
-        y3: {
-          display: false,
-          position: 'left',
-          min: 4,
-          max: 10,
-          ticks: {
-            color: colors.textMuted,
-            font: { size: 9 }
-          },
-          grid: {
-            drawOnChartArea: false
-          }
-        }
+        x: { ticks: { color: data.colors.textMuted, font: { size: fs } }, grid: { color: data.colors.grid, drawBorder: false } },
+        y: { position: 'left', title: { display: true, text: 'BOD / SS', color: data.colors.textMuted, font: { size: fs } }, ticks: { color: data.colors.textMuted, font: { size: fs } }, grid: { color: data.colors.grid, drawBorder: false } },
+        y1: { position: 'right', title: { display: true, text: 'COD / Temp', color: data.colors.textMuted, font: { size: fs } }, ticks: { color: data.colors.textMuted, font: { size: fs } }, grid: { drawOnChartArea: false } },
+        y2: { display: false, position: 'right', ticks: { color: data.colors.textMuted, font: { size: fs - 1 } }, grid: { drawOnChartArea: false } },
+        y3: { display: false, position: 'left', min: 4, max: 10, ticks: { color: data.colors.textMuted, font: { size: fs - 1 } }, grid: { drawOnChartArea: false } }
       }
     }
-  });
+  };
+}
+
+function renderTrendChart(factory) {
+  if (trendChart) { trendChart.destroy(); trendChart = null; }
+  const ctx = document.getElementById('trend-chart');
+  if (!ctx) return;
+  const data = buildChartData(factory);
+  if (!data) return;
+  trendChart = new Chart(ctx, createChartConfig(data, 9));
+}
+
+function renderExpandChart(factory) {
+  if (expandChartInstance) { expandChartInstance.destroy(); expandChartInstance = null; }
+  const ctx = document.getElementById('trend-chart-expand');
+  if (!ctx) return;
+  const data = buildChartData(factory);
+  if (!data) return;
+  expandChartInstance = new Chart(ctx, createChartConfig(data, 12));
 }

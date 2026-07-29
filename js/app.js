@@ -306,4 +306,30 @@ function closeDetail() {
   invalidateMapSize();
 }
 
+/* ============ CHART EXPAND ============ */
+let expandChartInstance = null;
+
+function expandChart() {
+  if (!selectedFactoryId) return;
+  const factory = MOCK_DATA.find(f => f.id === selectedFactoryId);
+  if (!factory) return;
+
+  document.getElementById('chart-expand-overlay').classList.remove('hidden');
+  document.getElementById('chart-expand-title').textContent = `📈 ${factory.name} — แนวโน้มค่ารายเดือนย้อนหลัง`;
+
+  setTimeout(() => renderExpandChart(factory), 50);
+}
+
+function closeExpandChart() {
+  document.getElementById('chart-expand-overlay').classList.add('hidden');
+  if (expandChartInstance) {
+    expandChartInstance.destroy();
+    expandChartInstance = null;
+  }
+}
+
+document.getElementById('chart-expand-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeExpandChart();
+});
+
 document.addEventListener('DOMContentLoaded', initApp);
