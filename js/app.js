@@ -160,7 +160,7 @@ function renderFactoryList(factories) {
     const pass = isPass(factory.current);
     const isActive = selectedFactoryId === factory.id;
     const photoHTML = factory.photo
-      ? `<img class="factory-item-photo" src="${factory.photo}" alt="${factory.name}" onerror="this.style.display='none'">`
+      ? `<img class="factory-item-photo" src="${factory.photo}" alt="${factory.name}" loading="lazy" onerror="this.style.display='none'">`
       : `<div class="factory-item-photo-placeholder">🏭</div>`;
 
     return `

@@ -173,7 +173,7 @@ function buildPopupHTML(factory) {
   const allPass = Object.values(checks).every(Boolean);
 
   const photoHTML = factory.photo
-    ? `<div class="popup-photo"><img src="${factory.photo}" alt="${factory.name}" onerror="this.style.display='none'"></div>`
+    ? `<div class="popup-photo"><img src="${factory.photo}" alt="${factory.name}" loading="lazy" onerror="this.style.display='none'"></div>`
     : '';
 
   return `
