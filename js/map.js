@@ -42,11 +42,35 @@ function setTileLayer(type) {
 }
 
 function drawEstateBoundary() {
+  // ขอบเขตจากผัง Master Plan Sriracha Project 1,786 ไร่
   const estateBoundary = L.polygon([
-    [13.1025, 100.9520],
-    [13.1025, 100.9700],
-    [13.0880, 100.9700],
-    [13.0880, 100.9520]
+    // Phase #4 (西北 - บ่อบำบัดน้ำเสีย)
+    [13.1028, 100.9520],
+    [13.1035, 100.9545],
+    [13.1020, 100.9565],
+    // Phase #1 (北部 - โรงงานโซนเหนือ)
+    [13.1015, 100.9585],
+    [13.1012, 100.9620],
+    [13.1008, 100.9655],
+    [13.1000, 100.9680],
+    // Phase #3 (东部 - โรงงานโซนตะวันออก)
+    [13.0980, 100.9690],
+    [13.0955, 100.9692],
+    [13.0930, 100.9685],
+    [13.0905, 100.9675],
+    // ขอบใต้ (เชื่อม Phase #2 และ #3)
+    [13.0895, 100.9655],
+    [13.0890, 100.9625],
+    [13.0888, 100.9595],
+    // Phase #2 (西南 - โรงงานโซนใต้)
+    [13.0892, 100.9565],
+    [13.0898, 100.9540],
+    [13.0905, 100.9525],
+    // ขอบตะวันตก
+    [13.0930, 100.9515],
+    [13.0960, 100.9512],
+    [13.0990, 100.9515],
+    [13.1010, 100.9518],
   ], {
     color: '#d4a017',
     weight: 2,
@@ -56,10 +80,62 @@ function drawEstateBoundary() {
     interactive: false
   }).addTo(map);
 
-  estateBoundary.bindTooltip('สวนอุตสาหกรรมเครือสหพัฒน์ ศรีราชา', {
+  estateBoundary.bindTooltip('สวนอุตสาหกรรมเครือสหพัฒน์ ศรีราชา (1,786 ไร่)', {
     permanent: true,
     direction: 'center',
     className: 'estate-label'
+  });
+
+  // แสดงชื่อแต่ละ Phase
+  const phaseLabelStyle = {
+    color: '#d4a017',
+    weight: 1,
+    fillColor: '#d4a017',
+    fillOpacity: 0.02,
+    dashArray: '4, 8',
+    interactive: false
+  };
+
+  // Phase #1
+  L.polygon([
+    [13.1015, 100.9585],
+    [13.1015, 100.9655],
+    [13.0980, 100.9680],
+    [13.0960, 100.9650],
+    [13.0970, 100.9590],
+  ], phaseLabelStyle).addTo(map).bindTooltip('Phase #1', {
+    permanent: true, direction: 'center', className: 'phase-label'
+  });
+
+  // Phase #2
+  L.polygon([
+    [13.0930, 100.9515],
+    [13.0960, 100.9512],
+    [13.0950, 100.9565],
+    [13.0910, 100.9575],
+    [13.0898, 100.9540],
+  ], phaseLabelStyle).addTo(map).bindTooltip('Phase #2', {
+    permanent: true, direction: 'center', className: 'phase-label'
+  });
+
+  // Phase #3
+  L.polygon([
+    [13.0955, 100.9635],
+    [13.0980, 100.9690],
+    [13.0930, 100.9685],
+    [13.0910, 100.9645],
+  ], phaseLabelStyle).addTo(map).bindTooltip('Phase #3', {
+    permanent: true, direction: 'center', className: 'phase-label'
+  });
+
+  // Phase #4 (บ่อบำบัดน้ำเสีย)
+  L.polygon([
+    [13.1028, 100.9520],
+    [13.1035, 100.9545],
+    [13.1020, 100.9565],
+    [13.1012, 100.9545],
+  ], phaseLabelStyle).addTo(map).bindTooltip('Phase #4 (บ่อบำบัด)', {
+    permanent: true, direction: 'center', className: 'phase-label'
   });
 }
 
@@ -115,16 +191,16 @@ function buildPopupHTML(factory) {
   const checks = getParamChecks(d);
 
   const rows = [
-    { label: 'BOD', value: d.bod, unit: 'mg/L', pass: checks.bod },
-    { label: 'COD', value: d.cod, unit: 'mg/L', pass: checks.cod },
-    { label: 'DO',  value: d.do,  unit: 'mg/L', pass: checks.do },
-    { label: 'pH',  value: d.ph,  unit: '-',    pass: checks.ph },
-    { label: 'Temp', value: d.temp, unit: '°C', pass: checks.temp }
+    { label: 'BOD', value: d.bod, unit: 'mg/L', pass: checks.bod, standard: '≤ 120' },
+    { label: 'COD', value: d.cod, unit: 'mg/L', pass: checks.cod, standard: '≤ 500' },
+    { label: 'DO',  value: d.do,  unit: 'mg/L', pass: checks.do, standard: '≥ 2' },
+    { label: 'pH',  value: d.ph,  unit: '-',    pass: checks.ph, standard: '5.5–9.0' },
+    { label: 'Temp', value: d.temp, unit: '°C', pass: checks.temp, standard: '≤ 45' }
   ];
 
-  if (d.tds !== undefined) rows.push({ label: 'TDS', value: d.tds, unit: 'mg/L', pass: checks.tds });
-  if (d.tss !== undefined) rows.push({ label: 'TSS', value: d.tss, unit: 'mg/L', pass: checks.tss });
-  if (d.oil !== undefined) rows.push({ label: 'Oil', value: d.oil, unit: 'mg/L', pass: checks.oil });
+  if (d.tds !== undefined) rows.push({ label: 'TDS', value: d.tds, unit: 'mg/L', pass: checks.tds, standard: '≤ 3000' });
+  if (d.tss !== undefined) rows.push({ label: 'TSS', value: d.tss, unit: 'mg/L', pass: checks.tss, standard: '≤ 200' });
+  if (d.oil !== undefined) rows.push({ label: 'FOG', value: d.oil, unit: 'mg/L', pass: checks.oil, standard: '≤ 10' });
 
   const paramsHTML = rows.map(r => `
     <div class="popup-param">
@@ -138,8 +214,13 @@ function buildPopupHTML(factory) {
 
   const allPass = Object.values(checks).every(Boolean);
 
+  const photoHTML = factory.photo
+    ? `<div class="popup-photo"><img src="${factory.photo}" alt="${factory.name}" onerror="this.style.display='none'"></div>`
+    : '';
+
   return `
     <div class="popup-content">
+      ${photoHTML}
       <div class="popup-header">
         <h3>${factory.name}</h3>
         <div class="popup-type">${factory.nameTh} — ${factory.industry}</div>
@@ -157,22 +238,22 @@ function buildPopupHTML(factory) {
 }
 
 function isPass(d) {
-  return d.bod <= 20 && d.cod <= 120 && d.do >= 2 && d.ph >= 6 && d.ph <= 9 && d.temp <= 40
-    && (d.tds === undefined || d.tds <= 500)
-    && (d.tss === undefined || d.tss <= 50)
-    && (d.oil === undefined || d.oil <= 5);
+  return d.bod <= 120 && d.cod <= 500 && d.do >= 2 && d.ph >= 5.5 && d.ph <= 9 && d.temp <= 45
+    && (d.tds === undefined || d.tds <= 3000)
+    && (d.tss === undefined || d.tss <= 200)
+    && (d.oil === undefined || d.oil <= 10);
 }
 
 function getParamChecks(d) {
   return {
-    bod:  d.bod <= 20,
-    cod:  d.cod <= 120,
+    bod:  d.bod <= 120,
+    cod:  d.cod <= 500,
     do:   d.do >= 2,
-    ph:   d.ph >= 6 && d.ph <= 9,
-    temp: d.temp <= 40,
-    tds:  d.tds === undefined || d.tds <= 500,
-    tss:  d.tss === undefined || d.tss <= 50,
-    oil:  d.oil === undefined || d.oil <= 5
+    ph:   d.ph >= 5.5 && d.ph <= 9,
+    temp: d.temp <= 45,
+    tds:  d.tds === undefined || d.tds <= 3000,
+    tss:  d.tss === undefined || d.tss <= 200,
+    oil:  d.oil === undefined || d.oil <= 10
   };
 }
 

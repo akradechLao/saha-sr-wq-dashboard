@@ -24,18 +24,18 @@ function generateHistory(bod, cod, doVal, ph, temp, tds, tss, oil) {
 }
 
 const STANDARDS = {
-  bod:  { max: 20,  unit: 'mg/L', label: 'BOD',        method: 'Standard Methods 5210B' },
-  cod:  { max: 120, unit: 'mg/L', label: 'COD',        method: 'Standard Methods 5220D' },
+  bod:  { max: 120, unit: 'mg/L', label: 'BOD',        method: 'Standard Methods 5210B' },
+  cod:  { max: 500, unit: 'mg/L', label: 'COD',        method: 'Standard Methods 5220D' },
   do:   { min: 2,   unit: 'mg/L', label: 'DO',         method: 'Electrode Method 4500-O' },
-  ph:   { min: 6,   max: 9, unit: '-', label: 'pH',     method: 'Electrode Method 4500-H' },
-  temp: { max: 40,  unit: '°C',   label: 'Temperature', method: 'Thermometric' },
-  tds:  { max: 500, unit: 'mg/L', label: 'TDS',        method: 'Conductivity Method' },
-  tss:  { max: 50,  unit: 'mg/L', label: 'TSS',        method: 'Standard Methods 2540D' },
-  oil:  { max: 5,   unit: 'mg/L', label: 'Oil & Grease', method: 'IR Spectrophotometry' }
+  ph:   { min: 5.5, max: 9, unit: '-', label: 'pH',     method: 'Electrode Method 4500-H' },
+  temp: { max: 45,  unit: '°C',   label: 'Temperature', method: 'Thermometric' },
+  tds:  { max: 3000, unit: 'mg/L', label: 'TDS',        method: 'Conductivity Method' },
+  tss:  { max: 200, unit: 'mg/L', label: 'TSS',        method: 'Standard Methods 2540D' },
+  oil:  { max: 10,  unit: 'mg/L', label: 'Oil & Grease', method: 'IR Spectrophotometry' }
 };
 
-// ข้อมูลโรงงานทั้งหมดจาก SPI Official Website: industrial-park.spi.co.th
-// สาขาศรีราชา (65 แห่ง) — ที่อยู่จาก SPI, พิกัดประมาณจากผังเมือง
+// ข้อมูลโรงงานจากผลวิเคราะห์คุณภาพน้ำ ปี 2569
+// แสดงเฉพาะโรงงานที่มีผลตรวจวัดจริง
 const MOCK_DATA = [
   {
     id: 1,
@@ -43,40 +43,23 @@ const MOCK_DATA = [
     nameTh: 'ยามาฮัทสึ (ประเทศไทย)',
     industry: 'เครื่องยนต์',
     address: '600/4 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.1002, lng: 100.9560,
-    current: { bod: 5.2, cod: 18.5, do: 6.2, ph: 7.1, temp: 30.2 },
-    history: generateHistory(5.2, 18.5, 6.2, 7.1, 30.2)
-  },
-  {
-    id: 2,
-    name: 'Well Pack Innovation',
-    nameTh: 'เวลแพคอินโนเวชั่น',
-    industry: 'บรรจุภัณฑ์',
-    address: '602 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.1005, lng: 100.9568,
-    current: { bod: 4.8, cod: 15.2, do: 6.5, ph: 7.0, temp: 29.8 },
-    history: generateHistory(4.8, 15.2, 6.5, 7.0, 29.8)
-  },
-  {
-    id: 3,
-    name: 'Value Added Textile',
-    nameTh: 'แวลูแอ็ด เด็ดเท็กซ์ไทล์',
-    industry: 'สิ่งทอ',
-    address: '600/3 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0998, lng: 100.9555,
-    current: { bod: 12.5, cod: 52.8, do: 3.8, ph: 7.4, temp: 32.5 },
-    history: generateHistory(12.5, 52.8, 3.8, 7.4, 32.5)
-  },
-  {
-    id: 4,
-    name: 'Toyo Textile Thai',
-    nameTh: 'โตโย เท็กซ์ไทล์ไทย',
-    industry: 'สิ่งทอ',
-    address: '622/3-4 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20280',
-    lat: 13.0990, lng: 100.9580,
-    current: { bod: 11.8, cod: 48.5, do: 4.0, ph: 7.3, temp: 32.0 },
-    history: generateHistory(11.8, 48.5, 4.0, 7.3, 32.0)
-  },
+    lat: 13.1002, lng: 100.956,
+    photo: 'data/photos/Yamahatsu (Thailand).jpg',
+    current: { bod: 6.9, cod: 20.0, do: 5.0, ph: 7.4, temp: 35.0, tds: 394.0, tss: 2.5, oil: 1.5 },
+    history: generateHistory(6.9, 20.0, 5.0, 7.4, 35.0, 394.0, 2.5, 1.5),
+    monthlyData: {
+      BOD: [6.1, 8.6, 8.4, 8.6, 3.9, 6.9],
+      COD: [48.0, 58.0, 54.0, 67.0, 20.0, 20.0],
+      SS: [18.0, 7.0, 2.5, 7.0, 2.5, 2.5],
+      pH: [7.5, 6.6, 6.8, 6.6, 6.8, 7.4],
+      Color: [25.0, 42.0, 227.0, 36.0, 34.0, 27.0],
+      FOG: [1.5, 1.5, 1.5, 1.5, 34.0, 1.5],
+      TDS: [360.0, 496.0, 568.0, 524.0, 530.0, 394.0],
+      Temp: [29.0, 29.0, 33.0, 32.0, 34.0, 35.0],
+      Surfactant: [0.2, 0.2, 0.2, 0.2, 0.2, 0.2],
+    }
+  }
+,
   {
     id: 5,
     name: 'Torii Thai',
@@ -84,79 +67,21 @@ const MOCK_DATA = [
     industry: 'เคมีภัณฑ์',
     address: '600/22 หมู่ 11 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
     lat: 13.0985, lng: 100.9575,
-    current: { bod: 8.2, cod: 35.5, do: 5.2, ph: 7.2, temp: 31.5 },
-    history: generateHistory(8.2, 35.5, 5.2, 7.2, 31.5)
-  },
-  {
-    id: 6,
-    name: 'Totalway Image',
-    nameTh: 'โทเทิลเวย์อิมเมจ',
-    industry: 'สิ่งพิมพ์',
-    address: '687 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0978, lng: 100.9600,
-    current: { bod: 6.5, cod: 25.8, do: 5.8, ph: 7.1, temp: 30.5 },
-    history: generateHistory(6.5, 25.8, 5.8, 7.1, 30.5)
-  },
-  {
-    id: 7,
-    name: 'TopTrend Manufacturing',
-    nameTh: 'ท้อปเทร็นด์ แมนูแฟคเจอริ่ง',
-    industry: 'สินค้าอุปโภคบริโภค',
-    address: '334 หมู่ 1 สวนอุตสาหกรรมศรีราชา ต.บึง อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0907, lng: 100.9664,
-    current: { bod: 10.5, cod: 41.2, do: 5.0, ph: 7.4, temp: 32.1 },
-    history: generateHistory(10.5, 41.2, 5.0, 7.4, 32.1)
-  },
-  {
-    id: 8,
-    name: 'Time Ventures',
-    nameTh: 'ไทม์เว็นเจอร์ส',
-    industry: 'พลาสติก',
-    address: '311/1 หมู่ 1 ถ.สุขาภิบาล 8 ต.บึง อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0912, lng: 100.9655,
-    current: { bod: 7.8, cod: 32.5, do: 5.5, ph: 7.2, temp: 31.0 },
-    history: generateHistory(7.8, 32.5, 5.5, 7.2, 31.0)
-  },
-  {
-    id: 9,
-    name: 'Thai Tomato',
-    nameTh: 'ไทยโทมาโด',
-    industry: 'อาหาร',
-    address: '620/4 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0972, lng: 100.9590,
-    current: { bod: 14.2, cod: 58.5, do: 3.5, ph: 7.5, temp: 33.0 },
-    history: generateHistory(14.2, 58.5, 3.5, 7.5, 33.0)
-  },
-  {
-    id: 10,
-    name: 'Thai Takaya',
-    nameTh: 'ไทยทาคายา',
-    industry: 'อิเล็กทรอนิกส์',
-    address: '688 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0968, lng: 100.9610,
-    current: { bod: 4.5, cod: 16.8, do: 6.5, ph: 7.0, temp: 29.5 },
-    history: generateHistory(4.5, 16.8, 6.5, 7.0, 29.5)
-  },
-  {
-    id: 11,
-    name: 'Thai Staflex',
-    nameTh: 'ไทยสเตเฟล็กซ์',
-    industry: 'สิ่งทอ',
-    address: '626 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0965, lng: 100.9618,
-    current: { bod: 10.2, cod: 42.8, do: 4.5, ph: 7.3, temp: 32.0 },
-    history: generateHistory(10.2, 42.8, 4.5, 7.3, 32.0)
-  },
-  {
-    id: 12,
-    name: 'Thai Shikibo',
-    nameTh: 'ไทยชิกิโบ',
-    industry: 'สิ่งทอ',
-    address: '311 หมู่ 1 ถ.สุขาภิบาล 8 ต.บึง อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0910, lng: 100.9648,
-    current: { bod: 9.8, cod: 38.5, do: 4.8, ph: 7.2, temp: 31.8 },
-    history: generateHistory(9.8, 38.5, 4.8, 7.2, 31.8)
-  },
+    current: { bod: 3.7, cod: 71.0, do: 5.0, ph: 7.3, temp: 31.0, tds: 600.0, tss: 2.5, oil: 1.5 },
+    history: generateHistory(3.7, 71.0, 5.0, 7.3, 31.0, 600.0, 2.5, 1.5),
+    monthlyData: {
+      BOD: [4.1, 12.4, 6.6, 10.8, 7.5, 3.7],
+      COD: [92.0, 118.0, 51.0, 64.0, 62.0, 71.0],
+      SS: [2.5, 4.8, 2.5, 2.5, 2.5, 2.5],
+      pH: [7.9, 6.8, 7.2, 7.0, 7.3, 7.3],
+      Color: [42.0, 66.0, 143.0, 54.0, 108.0, 67.0],
+      FOG: [1.5, 4.8, 1.5, 1.5, 1.5, 1.5],
+      TDS: [900.0, 476.0, 552.0, 620.0, 784.0, 600.0],
+      Temp: [30.0, 30.0, 30.0, 31.0, 32.0, 31.0],
+      Surfactant: [0.2, 0.2, 0.2, 0.55, 0.2, 0.2],
+    }
+  }
+,
   {
     id: 13,
     name: 'Thai Silicate Chemical',
@@ -164,71 +89,61 @@ const MOCK_DATA = [
     industry: 'เคมีภัณฑ์',
     address: '602/1 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
     lat: 13.0995, lng: 100.9562,
-    current: { bod: 6.8, cod: 28.5, do: 5.8, ph: 7.1, temp: 30.8 },
-    history: generateHistory(6.8, 28.5, 5.8, 7.1, 30.8)
-  },
+    current: { bod: 1.0, cod: 20.0, do: 5.0, ph: 6.4, temp: 34.0, tds: 601.0, tss: 2.5, oil: 1.5 },
+    history: generateHistory(1.0, 20.0, 5.0, 6.4, 34.0, 601.0, 2.5, 1.5),
+    monthlyData: {
+      BOD: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+      COD: [20.0, 20.0, 20.0, 20.0, 20.0, 20.0],
+      SS: [17.0, 5.0, 2.5, 2.5, 2.5, 2.5],
+      pH: [6.9, 6.8, 7.0, 7.0, 6.9, 6.4],
+      FOG: [1.5, 1.5, 1.5, 1.5, 1.5, 1.5],
+      TDS: [652.0, 840.0, 640.0, 1406.0, 820.0, 601.0],
+      Temp: [30.0, 29.0, 32.0, 34.0, 34.0, 34.0],
+    }
+  }
+,
   {
     id: 14,
     name: 'Thai Samsung Electronics',
     nameTh: 'ไทยซัมซุง อิเลคโทรนิคส์',
     industry: 'อิเล็กทรอนิกส์',
     address: '313 หมู่ 1 ถ.สุขาภิบาล 8 ต.บึง อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0950, lng: 100.9678,
-    monitor: ['ph','tds','tss','cod','bod'],
-    current: { bod: 8.2, cod: 32.5, do: 5.8, ph: 7.1, temp: 31.2, tds: 310, tss: 20 },
-    history: generateHistory(8.2, 32.5, 5.8, 7.1, 31.2, 310, 20)
-  },
+    lat: 13.095, lng: 100.9678,
+    current: { bod: 5.0, cod: 20.0, do: 5.0, ph: 7.0, temp: 30.0, tds: 212.0, tss: 2.5, oil: 1.5 },
+    history: generateHistory(5.0, 20.0, 5.0, 7.0, 30.0, 212.0, 2.5, 1.5),
+    monthlyData: {
+      BOD: [8.7, 11.3, 10.5, 7.9, 9.6, 5.0],
+      COD: [94.0, 86.0, 88.0, 73.0, 109.0, 20.0],
+      SS: [2.5, 2.5, 5.0, 5.0, 16.0, 2.5],
+      pH: [8.1, 7.9, 7.9, 7.1, 7.1, 7.0],
+      FOG: [1.5, 1.5, 1.5, 1.5, 1.5, 1.5],
+      TKN: [21.0, 16.0, 24.0, 23.0, 12.0, 8.0],
+      TDS: [448.0, 592.0, 444.0, 556.0, 544.0, 212.0],
+      Temp: [28.0, 28.0, 29.0, 30.0, 34.0, 30.0],
+      Surfactant: [0.2, 0.2, 0.2, 0.71, 0.2, 0.2],
+    }
+  }
+,
   {
     id: 15,
     name: 'Thai President Foods',
     nameTh: 'ไทยเพรซิเดนท์ฟูดส์',
     industry: 'อาหาร (มาม่า)',
     address: '601 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0948, lng: 100.9580,
-    monitor: ['ph','tds','tss','cod','bod','oil'],
-    current: { bod: 11.2, cod: 48.5, do: 4.2, ph: 7.3, temp: 32.5, tds: 400, tss: 32, oil: 2.8 },
-    history: generateHistory(11.2, 48.5, 4.2, 7.3, 32.5, 400, 32, 2.8)
-  },
-  {
-    id: 16,
-    name: 'P.F. Intertech',
-    nameTh: 'พี เอฟ อินเตอร์เทค',
-    industry: 'ชิ้นส่วนโลหะ',
-    address: '507 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0942, lng: 100.9555,
-    current: { bod: 5.5, cod: 22.8, do: 6.0, ph: 7.0, temp: 30.0 },
-    history: generateHistory(5.5, 22.8, 6.0, 7.0, 30.0)
-  },
-  {
-    id: 17,
-    name: 'Pack Industry',
-    nameTh: 'เพค อินดัสทรี',
-    industry: 'บรรจุภัณฑ์',
-    address: '626/1 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20280',
-    lat: 13.0962, lng: 100.9622,
-    current: { bod: 4.2, cod: 15.5, do: 6.5, ph: 7.0, temp: 29.5 },
-    history: generateHistory(4.2, 15.5, 6.5, 7.0, 29.5)
-  },
-  {
-    id: 18,
-    name: 'PanTech R&D',
-    nameTh: 'แพนเทคอาร์ แอนด์ ดี',
-    industry: 'วิจัยและพัฒนา',
-    address: '620/5 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0970, lng: 100.9595,
-    current: { bod: 3.8, cod: 12.5, do: 6.8, ph: 7.0, temp: 29.2 },
-    history: generateHistory(3.8, 12.5, 6.8, 7.0, 29.2)
-  },
-  {
-    id: 19,
-    name: 'PanAsia Footwear',
-    nameTh: 'แพนเอเซียฟุตแวร์',
-    industry: 'รองเท้า',
-    address: '507 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0940, lng: 100.9550,
-    current: { bod: 8.5, cod: 35.2, do: 5.0, ph: 7.3, temp: 31.5 },
-    history: generateHistory(8.5, 35.2, 5.0, 7.3, 31.5)
-  },
+    lat: 13.0948, lng: 100.958,
+    current: { bod: 10.6, cod: 58.0, do: 5.0, ph: 7.9, temp: 31.0, tds: 988.0, tss: 8.0, oil: 1.5 },
+    history: generateHistory(10.6, 58.0, 5.0, 7.9, 31.0, 988.0, 8.0, 1.5),
+    monthlyData: {
+      BOD: [16.8, 27.1, 31.2, 13.9, 9.0, 10.6],
+      COD: [143.0, 109.0, 266.0, 83.0, 73.0, 58.0],
+      SS: [40.0, 45.0, 146.0, 20.0, 11.0, 8.0],
+      pH: [7.7, 7.2, 7.5, 7.8, 7.6, 7.9],
+      FOG: [1.5, 1.5, 3.1, 1.5, 1.5, 1.5],
+      TDS: [1964.0, 1632.0, 1692.0, 1072.0, 1056.0, 988.0],
+      Temp: [32.0, 33.0, 36.0, 35.0, 35.0, 31.0],
+    }
+  }
+,
   {
     id: 20,
     name: 'Osot Inter laboratories',
@@ -236,39 +151,40 @@ const MOCK_DATA = [
     industry: 'ยาและเวชภัณฑ์',
     address: '600/9 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
     lat: 13.0992, lng: 100.9572,
-    current: { bod: 3.5, cod: 10.8, do: 7.0, ph: 7.0, temp: 29.0 },
-    history: generateHistory(3.5, 10.8, 7.0, 7.0, 29.0)
-  },
-  {
-    id: 21,
-    name: 'Nissin Foods (Thailand)',
-    nameTh: 'นิสชิน ฟู้ดส์ (ไทยแลนด์)',
-    industry: 'อาหาร (บะหมี่)',
-    address: '631 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0955, lng: 100.9595,
-    current: { bod: 10.8, cod: 45.2, do: 4.5, ph: 7.2, temp: 31.8 },
-    history: generateHistory(10.8, 45.2, 4.5, 7.2, 31.8)
-  },
+    current: { bod: 2.8, cod: 58.0, do: 5.0, ph: 7.8, temp: 31.0, tds: 1344.0, tss: 38.0 },
+    history: generateHistory(2.8, 58.0, 5.0, 7.8, 31.0, 1344.0, 38.0, undefined),
+    monthlyData: {
+      BOD: [1.0, 1.0, 1.0, 2.6, 1.0, 2.8],
+      COD: [20.0, 20.0, 20.0, 58.0, 44.0, 58.0],
+      SS: [6.0, 6.0, 9.0, 22.0, 16.0, 38.0],
+      pH: [7.8, 7.8, 7.4, 7.8, 8.4, 7.8],
+      TDS: [1408.0, 1408.0, 1300.0, 2164.0, 1776.0, 1344.0],
+      Temp: [30.0, 30.0, 30.0, 30.0, 31.0, 31.0],
+    }
+  }
+,
   {
     id: 22,
     name: 'Molten (Thailand)',
     nameTh: 'มอลเทน (ไทยแลนด์)',
     industry: 'พลาสติก',
     address: '666 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.1010, lng: 100.9645,
-    current: { bod: 16.8, cod: 78.4, do: 3.0, ph: 6.8, temp: 36.1 },
-    history: generateHistory(16.8, 78.4, 3.0, 6.8, 36.1)
-  },
-  {
-    id: 23,
-    name: 'Molds Furutani (Thailand)',
-    nameTh: 'โมลด์ส ฟุรุตานิ (ไทยแลนด์)',
-    industry: 'แม่พิมพ์',
-    address: '600/38-39 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0988, lng: 100.9568,
-    current: { bod: 5.8, cod: 22.5, do: 6.0, ph: 7.1, temp: 30.2 },
-    history: generateHistory(5.8, 22.5, 6.0, 7.1, 30.2)
-  },
+    lat: 13.101, lng: 100.9645,
+    current: { bod: 1.0, cod: 20.0, do: 5.0, ph: 7.0, temp: 30.0, tds: 410.0, tss: 2.5, oil: 1.5 },
+    history: generateHistory(1.0, 20.0, 5.0, 7.0, 30.0, 410.0, 2.5, 1.5),
+    monthlyData: {
+      BOD: [4.6, 1.0, 1.0, 1.0, 4.2, 1.0],
+      COD: [20.0, 20.0, 20.0, 20.0, 20.0, 20.0],
+      SS: [2.5, 2.5, 2.5, 2.5, 6.0, 2.5],
+      pH: [7.9, 7.2, 7.7, 7.8, 6.8, 7.0],
+      FOG: [1.5, 1.5, 1.5, 1.5, 1.5, 1.5],
+      TDS: [396.0, 1190.0, 402.0, 606.0, 539.0, 410.0],
+      Temp: [32.0, 30.0, 32.0, 33.0, 30.0, 30.0],
+      Ni: [0.03, 0.42, 0.015, 0.015, 0.015, 0.03],
+      Zinc: [0.06, 0.07, 0.03, 0.015, 0.04, 0.03],
+    }
+  }
+,
   {
     id: 24,
     name: 'Lion (Thailand)',
@@ -276,161 +192,40 @@ const MOCK_DATA = [
     industry: 'ผลิตภัณฑ์ทำความสะอาด',
     address: '602 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
     lat: 13.0997, lng: 100.9553,
-    monitor: ['ph','tds','tss','cod','bod'],
-    current: { bod: 15.3, cod: 68.7, do: 3.2, ph: 7.8, temp: 33.5, tds: 380, tss: 35 },
-    history: generateHistory(15.3, 68.7, 3.2, 7.8, 33.5, 380, 35)
-  },
-  {
-    id: 25,
-    name: 'KRS Logistics',
-    nameTh: 'เคอาร์เอส ลอจิสติคส์',
-    industry: 'โลจิสติกส์',
-    address: '311 หมู่ 1 ต.บึง อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0915, lng: 100.9652,
-    current: { bod: 2.8, cod: 8.5, do: 7.2, ph: 7.0, temp: 29.0 },
-    history: generateHistory(2.8, 8.5, 7.2, 7.0, 29.0)
-  },
+    current: { bod: 9.1, cod: 51.0, do: 5.0, ph: 6.4, temp: 26.0, tds: 1104.0, tss: 9.0, oil: 1.5 },
+    history: generateHistory(9.1, 51.0, 5.0, 6.4, 26.0, 1104.0, 9.0, 1.5),
+    monthlyData: {
+      BOD: [4.6, 3.8, 1.0, 6.1, 9.3, 9.1],
+      COD: [45.0, 42.0, 20.0, 48.0, 50.0, 51.0],
+      SS: [11.0, 5.0, 2.5, 2.5, 2.5, 9.0],
+      pH: [7.6, 7.1, 7.6, 6.0, 7.0, 6.4],
+      FOG: [1.5, 1.5, 1.5, 1.5, 1.5, 1.5],
+      TDS: [932.0, 1672.0, 1432.0, 1344.0, 1676.0, 1104.0],
+      Temp: [26.0, 25.0, 27.0, 27.0, 27.0, 26.0],
+      Surfactant: [0.52, 1.71, 0.2, 0.92, 0.2, 0.2],
+    }
+  }
+,
   {
     id: 26,
     name: 'Kenmin Foods (Thailand)',
     nameTh: 'เคนมินฟู้ดส์ (ไทยแลนด์)',
     industry: 'อาหาร',
     address: '600/45 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.1005, lng: 100.9640,
-    current: { bod: 13.5, cod: 55.2, do: 4.0, ph: 7.5, temp: 33.0 },
-    history: generateHistory(13.5, 55.2, 4.0, 7.5, 33.0)
-  },
-  {
-    id: 27,
-    name: 'Kobinpattana',
-    nameTh: 'กบินทร์พัฒนกิจ',
-    industry: 'จัดจำหน่ายสินค้า',
-    address: '629 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0982, lng: 100.9605,
-    current: { bod: 2.5, cod: 7.8, do: 7.5, ph: 7.0, temp: 28.8 },
-    history: generateHistory(2.5, 7.8, 7.5, 7.0, 28.8)
-  },
-  {
-    id: 28,
-    name: 'K&K Package (Thailand)',
-    nameTh: 'เคแอนด์เค แพ็คเกจ (ประเทศไทย)',
-    industry: 'บรรจุภัณฑ์',
-    address: '676 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0975, lng: 100.9612,
-    current: { bod: 4.5, cod: 16.2, do: 6.2, ph: 7.0, temp: 29.8 },
-    history: generateHistory(4.5, 16.2, 6.2, 7.0, 29.8)
-  },
-  {
-    id: 29,
-    name: 'Asahi Kasei Spunbond (Thailand)',
-    nameTh: 'อาซาฮี คาเซอิ สปันบอนด์ (ประเทศไทย)',
-    industry: 'ผ้าไม่ถักทอ',
-    address: 'ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0965, lng: 100.9650,
-    monitor: ['ph','tds','tss','cod','bod'],
-    current: { bod: 9.7, cod: 38.4, do: 5.2, ph: 7.0, temp: 30.5, tds: 350, tss: 28 },
-    history: generateHistory(9.7, 38.4, 5.2, 7.0, 30.5, 350, 28)
-  },
-  {
-    id: 30,
-    name: 'Bangkok Tokyo Socks',
-    nameTh: 'บางกอกโตเกียวซ็อคส์',
-    industry: 'ถุงเท้า',
-    address: '673 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0970, lng: 100.9608,
-    current: { bod: 8.8, cod: 35.5, do: 5.0, ph: 7.3, temp: 31.5 },
-    history: generateHistory(8.8, 35.5, 5.0, 7.3, 31.5)
-  },
-  {
-    id: 31,
-    name: 'Dome Composite (Thailand)',
-    nameTh: 'โดม คอมโพสิต (ประเทศไทย)',
-    industry: 'วัสดุคอมโพสิต',
-    address: '173/5 ม.5 ถ.สุขาภิบาล 8 ต.บึง อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0905, lng: 100.9660,
-    current: { bod: 5.2, cod: 20.5, do: 6.0, ph: 7.1, temp: 30.0 },
-    history: generateHistory(5.2, 20.5, 6.0, 7.1, 30.0)
-  },
-  {
-    id: 32,
-    name: 'Eastern Silicate',
-    nameTh: 'อีสเทิร์นซิลิเกต',
-    industry: 'เคมีภัณฑ์',
-    address: '602 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0993, lng: 100.9565,
-    current: { bod: 6.5, cod: 28.2, do: 5.5, ph: 7.2, temp: 30.8 },
-    history: generateHistory(6.5, 28.2, 5.5, 7.2, 30.8)
-  },
-  {
-    id: 33,
-    name: 'Eastern Thai Consulting 1992',
-    nameTh: 'อีสเทิร์นไทยคอนซัลติ้ง 1992',
-    industry: 'ที่ปรึกษา',
-    address: '683 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0960, lng: 100.9615,
-    current: { bod: 2.0, cod: 5.5, do: 7.5, ph: 7.0, temp: 28.5 },
-    history: generateHistory(2.0, 5.5, 7.5, 7.0, 28.5)
-  },
-  {
-    id: 34,
-    name: 'Family Glove',
-    nameTh: 'แฟมิลี่โกลฟ',
-    industry: 'ถุงมือ',
-    address: '624/1-4 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0958, lng: 100.9620,
-    current: { bod: 7.2, cod: 30.5, do: 5.5, ph: 7.2, temp: 31.0 },
-    history: generateHistory(7.2, 30.5, 5.5, 7.2, 31.0)
-  },
-  {
-    id: 35,
-    name: 'First United Industry',
-    nameTh: 'เฟิสท์ยูไนเต็ดอินดัสตรี',
-    industry: 'สิ่งทอ',
-    address: '333 หมู่ 1 ถ.สุขาภิบาล 8 ต.บึง อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0908, lng: 100.9658,
-    current: { bod: 11.5, cod: 48.8, do: 4.2, ph: 7.4, temp: 32.5 },
-    history: generateHistory(11.5, 48.8, 4.2, 7.4, 32.5)
-  },
-  {
-    id: 36,
-    name: 'General Glass',
-    nameTh: 'เจนเนอร์รัลกลาส',
-    industry: 'กระจก',
-    address: '507/3 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0945, lng: 100.9558,
-    current: { bod: 4.8, cod: 18.5, do: 6.2, ph: 7.0, temp: 30.0 },
-    history: generateHistory(4.8, 18.5, 6.2, 7.0, 30.0)
-  },
-  {
-    id: 37,
-    name: 'Hiraiseimitsu (Thailand)',
-    nameTh: 'ฮิไรเซมิสึ (ประเทศไทย)',
-    industry: 'พลาสติกฉีดขึ้นรูป',
-    address: '621 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0968, lng: 100.9602,
-    current: { bod: 5.5, cod: 22.8, do: 5.8, ph: 7.1, temp: 30.5 },
-    history: generateHistory(5.5, 22.8, 5.8, 7.1, 30.5)
-  },
-  {
-    id: 38,
-    name: 'International Quality Footwear',
-    nameTh: 'อินเตอร์เนชั่นแนล คิวริตี้ ฟุตแวร์',
-    industry: 'รองเท้า',
-    address: '626/1 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0963, lng: 100.9625,
-    current: { bod: 9.2, cod: 38.8, do: 4.8, ph: 7.3, temp: 32.0 },
-    history: generateHistory(9.2, 38.8, 4.8, 7.3, 32.0)
-  },
-  {
-    id: 39,
-    name: 'International Leather Fashion',
-    nameTh: 'อินเตอร์เนชั่นแนลเลทเธอร์แฟชั่น',
-    industry: 'หนัง',
-    address: '687 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0976, lng: 100.9605,
-    current: { bod: 12.8, cod: 55.2, do: 3.5, ph: 7.5, temp: 33.5 },
-    history: generateHistory(12.8, 55.2, 3.5, 7.5, 33.5)
-  },
+    lat: 13.1005, lng: 100.964,
+    current: { bod: 6.1, cod: 45.0, do: 5.0, ph: 7.1, temp: 32.0, tds: 2212.0, tss: 9.0, oil: 1.5 },
+    history: generateHistory(6.1, 45.0, 5.0, 7.1, 32.0, 2212.0, 9.0, 1.5),
+    monthlyData: {
+      BOD: [5.4, 11.5, 9.2, 8.9, 3.9, 6.1],
+      COD: [20.0, 20.0, 20.0, 57.0, 41.0, 45.0],
+      SS: [15.0, 37.0, 30.0, 15.0, 2.5, 9.0],
+      pH: [8.0, 7.7, 8.4, 7.8, 7.7, 7.1],
+      FOG: [1.5, 1.5, 1.5, 1.5, 1.5, 1.5],
+      TDS: [2036.0, 1752.0, 2160.0, 1808.0, 2252.0, 2212.0],
+      Temp: [29.0, 29.0, 31.0, 32.0, 32.0, 32.0],
+    }
+  }
+,
   {
     id: 40,
     name: 'Janome (Thailand)',
@@ -438,39 +233,20 @@ const MOCK_DATA = [
     industry: 'จักรเย็บผ้า',
     address: '312 หมู่ 1 ถ.สุขาภิบาล 8 ต.บึง อ.ศรีราชา จ.ชลบุรี 20230',
     lat: 13.0918, lng: 100.9645,
-    current: { bod: 3.8, cod: 12.5, do: 6.8, ph: 7.0, temp: 29.2 },
-    history: generateHistory(3.8, 12.5, 6.8, 7.0, 29.2)
-  },
-  {
-    id: 41,
-    name: 'Thai Nihol Seal',
-    nameTh: 'ไทยนิฮอลซีล',
-    industry: 'ซีลยาง',
-    address: '227/7 หมู่ 11 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0952, lng: 100.9588,
-    current: { bod: 4.5, cod: 16.8, do: 6.2, ph: 7.0, temp: 29.8 },
-    history: generateHistory(4.5, 16.8, 6.2, 7.0, 29.8)
-  },
-  {
-    id: 42,
-    name: 'Thai Monster',
-    nameTh: 'ไทยมอนสเตอร์',
-    industry: 'เครื่องจักร',
-    address: '688 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0966, lng: 100.9612,
-    current: { bod: 5.8, cod: 24.5, do: 5.8, ph: 7.1, temp: 30.5 },
-    history: generateHistory(5.8, 24.5, 5.8, 7.1, 30.5)
-  },
-  {
-    id: 43,
-    name: 'Thai Lotte',
-    nameTh: 'ไทยลอตเต้',
-    industry: 'ขนมหวาน',
-    address: '600/8 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0940, lng: 100.9570,
-    current: { bod: 9.5, cod: 38.8, do: 5.0, ph: 7.1, temp: 31.2 },
-    history: generateHistory(9.5, 38.8, 5.0, 7.1, 31.2)
-  },
+    current: { bod: 11.9, cod: 90.0, do: 5.0, ph: 7.9, temp: 30.0, tds: 2680.0, tss: 2.5, oil: 1.5 },
+    history: generateHistory(11.9, 90.0, 5.0, 7.9, 30.0, 2680.0, 2.5, 1.5),
+    monthlyData: {
+      BOD: [8.4, 9.6, 30.6, 28.4, 9.7, 11.9],
+      COD: [63.0, 83.0, 86.0, 99.0, 78.0, 90.0],
+      SS: [2.5, 2.5, 11.0, 9.0, 2.5, 2.5],
+      pH: [8.3, 7.2, 7.6, 7.5, 6.9, 7.9],
+      FOG: [1.5, 1.5, 1.5, 1.5, 1.5, 1.5],
+      TDS: [1592.0, 2424.0, 2124.0, 2308.0, 2044.0, 2680.0],
+      Temp: [27.0, 26.0, 30.0, 29.0, 31.0, 30.0],
+      Surfactant: [0.2, 0.2, 0.2, 0.2, 0.2, 0.2],
+    }
+  }
+,
   {
     id: 44,
     name: 'Thai Kobashi',
@@ -478,40 +254,45 @@ const MOCK_DATA = [
     industry: 'ชิ้นส่วนโลหะ',
     address: '670-672 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
     lat: 13.0972, lng: 100.9598,
-    current: { bod: 5.2, cod: 20.8, do: 6.0, ph: 7.1, temp: 30.2 },
-    history: generateHistory(5.2, 20.8, 6.0, 7.1, 30.2)
-  },
-  {
-    id: 45,
-    name: 'Thai Kamaya',
-    nameTh: 'ไทยคามาย่า',
-    industry: 'ชิ้นส่วนโลหะ',
-    address: '314 หมู่ 1 ถ.สุขาภิบาล 8 ต.บึง อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0920, lng: 100.9650,
-    current: { bod: 4.8, cod: 18.2, do: 6.2, ph: 7.0, temp: 30.0 },
-    history: generateHistory(4.8, 18.2, 6.2, 7.0, 30.0)
-  },
-  {
-    id: 46,
-    name: 'Thai Cubic Technology',
-    nameTh: 'ไทยคิวบิคเทคโนโลยี',
-    industry: 'พลาสติก',
-    address: '620/2 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0973, lng: 100.9592,
-    current: { bod: 6.5, cod: 28.5, do: 5.5, ph: 7.2, temp: 31.0 },
-    history: generateHistory(6.5, 28.5, 5.5, 7.2, 31.0)
-  },
+    photo: 'data/photos/Thai Kobashi.jpg',
+    current: { bod: 1.0, cod: 48.0, do: 5.0, ph: 6.8, temp: 32.0, tds: 482.0, tss: 20.0, oil: 1.5 },
+    history: generateHistory(1.0, 48.0, 5.0, 6.8, 32.0, 482.0, 20.0, 1.5),
+    monthlyData: {
+      BOD: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+      COD: [20.0, 20.0, 20.0, 45.0, 20.0, 48.0],
+      SS: [6.0, 2.5, 2.5, 6.0, 8.0, 20.0],
+      pH: [5.8, 7.0, 7.2, 7.0, 6.7, 6.8],
+      FOG: [1.5, 1.5, 1.5, 1.5, 1.5, 1.5],
+      TDS: [380.0, 394.0, 399.0, 442.0, 468.0, 482.0],
+      Temp: [28.0, 27.0, 29.0, 31.0, 32.0, 32.0],
+      Ni: [0.015, 0.015, 0.015, 0.015, 0.015, 0.015],
+      Cr6+: [0.025, 0.025, 0.025, 0.025, 0.025, 0.025],
+      Pb: [0.015, 0.015, 0.015, 0.015, 0.015, 0.015],
+    }
+  }
+,
   {
     id: 47,
     name: 'Thai Asahi Kasei Spandex',
     nameTh: 'ไทยอาซาฮี คาเซอิ สแปนเด็กซ์',
     industry: 'เส้นใยสแปนเด็กซ์',
     address: '919 หมู่ 11 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0958, lng: 100.9630,
-    monitor: ['ph','tds','tss','cod','bod'],
-    current: { bod: 8.5, cod: 35.8, do: 5.0, ph: 7.3, temp: 31.8, tds: 380, tss: 28 },
-    history: generateHistory(8.5, 35.8, 5.0, 7.3, 31.8, 380, 28)
-  },
+    lat: 13.0958, lng: 100.963,
+    current: { bod: 35.6, cod: 93.0, do: 5.0, ph: 7.6, temp: 40.0, tds: 688.0, tss: 38.0, oil: 1.5 },
+    history: generateHistory(35.6, 93.0, 5.0, 7.6, 40.0, 688.0, 38.0, 1.5),
+    monthlyData: {
+      BOD: [26.5, 28.1, 43.8, 20.8, 22.1, 35.6],
+      COD: [115.0, 42.0, 105.0, 43.0, 88.0, 93.0],
+      SS: [25.0, 10.0, 25.0, 16.0, 16.0, 38.0],
+      pH: [7.8, 7.4, 7.7, 7.6, 7.5, 7.6],
+      FOG: [1.5, 1.5, 3.5, 1.5, 1.5, 1.5],
+      TKN: [21.0, 16.0, 66.0, 9.0, 14.0, 30.0],
+      TDS: [620.0, 612.0, 608.0, 500.0, 324.0, 688.0],
+      Temp: [36.0, 39.0, 33.0, 36.0, 33.0, 40.0],
+      Formaldehyde: [0.25, 0.25, 0.25, 0.25, 0.25, 0.25],
+    }
+  }
+,
   {
     id: 48,
     name: 'Thai Arai',
@@ -519,99 +300,21 @@ const MOCK_DATA = [
     industry: 'ชิ้นส่วนพลาสติก',
     address: '623/1-2 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
     lat: 13.0942, lng: 100.9575,
-    current: { bod: 7.5, cod: 32.8, do: 5.5, ph: 7.2, temp: 31.8 },
-    history: generateHistory(7.5, 32.8, 5.5, 7.2, 31.8)
-  },
-  {
-    id: 49,
-    name: 'Textile Prestige Factory 3',
-    nameTh: 'เท็กซ์ไทล์เพรสทีจ โรงงาน 3',
-    industry: 'เสื้อผ้าสำเร็จรูป',
-    address: '600/3 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0995, lng: 100.9570,
-    current: { bod: 14.5, cod: 62.8, do: 3.5, ph: 7.6, temp: 33.8 },
-    history: generateHistory(14.5, 62.8, 3.5, 7.6, 33.8)
-  },
-  {
-    id: 50,
-    name: 'Textile Prestige Factory 2',
-    nameTh: 'เท็กซ์ไทล์เพรสทีจ โรงงาน 2',
-    industry: 'เสื้อผ้าสำเร็จรูป',
-    address: '624/5-6 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0955, lng: 100.9625,
-    current: { bod: 13.8, cod: 58.5, do: 3.8, ph: 7.5, temp: 33.2 },
-    history: generateHistory(13.8, 58.5, 3.8, 7.5, 33.2)
-  },
-  {
-    id: 51,
-    name: 'T&M Manufacturing (Thailand)',
-    nameTh: 'ที แอนด์ เอ็ม แมนูแฟคเจอริ่ง (ประเทศไทย)',
-    industry: 'อาหาร',
-    address: '622/1 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0988, lng: 100.9585,
-    current: { bod: 12.5, cod: 52.8, do: 4.0, ph: 7.4, temp: 32.8 },
-    history: generateHistory(12.5, 52.8, 4.0, 7.4, 32.8)
-  },
-  {
-    id: 52,
-    name: 'Sriracha Aviation',
-    nameTh: 'ศรีราชา เอวิเอชั่น',
-    industry: 'การบิน',
-    address: '304 หมู่ 1 ต.บึง อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0902, lng: 100.9665,
-    current: { bod: 1.5, cod: 4.2, do: 7.8, ph: 7.0, temp: 28.0 },
-    history: generateHistory(1.5, 4.2, 7.8, 7.0, 28.0)
-  },
-  {
-    id: 53,
-    name: 'Sriracha Transport',
-    nameTh: 'ศรีราชาขนส่ง',
-    industry: 'ขนส่ง',
-    address: '661/11 หมู่ 11 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0950, lng: 100.9635,
-    current: { bod: 2.2, cod: 6.5, do: 7.5, ph: 7.0, temp: 28.5 },
-    history: generateHistory(2.2, 6.5, 7.5, 7.0, 28.5)
-  },
-  {
-    id: 54,
-    name: 'Suea Fa Industry (Thailand)',
-    nameTh: 'ซื่อฟ้าอุตสาหกรรม (ประเทศไทย)',
-    industry: 'สนับสนุนอุตสาหกรรม',
-    address: '600/46 หมู่ 11 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.1000, lng: 100.9650,
-    current: { bod: 6.8, cod: 28.5, do: 5.5, ph: 7.2, temp: 31.0 },
-    history: generateHistory(6.8, 28.5, 5.5, 7.2, 31.0)
-  },
-  {
-    id: 55,
-    name: 'Chardong (Thailand)',
-    nameTh: 'ชาล์ดอง (ประเทศไทย)',
-    industry: 'อาหาร',
-    address: '600/4 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0990, lng: 100.9562,
-    current: { bod: 10.5, cod: 42.8, do: 4.5, ph: 7.3, temp: 32.0 },
-    history: generateHistory(10.5, 42.8, 4.5, 7.3, 32.0)
-  },
-  {
-    id: 56,
-    name: 'Pitakit',
-    nameTh: 'พิทักษ์กิจ',
-    industry: 'โลจิสติกส์',
-    address: '300 หมู่ 1 ถ.สุขาภิบาล 8 ต.บึง อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0900, lng: 100.9655,
-    current: { bod: 2.0, cod: 5.8, do: 7.5, ph: 7.0, temp: 28.5 },
-    history: generateHistory(2.0, 5.8, 7.5, 7.0, 28.5)
-  },
-  {
-    id: 57,
-    name: 'PTK Multiservice',
-    nameTh: 'พี ที เค มัลติเซอร์วิส',
-    industry: 'บริการ',
-    address: '300/1 หมู่ 1 ถ.สุขาภิบาล 8 ต.บึง อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0903, lng: 100.9658,
-    current: { bod: 1.8, cod: 4.5, do: 7.8, ph: 7.0, temp: 28.2 },
-    history: generateHistory(1.8, 4.5, 7.8, 7.0, 28.2)
-  },
+    photo: 'data/photos/Thai Arai.jpg',
+    current: { bod: 1.0, cod: 20.0, do: 5.0, ph: 7.3, temp: 32.0, tds: 1366.0, tss: 82.0, oil: 1.5 },
+    history: generateHistory(1.0, 20.0, 5.0, 7.3, 32.0, 1366.0, 82.0, 1.5),
+    monthlyData: {
+      BOD: [4.6, 2.1, 3.0, 4.4, 1.0, 1.0],
+      COD: [20.0, 20.0, 20.0, 20.0, 20.0, 20.0],
+      SS: [134.0, 54.0, 39.0, 19.0, 102.0, 82.0],
+      pH: [7.1, 7.3, 7.4, 6.4, 7.3, 7.3],
+      FOG: [1.5, 1.5, 3.0, 1.5, 1.5, 1.5],
+      TDS: [900.0, 856.0, 500.0, 656.0, 872.0, 1366.0],
+      Temp: [32.0, 32.0, 32.0, 33.0, 32.0, 32.0],
+      Zinc: [1.29, 0.5, 1.48, 0.56, 0.47, 1.52],
+    }
+  }
+,
   {
     id: 58,
     name: 'Racha Ushino',
@@ -619,9 +322,20 @@ const MOCK_DATA = [
     industry: 'ผ้าขนหนู',
     address: '630 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
     lat: 13.0985, lng: 100.9635,
-    current: { bod: 11.8, cod: 45.6, do: 4.8, ph: 7.2, temp: 31.9 },
-    history: generateHistory(11.8, 45.6, 4.8, 7.2, 31.9)
-  },
+    current: { bod: 1.0, cod: 20.0, do: 5.0, ph: 8.2, temp: 31.0, tds: 1572.0, tss: 7.0, oil: 1.5 },
+    history: generateHistory(1.0, 20.0, 5.0, 8.2, 31.0, 1572.0, 7.0, 1.5),
+    monthlyData: {
+      BOD: [7.4, 10.2, 2.0, 14.7, 22.8, 1.0],
+      COD: [127.0, 283.0, 86.0, 58.0, 72.0, 20.0],
+      SS: [5.0, 2.5, 5.0, 31.0, 8.0, 7.0],
+      pH: [8.0, 7.0, 7.6, 7.6, 7.7, 8.2],
+      Color: [32.0, 65.0, 25.0, 34.0, 10.0, 41.0],
+      FOG: [1.5, 1.5, 1.5, 1.5, 1.5, 1.5],
+      TDS: [1572.0, 1912.0, 1544.0, 1092.0, 1324.0, 1572.0],
+      Temp: [31.0, 28.0, 33.0, 29.0, 32.0, 31.0],
+    }
+  }
+,
   {
     id: 59,
     name: 'S&J International Enterprises',
@@ -629,10 +343,21 @@ const MOCK_DATA = [
     industry: 'เครื่องสำอาง',
     address: 'ซ.หมู่บ้านศรีราชาแลนด์การ์ด ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20110',
     lat: 13.0964, lng: 100.9625,
-    monitor: ['ph','tds','tss','cod','bod','oil'],
-    current: { bod: 5.8, cod: 22.4, do: 6.0, ph: 7.0, temp: 30.5, tds: 280, tss: 18, oil: 1.5 },
-    history: generateHistory(5.8, 22.4, 6.0, 7.0, 30.5, 280, 18, 1.5)
-  },
+    photo: 'data/photos/S&J International Enterprises.jpg',
+    current: { bod: 6.2, cod: 64.0, do: 5.0, ph: 7.3, temp: 35.0, tds: 828.0, tss: 6.0, oil: 1.5 },
+    history: generateHistory(6.2, 64.0, 5.0, 7.3, 35.0, 828.0, 6.0, 1.5),
+    monthlyData: {
+      BOD: [2.0, 11.5, 37.2, 3.6, 142.0, 6.2],
+      COD: [20.0, 54.0, 111.0, 54.0, 423.0, 64.0],
+      SS: [30.0, 26.0, 12.0, 13.0, 26.0, 6.0],
+      pH: [7.2, 7.1, 8.3, 8.5, 7.5, 7.3],
+      FOG: [1.5, 1.5, 1.5, 1.5, 1.5, 1.5],
+      TDS: [976.0, 792.0, 1080.0, 1352.0, 922.0, 828.0],
+      Temp: [30.0, 32.0, 32.0, 32.0, 37.0, 35.0],
+      Surfactant: [0.2, 2.2, 7.67, 1.89, 28.4, 3.99],
+    }
+  }
+,
   {
     id: 60,
     name: 'Sahachon Phuet Pha',
@@ -640,40 +365,21 @@ const MOCK_DATA = [
     industry: 'อาหาร',
     address: '600/1 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
     lat: 13.0995, lng: 100.9558,
-    monitor: ['ph','tds','tss','cod','bod'],
-    current: { bod: 12.2, cod: 52.5, do: 4.0, ph: 7.4, temp: 32.5, tds: 420, tss: 38 },
-    history: generateHistory(12.2, 52.5, 4.0, 7.4, 32.5, 420, 38)
-  },
-  {
-    id: 61,
-    name: 'Sahacogen (Chonburi)',
-    nameTh: 'สหโคเจน (ชลบุรี)',
-    industry: 'โรงไฟฟ้า',
-    address: '636 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0988, lng: 100.9606,
-    current: { bod: 15.2, cod: 95.8, do: 3.5, ph: 7.2, temp: 35.5 },
-    history: generateHistory(15.2, 95.8, 3.5, 7.2, 35.5)
-  },
-  {
-    id: 62,
-    name: 'SPI Office & Outlet',
-    nameTh: 'สหพัฒนาอินเตอร์โฮลดิ้ง',
-    industry: 'สำนักงาน',
-    address: '999 หมู่ 11 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.1008, lng: 100.9661,
-    current: { bod: 3.2, cod: 12.8, do: 7.0, ph: 7.2, temp: 29.5 },
-    history: generateHistory(3.2, 12.8, 7.0, 7.2, 29.5)
-  },
-  {
-    id: 63,
-    name: 'Saha Pathanapiboon',
-    nameTh: 'สหพัฒนพิบูล',
-    industry: 'อาหารและเครื่องดื่ม',
-    address: '682 หมู่ 5 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0955, lng: 100.9640,
-    current: { bod: 10.8, cod: 45.5, do: 4.5, ph: 7.3, temp: 32.2 },
-    history: generateHistory(10.8, 45.5, 4.5, 7.3, 32.2)
-  },
+    current: { bod: 2.2, cod: 20.0, do: 5.0, ph: 8.0, temp: 33.0, tds: 1640.0, tss: 12.0, oil: 1.5 },
+    history: generateHistory(2.2, 20.0, 5.0, 8.0, 33.0, 1640.0, 12.0, 1.5),
+    monthlyData: {
+      BOD: [1.0, 1.0, 1.0, 2.7, 9.1, 2.2],
+      COD: [20.0, 20.0, 20.0, 42.0, 65.0, 20.0],
+      SS: [19.0, 10.0, 16.0, 32.0, 42.0, 12.0],
+      pH: [7.7, 7.0, 7.7, 7.6, 7.8, 8.0],
+      FOG: [1.5, 1.5, 3.1, 1.5, 1.5, 1.5],
+      TKN: [30.0, 28.0, 33.0, 32.0, 34.0, 33.0],
+      TDS: [1640.0, 1744.0, 1772.0, 1620.0, 1724.0, 1640.0],
+      Temp: [30.0, 28.0, 33.0, 32.0, 34.0, 33.0],
+      Chloride: [852.0, 835.0, 792.0, 736.0, 720.0, 905.0],
+    }
+  }
+,
   {
     id: 64,
     name: 'Saha Sewa',
@@ -681,9 +387,19 @@ const MOCK_DATA = [
     industry: 'อาหารทะเล',
     address: '666/2 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
     lat: 13.1008, lng: 100.9648,
-    current: { bod: 15.5, cod: 68.2, do: 3.0, ph: 7.5, temp: 34.0 },
-    history: generateHistory(15.5, 68.2, 3.0, 7.5, 34.0)
-  },
+    current: { bod: 45.0, cod: 161.0, do: 5.0, ph: 7.8, temp: 29.0, tds: 616.0, tss: 9.0, oil: 1.5 },
+    history: generateHistory(45.0, 161.0, 5.0, 7.8, 29.0, 616.0, 9.0, 1.5),
+    monthlyData: {
+      BOD: [46.1, 58.4, 54.8, 41.9, 11.9, 45.0],
+      COD: [237.0, 208.0, 228.0, 157.0, 20.0, 161.0],
+      SS: [33.0, 7.0, 14.0, 25.0, 20.0, 9.0],
+      pH: [8.4, 8.0, 6.6, 7.6, 6.6, 7.8],
+      FOG: [1.5, 1.5, 1.5, 3.5, 1.5, 1.5],
+      TDS: [696.0, 652.0, 692.0, 444.0, 117.0, 616.0],
+      Temp: [28.0, 29.0, 29.0, 32.0, 30.0, 29.0],
+    }
+  }
+,
   {
     id: 65,
     name: 'Saha Seiren',
@@ -691,8 +407,17 @@ const MOCK_DATA = [
     industry: 'ชิ้นส่วนยานยนต์',
     address: '592 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
     lat: 13.0975, lng: 100.9645,
-    monitor: ['ph','tds','tss','cod','bod'],
-    current: { bod: 12.4, cod: 52.8, do: 4.5, ph: 7.3, temp: 32.8, tds: 440, tss: 35 },
-    history: generateHistory(12.4, 52.8, 4.5, 7.3, 32.8, 440, 35)
+    current: { bod: 9.0, cod: 58.0, do: 5.0, ph: 7.2, temp: 34.0, tds: 602.0, tss: 6.0, oil: 1.5 },
+    history: generateHistory(9.0, 58.0, 5.0, 7.2, 34.0, 602.0, 6.0, 1.5),
+    monthlyData: {
+      BOD: [8.5, 1.0, 1.0, 6.4, 1.0, 9.0],
+      COD: [51.0, 20.0, 20.0, 20.0, 20.0, 58.0],
+      SS: [7.0, 2.5, 2.5, 2.5, 2.5, 6.0],
+      pH: [6.9, 6.8, 7.0, 7.2, 6.7, 7.2],
+      Color: [74.0, 25.0, 68.0, 38.0, 10.0, 60.0],
+      FOG: [1.5, 1.5, 1.5, 1.5, 1.5, 1.5],
+      TDS: [588.0, 440.0, 772.0, 706.0, 592.0, 602.0],
+      Temp: [31.0, 28.0, 35.0, 34.0, 30.0, 34.0],
+    }
   }
 ];

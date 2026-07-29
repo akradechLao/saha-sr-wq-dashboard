@@ -106,11 +106,15 @@ function renderFactoryList(factories) {
   list.innerHTML = factories.map(factory => {
     const pass = isPass(factory.current);
     const isActive = selectedFactoryId === factory.id;
+    const photoHTML = factory.photo
+      ? `<img class="factory-item-photo" src="${factory.photo}" alt="${factory.name}" onerror="this.style.display='none'">`
+      : `<div class="factory-item-photo-placeholder">🏭</div>`;
 
     return `
       <div class="factory-item ${isActive ? 'active' : ''}"
            data-id="${factory.id}"
            onclick="selectFactory(${factory.id})">
+        ${photoHTML}
         <div class="factory-item-info">
           <div class="factory-item-name">${factory.name}</div>
           <div class="factory-item-type">${factory.industry}</div>
@@ -178,6 +182,17 @@ function showDetail(factory) {
   document.getElementById('detail-name-th').textContent = `${factory.nameTh} — ${factory.industry}`;
   document.getElementById('detail-industry').textContent = factory.industry;
 
+  const photoEl = document.getElementById('detail-photo');
+  if (photoEl) {
+    if (factory.photo) {
+      photoEl.src = factory.photo;
+      photoEl.style.display = 'block';
+      photoEl.onerror = function() { this.style.display = 'none'; };
+    } else {
+      photoEl.style.display = 'none';
+    }
+  }
+
   renderParamGrid(factory);
   renderTrendChart(factory);
 
@@ -189,16 +204,16 @@ function renderParamGrid(factory) {
   const checks = getParamChecks(d);
 
   const params = [
-    { key: 'bod',  label: 'BOD',         value: d.bod,  unit: 'mg/L', pass: checks.bod,  standard: '≤ 20 mg/L' },
-    { key: 'cod',  label: 'COD',         value: d.cod,  unit: 'mg/L', pass: checks.cod,  standard: '≤ 120 mg/L' },
+    { key: 'bod',  label: 'BOD',         value: d.bod,  unit: 'mg/L', pass: checks.bod,  standard: '≤ 120 mg/L' },
+    { key: 'cod',  label: 'COD',         value: d.cod,  unit: 'mg/L', pass: checks.cod,  standard: '≤ 500 mg/L' },
     { key: 'do',   label: 'DO',          value: d.do,   unit: 'mg/L', pass: checks.do,   standard: '≥ 2 mg/L' },
-    { key: 'ph',   label: 'pH',          value: d.ph,   unit: '',     pass: checks.ph,   standard: '6.0 – 9.0' },
-    { key: 'temp', label: 'Temperature', value: d.temp, unit: '°C',   pass: checks.temp, standard: '≤ 40 °C' }
+    { key: 'ph',   label: 'pH',          value: d.ph,   unit: '',     pass: checks.ph,   standard: '5.5 – 9.0' },
+    { key: 'temp', label: 'Temperature', value: d.temp, unit: '°C',   pass: checks.temp, standard: '≤ 45 °C' }
   ];
 
-  if (d.tds !== undefined) params.push({ key: 'tds', label: 'TDS', value: d.tds, unit: 'mg/L', pass: checks.tds, standard: '≤ 500 mg/L' });
-  if (d.tss !== undefined) params.push({ key: 'tss', label: 'TSS', value: d.tss, unit: 'mg/L', pass: checks.tss, standard: '≤ 50 mg/L' });
-  if (d.oil !== undefined) params.push({ key: 'oil', label: 'Oil & Grease', value: d.oil, unit: 'mg/L', pass: checks.oil, standard: '≤ 5 mg/L' });
+  if (d.tds !== undefined) params.push({ key: 'tds', label: 'TDS', value: d.tds, unit: 'mg/L', pass: checks.tds, standard: '≤ 3000 mg/L' });
+  if (d.tss !== undefined) params.push({ key: 'tss', label: 'TSS', value: d.tss, unit: 'mg/L', pass: checks.tss, standard: '≤ 200 mg/L' });
+  if (d.oil !== undefined) params.push({ key: 'oil', label: 'FOG', value: d.oil, unit: 'mg/L', pass: checks.oil, standard: '≤ 10 mg/L' });
 
   const grid = document.getElementById('param-grid');
   grid.innerHTML = params.map(p => `
