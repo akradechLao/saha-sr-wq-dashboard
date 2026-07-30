@@ -17,6 +17,18 @@ function getChartColors() {
 
 const DL_DISPLAY = { BOD: 2, COD: 40, TDS: 3000, SS: 5, FOG: 3, Surfactant: 0.4, Color: 20, Ni: 0.03, TKN: 5, Zn: 0.03, 'Cr6+': 0.05, Pb: 0.03 };
 
+const PARAM_STYLES = {
+  BOD:       { color: '#eab308', bg: 'rgba(234,179,8,0.10)',  dash: null,     width: 2.5, fill: true,  pointR: 4, y: 'y'  },
+  COD:       { color: '#3b82f6', bg: 'rgba(59,130,246,0.08)', dash: null,     width: 2.5, fill: false, pointR: 4, y: 'y1' },
+  SS:        { color: '#f97316', bg: null,                     dash: [8, 3],   width: 1.8, fill: false, pointR: 3, y: 'y'  },
+  pH:        { color: '#a855f7', bg: 'rgba(168,85,247,0.06)', dash: null,     width: 2,   fill: false, pointR: 3, y: 'y3', hidden: true },
+  Temp:      { color: '#ef4444', bg: 'rgba(239,68,68,0.06)',  dash: [2, 2],   width: 2,   fill: false, pointR: 3, y: 'y1' },
+  TDS:       { color: '#06b6d4', bg: null,                     dash: [10, 4],  width: 1.8, fill: false, pointR: 3, y: 'y2' },
+  FOG:       { color: '#22c55e', bg: null,                     dash: [6, 2, 2, 2], width: 1.8, fill: false, pointR: 3, y: 'y2' },
+  Surfactant:{ color: '#ec4899', bg: null,                     dash: [4, 4],   width: 1.8, fill: false, pointR: 3, y: 'y2' },
+  Color:     { color: '#8b5cf6', bg: null,                     dash: [8, 3, 2, 3], width: 1.8, fill: false, pointR: 3, y: 'y2' },
+};
+
 function processDatasetWithDL(label, rawData, belowDL, baseConfig, colors) {
   const dlLimit = DL_DISPLAY[label];
   const hasDL = belowDL && belowDL[label];
@@ -58,7 +70,6 @@ function processDatasetWithDL(label, rawData, belowDL, baseConfig, colors) {
 function buildChartDataFromMonthly(md, dl) {
   if (!md || !md.BOD) return null;
   const colors = getChartColors();
-  const monthCount = md.BOD.length;
   const labels = MONTH_LABELS.slice(0, 12);
 
   function padTo12(arr) {
@@ -80,17 +91,26 @@ function buildChartDataFromMonthly(md, dl) {
     Object.keys(dl).forEach(k => { dlPadded[k] = padDLTo12(dl[k]); });
   }
 
-  const rawDefs = [
-    { label: 'BOD', raw: padTo12(md.BOD), borderColor: '#d4a017', backgroundColor: 'rgba(212, 160, 23, 0.08)', borderWidth: 2, tension: 0.35, fill: true, pointRadius: 3, pointHoverRadius: 6, yAxisID: 'y', spanGaps: true },
-    { label: 'COD', raw: padTo12(md.COD), borderColor: '#3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.06)', borderWidth: 2, tension: 0.35, fill: false, pointRadius: 3, pointHoverRadius: 6, yAxisID: 'y1', spanGaps: true },
-    md.SS ? { label: 'SS', raw: padTo12(md.SS), borderColor: '#f97316', borderWidth: 1.5, tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 5, yAxisID: 'y', borderDash: [4, 2], spanGaps: true } : null,
-    md.pH ? { label: 'pH', raw: padTo12(md.pH), borderColor: '#a855f7', backgroundColor: 'rgba(168, 85, 247, 0.06)', borderWidth: 2, tension: 0.35, fill: false, pointRadius: 3, pointHoverRadius: 5, yAxisID: 'y3', hidden: true, spanGaps: true } : null,
-    md.Temp ? { label: 'Temp', raw: padTo12(md.Temp), borderColor: '#ef4444', backgroundColor: 'rgba(239, 68, 68, 0.06)', borderWidth: 2, borderDash: [5, 3], tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 5, yAxisID: 'y1', spanGaps: true } : null,
-    md.TDS ? { label: 'TDS', raw: padTo12(md.TDS), borderColor: '#06b6d4', borderWidth: 1.5, tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 4, yAxisID: 'y2', borderDash: [3, 2], spanGaps: true } : null,
-    md.FOG ? { label: 'FOG', raw: padTo12(md.FOG), borderColor: '#84cc16', borderWidth: 1.5, tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 4, yAxisID: 'y2', borderDash: [2, 2], spanGaps: true } : null,
-    md.Surfactant ? { label: 'Surfactant', raw: padTo12(md.Surfactant), borderColor: '#ec4899', borderWidth: 1.5, tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 4, yAxisID: 'y2', borderDash: [6, 2], spanGaps: true } : null,
-    md.Color ? { label: 'Color', raw: padTo12(md.Color), borderColor: '#8b5cf6', borderWidth: 1.5, tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 4, yAxisID: 'y2', borderDash: [2, 4], spanGaps: true } : null,
-  ].filter(Boolean);
+  const paramMap = { BOD: 'BOD', COD: 'COD', SS: 'SS', pH: 'pH', Temp: 'Temp', TDS: 'TDS', FOG: 'FOG', Surfactant: 'Surfactant', Color: 'Color' };
+
+  const rawDefs = Object.keys(paramMap).filter(k => md[k]).map(k => {
+    const s = PARAM_STYLES[k];
+    return {
+      label: k,
+      raw: padTo12(md[k]),
+      borderColor: s.color,
+      backgroundColor: s.bg || 'transparent',
+      borderWidth: s.width,
+      borderDash: s.dash || [],
+      tension: 0.35,
+      fill: s.fill,
+      pointRadius: s.pointR,
+      pointHoverRadius: s.pointR + 3,
+      yAxisID: s.y,
+      spanGaps: true,
+      hidden: s.hidden || false
+    };
+  });
 
   const datasets = rawDefs.map(def => processDatasetWithDL(def.label, def.raw, dlPadded, def, colors));
   return { labels, datasets, colors };

@@ -356,17 +356,20 @@ function renderParamGrid(factory) {
   if (d.oil !== undefined) params.push({ key: 'oil', label: 'FOG', value: d.oil, unit: 'mg/L', pass: checks.oil, standard: '≤ 10 mg/L' });
 
   const grid = document.getElementById('param-grid');
-  grid.innerHTML = params.map(p => `
-    <div class="param-card ${p.key === 'temp' ? 'full-width' : ''}">
-      <div class="param-label">${p.label}</div>
+  grid.innerHTML = params.map(p => {
+    const ps = typeof PARAM_STYLES !== 'undefined' ? PARAM_STYLES[p.label] : null;
+    const borderColor = ps ? ps.color : 'var(--border)';
+    return `
+    <div class="param-card ${p.key === 'temp' ? 'full-width' : ''}" style="border-left:3px solid ${borderColor};">
+      <div class="param-label" style="color:${borderColor};">${p.label}</div>
       <div class="param-value ${p.pass ? 'pass' : 'fail'}">
-        ${p.value}<span class="param-unit">${p.unit}</span>
+        ${escapeHtml(p.value)}<span class="param-unit">${p.unit}</span>
       </div>
       <div class="param-status ${p.pass ? 'pass' : 'fail'}">
         ${p.pass ? '✓ ผ่านเกณฑ์' : '✗ ไม่ผ่านเกณฑ์'} (${p.standard})
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 }
 
 /* ============ HISTORY YEAR SELECTOR ============ */
