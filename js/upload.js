@@ -181,11 +181,11 @@ function generateFullCode(rows, year, fileName) {
     if (isMatch) matchCount++;
 
     tableHTML += `<tr style="${isMatch ? '' : 'opacity:0.5;'}">`;
-    tableHTML += `<td style="font-weight:600;">${row.name}</td>`;
-    tableHTML += `<td style="font-size:0.7rem;color:${isMatch ? 'var(--pass)' : 'var(--fail)'};">${isMatch ? matched.name : '❌ ไม่พบ'}</td>`;
+    tableHTML += `<td style="font-weight:600;">${escapeHtml(row.name)}</td>`;
+    tableHTML += `<td style="font-size:0.7rem;color:${isMatch ? 'var(--pass)' : 'var(--fail)'};">${isMatch ? escapeHtml(matched.name) : '❌ ไม่พบ'}</td>`;
     for (let i = 0; i < monthCount; i++) {
       const val = row.months[i] !== undefined ? row.months[i] : '-';
-      tableHTML += `<td>${val}</td>`;
+      tableHTML += `<td>${escapeHtml(val)}</td>`;
     }
     tableHTML += '</tr>';
   });
@@ -199,7 +199,7 @@ function generateFullCode(rows, year, fileName) {
   const field = `monthlyData_${year}`;
 
   let code = `// ===== MOCK_DATA — คุณภาพน้ำเสีย สวนอุตสาหกรรมเครือสหพัฒน์ ศรีราชา =====\n`;
-  code += `// อัพเดตอัตโนมัติเมื่อ ${new Date().toLocaleDateString('th-TH')} — ข้อมูลย้อนหลังปี ${year} จากไฟล์ ${fileName}\n\n`;
+  code += `// อัพเดตอัตโนมัติเมื่อ ${new Date().toLocaleDateString('th-TH')} — ข้อมูลย้อนหลังปี ${year} จากไฟล์ ${fileName.replace(/[^a-zA-Z0-9\-_. ]/g, '')}\n\n`;
   code += `const STANDARDS = {\n`;
   code += `  bod:  { max: 120, unit: 'mg/L', label: 'BOD',        method: 'Standard Methods 5210B' },\n`;
   code += `  cod:  { max: 500, unit: 'mg/L', label: 'COD',        method: 'Standard Methods 5220D' },\n`;
@@ -227,12 +227,12 @@ function generateFullCode(rows, year, fileName) {
 
     code += `  {\n`;
     code += `    id: ${factory.id},\n`;
-    code += `    name: '${factory.name}',\n`;
-    code += `    nameTh: '${factory.nameTh}',\n`;
-    code += `    industry: '${factory.industry}',\n`;
-    if (factory.address) code += `    address: '${factory.address}',\n`;
+    code += `    name: '${factory.name.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}',\n`;
+    code += `    nameTh: '${factory.nameTh.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}',\n`;
+    code += `    industry: '${factory.industry.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}',\n`;
+    if (factory.address) code += `    address: '${factory.address.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}',\n`;
     if (factory.lat !== undefined) code += `    lat: ${factory.lat}, lng: ${factory.lng},\n`;
-    if (factory.photo) code += `    photo: '${factory.photo}',\n`;
+    if (factory.photo) code += `    photo: '${factory.photo.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}',\n`;
     if (factory.hasData === false) code += `    hasData: false,\n`;
 
     // เขียน monthlyData ปัจจุบัน

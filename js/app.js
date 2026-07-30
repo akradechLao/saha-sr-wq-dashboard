@@ -2,6 +2,11 @@ let selectedFactoryId = null;
 let isAdmin = false;
 const displayFactories = MOCK_DATA.filter(f => f.hasData !== false);
 
+function escapeHtml(s) {
+  if (s == null) return '';
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
 function initApp() {
   initMap();
 
@@ -167,7 +172,7 @@ function renderFactoryList(factories) {
     const pass = isPass(factory.current);
     const isActive = selectedFactoryId === factory.id;
     const photoHTML = factory.photo
-      ? `<img class="factory-item-photo" src="${factory.photo}" alt="${factory.name}" loading="lazy" onerror="this.style.display='none'">`
+      ? `<img class="factory-item-photo" src="${escapeHtml(factory.photo)}" alt="${escapeHtml(factory.name)}" loading="lazy" onerror="this.style.display='none'">`
       : `<div class="factory-item-photo-placeholder">🏭</div>`;
 
     return `
@@ -176,8 +181,8 @@ function renderFactoryList(factories) {
            onclick="selectFactory(${factory.id})">
         ${photoHTML}
         <div class="factory-item-info">
-          <div class="factory-item-name">${factory.name}</div>
-          <div class="factory-item-type">${factory.industry}</div>
+          <div class="factory-item-name">${escapeHtml(factory.name)}</div>
+          <div class="factory-item-type">${escapeHtml(factory.industry)}</div>
         </div>
         <div class="status-indicator ${pass ? 'pass' : 'fail'}"
              title="${pass ? 'ผ่านเกณฑ์' : 'ไม่ผ่านเกณฑ์'}"></div>

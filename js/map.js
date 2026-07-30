@@ -186,16 +186,16 @@ function buildPopupHTML(factory) {
   const allPass = Object.values(checks).every(Boolean);
 
   const photoHTML = factory.photo
-    ? `<div class="popup-photo"><img src="${factory.photo}" alt="${factory.name}" loading="lazy" onerror="this.style.display='none'"></div>`
+    ? `<div class="popup-photo"><img src="${escapeHtml(factory.photo)}" alt="${escapeHtml(factory.name)}" loading="lazy" onerror="this.style.display='none'"></div>`
     : '';
 
   return `
     <div class="popup-content">
       ${photoHTML}
       <div class="popup-header">
-        <h3>${factory.name}</h3>
-        <div class="popup-type">${factory.nameTh}</div>
-        <span class="popup-industry-tag">${factory.industry}</span>
+        <h3>${escapeHtml(factory.name)}</h3>
+        <div class="popup-type">${escapeHtml(factory.nameTh)}</div>
+        <span class="popup-industry-tag">${escapeHtml(factory.industry)}</span>
       </div>
       <div class="popup-params">
         ${paramsHTML}
@@ -348,7 +348,7 @@ function saveNewCoords(factoryId, lat, lng) {
 
     const coordEl = document.getElementById('detail-coords');
     if (coordEl && selectedFactoryId === factoryId) {
-      coordEl.innerHTML = `<strong>พิกัด:</strong> ${lat}, ${lng} <span style="color:var(--pass);font-size:0.7rem;">✓ บันทึกแล้ว</span>`;
+      coordEl.innerHTML = `<strong>พิกัด:</strong> ${escapeHtml(lat)}, ${escapeHtml(lng)} <span style="color:var(--pass);font-size:0.7rem;">✓ บันทึกแล้ว</span>`;
     }
   }
 
@@ -366,7 +366,7 @@ function showSaveToast(name) {
 
   const toast = document.createElement('div');
   toast.className = 'save-toast';
-  toast.innerHTML = `✓ บันทึกพิกัด${name ? ' ' + name : ''}แล้ว`;
+  toast.innerHTML = `✓ บันทึกพิกัด${name ? ' ' + escapeHtml(name) : ''}แล้ว`;
   document.body.appendChild(toast);
 
   setTimeout(() => toast.classList.add('show'), 10);
