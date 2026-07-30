@@ -669,6 +669,29 @@ body {
   cursor: pointer;
 }
 
+.year-nav-btn {
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-size: 0.7rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  padding: 0;
+  line-height: 1;
+}
+
+.year-nav-btn:hover {
+  background: var(--accent-yellow);
+  color: #0a0e27;
+  border-color: var(--accent-yellow);
+}
+
 .chart-container {
   flex: 1;
   position: relative;

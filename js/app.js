@@ -434,6 +434,28 @@ function getSelectedHistoryYear() {
   return currentHistoryYear;
 }
 
+function navHistoryYear(delta) {
+  const select = document.getElementById('history-year-select');
+  if (!select || select.options.length === 0) return;
+  const idx = select.selectedIndex;
+  const newIdx = Math.max(0, Math.min(select.options.length - 1, idx + delta));
+  if (newIdx !== idx) {
+    select.selectedIndex = newIdx;
+    onHistoryYearChange(select.value);
+  }
+}
+
+function navExpandYear(delta) {
+  const select = document.getElementById('history-year-select-expand');
+  if (!select || select.options.length === 0) return;
+  const idx = select.selectedIndex;
+  const newIdx = Math.max(0, Math.min(select.options.length - 1, idx + delta));
+  if (newIdx !== idx) {
+    select.selectedIndex = newIdx;
+    onExpandYearChange(select.value);
+  }
+}
+
 function closeDetail() {
   const panel = document.getElementById('detail-panel');
   const sidebar = document.getElementById('sidebar');
