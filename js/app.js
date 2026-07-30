@@ -42,10 +42,16 @@ function initApp() {
 
   window.addEventListener('resize', handleResize);
 
-  // Load historical data in background
+  // Load historical data in background, then re-setup year selector if a factory is selected
   if (typeof loadHistoricalData === 'function') {
     loadHistoricalData().then(data => {
-      if (data) console.log('Historical data loaded:', Object.keys(data).length, 'factories');
+      if (data) {
+        console.log('Historical data loaded:', Object.keys(data).length, 'factories');
+        if (selectedFactoryId) {
+          const f = MOCK_DATA.find(x => x.id === selectedFactoryId);
+          if (f) setupHistoryYearSelector(f);
+        }
+      }
     });
   }
 }
@@ -373,8 +379,18 @@ function setupHistoryYearSelector(factory) {
 
   const years = getHistoryYears(factory.name);
   if (!years || years.length === 0) {
-    container.style.display = 'none';
-    currentHistoryYear = null;
+    // If historical data hasn't loaded yet, wait for it
+    if (historicalData === null && typeof loadHistoricalData === 'function') {
+      container.style.display = 'none';
+      loadHistoricalData().then(data => {
+        if (data && selectedFactoryId === factory.id) {
+          setupHistoryYearSelector(factory);
+        }
+      });
+    } else {
+      container.style.display = 'none';
+      currentHistoryYear = null;
+    }
     return;
   }
 
@@ -383,10 +399,12 @@ function setupHistoryYearSelector(factory) {
   container.style.gap = '6px';
   container.style.marginBottom = '6px';
 
+  const currentVal = select.value ? Number(select.value) : null;
+
   select.innerHTML = years.slice().reverse().map(y => {
     const buddhist = y + 543;
-    const isCurrent = y === new Date().getFullYear() || y === (typeof DATA_YEAR !== 'undefined' ? DATA_YEAR - 543 : 2026);
-    return `<option value="${y}" ${isCurrent ? 'selected' : ''}>${buddhist} (${y})</option>`;
+    const isCurrent = y === (typeof DATA_YEAR !== 'undefined' ? DATA_YEAR - 543 : 2026);
+    return `<option value="${y}" ${y === currentVal ? 'selected' : isCurrent && !currentVal ? 'selected' : ''}>${buddhist} (${y})</option>`;
   }).join('');
 
   currentHistoryYear = Number(select.value);
@@ -400,6 +418,16 @@ function onHistoryYearChange(yearStr) {
 
   renderTrendChart(factory);
   try { renderChartSummary(factory, 'chart-summary'); } catch(e) {}
+
+  // Also update expand chart if overlay is open
+  const overlay = document.getElementById('chart-expand-overlay');
+  if (overlay && !overlay.classList.contains('hidden')) {
+    // Sync expand year selector
+    const expandSelect = document.getElementById('history-year-select-expand');
+    if (expandSelect) expandSelect.value = yearStr;
+    try { renderExpandChartSummary(factory); } catch(e) {}
+    try { renderExpandChart(factory); } catch(e) {}
+  }
 }
 
 function getSelectedHistoryYear() {
@@ -431,11 +459,54 @@ function expandChart() {
   overlay.classList.remove('hidden');
   document.getElementById('chart-expand-title').textContent = `📈 ${factory.name} — แนวโน้มค่ารายเดือนย้อนหลัง`;
 
+  // Populate year selector in expand modal
+  setupExpandYearSelector(factory);
+
   try { renderExpandChartSummary(factory); } catch(e) { console.warn('summary err', e); }
 
   setTimeout(() => {
     try { renderExpandChart(factory); } catch(e) { console.warn('chart err', e); }
   }, 100);
+}
+
+function setupExpandYearSelector(factory) {
+  const container = document.getElementById('chart-expand-year-selector');
+  const select = document.getElementById('history-year-select-expand');
+  if (!container || !select) return;
+
+  const years = getHistoryYears(factory.name);
+  if (!years || years.length === 0) {
+    container.style.display = 'none';
+    return;
+  }
+
+  container.style.display = 'flex';
+  container.style.alignItems = 'center';
+  container.style.gap = '6px';
+
+  // Sync with detail panel's current selection
+  const currentVal = document.getElementById('history-year-select')
+    ? Number(document.getElementById('history-year-select').value) : null;
+
+  select.innerHTML = years.slice().reverse().map(y => {
+    const buddhist = y + 543;
+    const isCurrent = y === (typeof DATA_YEAR !== 'undefined' ? DATA_YEAR - 543 : 2026);
+    return `<option value="${y}" ${y === currentVal ? 'selected' : isCurrent && !currentVal ? 'selected' : ''}>${buddhist} (${y})</option>`;
+  }).join('');
+}
+
+function onExpandYearChange(yearStr) {
+  // Sync back to detail panel's year selector
+  const detailSelect = document.getElementById('history-year-select');
+  if (detailSelect) detailSelect.value = yearStr;
+  onHistoryYearChange(yearStr);
+
+  // Re-render expand chart
+  if (!selectedFactoryId) return;
+  const factory = MOCK_DATA.find(f => f.id === selectedFactoryId);
+  if (!factory) return;
+  try { renderExpandChartSummary(factory); } catch(e) {}
+  try { renderExpandChart(factory); } catch(e) {}
 }
 
 function closeExpandChart() {

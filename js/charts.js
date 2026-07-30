@@ -196,13 +196,50 @@ function renderTrendChart(factory) {
   }
 
   trendChart = new Chart(ctx, createChartConfig(data, 9));
+
+  // Override tooltip year for historical data
+  if (useHistory && trendChart) {
+    const buddhist = selectedYear + 543;
+    trendChart.options.plugins.tooltip.callbacks.title = function(items) {
+      return `เดือน ${items[0].label} ${buddhist}`;
+    };
+    trendChart.update('none');
+  }
 }
 
 function renderExpandChart(factory) {
   if (expandChartInstance) { expandChartInstance.destroy(); expandChartInstance = null; }
   const ctx = document.getElementById('trend-chart-expand');
   if (!ctx) return;
-  const data = buildChartData(factory);
+
+  const selectedYear = typeof getSelectedHistoryYear === 'function' ? getSelectedHistoryYear() : null;
+  const histYears = typeof getHistoryYears === 'function' ? getHistoryYears(factory.name) : [];
+  const useHistory = selectedYear && histYears.includes(selectedYear);
+
+  let data;
+  if (useHistory) {
+    data = buildHistoryChartData(factory, selectedYear);
+    // Update labels with year for historical data
+    if (data && data.labels.length > 12) {
+      const buddhist = selectedYear + 543;
+      const months = getHistoryMonths(factory.name, selectedYear);
+      if (months) {
+        const monthKeys = Object.keys(months).sort((a, b) => Number(a) - Number(b));
+        data.labels = monthKeys.map(m => HISTORY_MONTH_NAMES[Number(m) - 1] + ' ' + buddhist);
+      }
+    }
+  } else {
+    data = buildChartData(factory);
+  }
   if (!data) return;
-  expandChartInstance = new Chart(ctx, createChartConfig(data, 12));
+
+  const cfg = createChartConfig(data, 12);
+  // Override tooltip title to show correct year
+  if (useHistory) {
+    const buddhist = selectedYear + 543;
+    cfg.options.plugins.tooltip.callbacks.title = function(items) {
+      return `เดือน ${items[0].label} ${buddhist}`;
+    };
+  }
+  expandChartInstance = new Chart(ctx, cfg);
 }
