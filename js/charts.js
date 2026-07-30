@@ -15,7 +15,7 @@ function getChartColors() {
   };
 }
 
-const DL_DISPLAY = { BOD: 2, COD: 40, TDS: 3000, TSS: 200, FOG: 3 };
+const DL_DISPLAY = { BOD: 2, COD: 40, TDS: 3000, SS: 5, FOG: 3, Surfactant: 0.4, Color: 20, Ni: 0.03, TKN: 5, Zn: 0.03, 'Cr6+': 0.05, Pb: 0.03 };
 
 function processDatasetWithDL(label, rawData, belowDL, baseConfig, colors) {
   const dlLimit = DL_DISPLAY[label];
