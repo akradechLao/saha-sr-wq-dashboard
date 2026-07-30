@@ -55,13 +55,11 @@ function processDatasetWithDL(label, rawData, belowDL, baseConfig, colors) {
   };
 }
 
-function buildChartData(factory) {
-  const md = factory.monthlyData;
+function buildChartDataFromMonthly(md, dl) {
   if (!md || !md.BOD) return null;
-
   const colors = getChartColors();
-  const labels = MONTH_LABELS.slice(0, md.BOD.length);
-  const dl = factory.belowDL || {};
+  const monthCount = md.BOD.length;
+  const labels = MONTH_LABELS.slice(0, monthCount);
 
   const rawDefs = [
     { label: 'BOD', raw: md.BOD, borderColor: '#d4a017', backgroundColor: 'rgba(212, 160, 23, 0.08)', borderWidth: 2, tension: 0.35, fill: true, pointRadius: 3, pointHoverRadius: 6, yAxisID: 'y' },
@@ -71,11 +69,45 @@ function buildChartData(factory) {
     md.Temp ? { label: 'Temp', raw: md.Temp, borderColor: '#ef4444', backgroundColor: 'rgba(239, 68, 68, 0.06)', borderWidth: 2, borderDash: [5, 3], tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 5, yAxisID: 'y1' } : null,
     md.TDS ? { label: 'TDS', raw: md.TDS, borderColor: '#06b6d4', borderWidth: 1.5, tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 4, yAxisID: 'y2', borderDash: [3, 2] } : null,
     md.FOG ? { label: 'FOG', raw: md.FOG, borderColor: '#84cc16', borderWidth: 1.5, tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 4, yAxisID: 'y2', borderDash: [2, 2] } : null,
+    md.Surfactant ? { label: 'Surfactant', raw: md.Surfactant, borderColor: '#ec4899', borderWidth: 1.5, tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 4, yAxisID: 'y2', borderDash: [6, 2] } : null,
+    md.Color ? { label: 'Color', raw: md.Color, borderColor: '#8b5cf6', borderWidth: 1.5, tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 4, yAxisID: 'y2', borderDash: [2, 4] } : null,
   ].filter(Boolean);
 
-  const datasets = rawDefs.map(def => processDatasetWithDL(def.label, def.raw, dl, def, colors));
-
+  const datasets = rawDefs.map(def => processDatasetWithDL(def.label, def.raw, dl || {}, def, colors));
   return { labels, datasets, colors };
+}
+
+function buildChartData(factory) {
+  return buildChartDataFromMonthly(factory.monthlyData, factory.belowDL);
+}
+
+function buildHistoryChartData(factory, year) {
+  const months = getHistoryMonths(factory.name, year);
+  if (!months) return null;
+
+  const monthKeys = Object.keys(months).sort((a, b) => Number(a) - Number(b));
+  const md = {};
+  monthKeys.forEach(m => {
+    const d = months[m];
+    Object.keys(d).forEach(k => {
+      if (!md[k]) md[k] = [];
+      md[k].push(d[k]);
+    });
+  });
+
+  const histDL = getHistoryDL(factory.name, year) || {};
+  const dl = {};
+  monthKeys.forEach((m, i) => {
+    const mDL = histDL[m];
+    if (mDL) {
+      Object.keys(mDL).forEach(k => {
+        if (!dl[k]) dl[k] = new Array(monthKeys.length).fill(false);
+        dl[k][i] = true;
+      });
+    }
+  });
+
+  return buildChartDataFromMonthly(md, dl);
 }
 
 function createChartConfig(data, fontSize) {
@@ -139,30 +171,27 @@ function renderTrendChart(factory) {
   if (trendChart) { trendChart.destroy(); trendChart = null; }
   const ctx = document.getElementById('trend-chart');
   if (!ctx) return;
-  const data = buildChartData(factory);
+
+  const selectedYear = typeof getSelectedHistoryYear === 'function' ? getSelectedHistoryYear() : null;
+  const histYears = typeof getHistoryYears === 'function' ? getHistoryYears(factory.name) : [];
+  const useHistory = selectedYear && histYears.includes(selectedYear);
+
+  let data;
+  if (useHistory) {
+    data = buildHistoryChartData(factory, selectedYear);
+  } else {
+    data = buildChartData(factory);
+  }
   if (!data) return;
 
-  // เพิ่มข้อมูลย้อนหลังถ้ามี
-  if (typeof getHistoricalMonths === 'function') {
-    const hist = getHistoricalMonths(factory.name);
-    if (hist) {
-      const years = Object.keys(hist).sort();
-      years.forEach(year => {
-        const md = hist[year];
-        if (!md) return;
-        const yearLabel = year;
-        const monthNames = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
-        const monthCount = Math.max(...Object.keys(md).map(Number).filter(n => !isNaN(n))) + 1;
-        const labels = [];
-        for (let i = 0; i < monthCount; i++) {
-          labels.push(`${monthNames[i]} ${yearLabel}`);
-        }
-        data.labels = labels.concat(data.labels);
-
-        if (md.BOD) data.datasets.forEach(ds => {
-          if (ds.label === 'BOD') ds.data = Object.values(md).concat(ds.data);
-        });
-      });
+  // For historical data with >12 months, show YYYY labels
+  if (useHistory && data.labels.length > 12) {
+    const buddhist = selectedYear + 543;
+    const monthNames = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+    const months = getHistoryMonths(factory.name, selectedYear);
+    if (months) {
+      const monthKeys = Object.keys(months).sort((a, b) => Number(a) - Number(b));
+      data.labels = monthKeys.map(m => monthNames[Number(m) - 1] + ' ' + buddhist);
     }
   }
 

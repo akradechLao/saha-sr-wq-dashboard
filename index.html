@@ -131,6 +131,10 @@
         <div class="param-grid" id="param-grid"></div>
         <div class="detail-chart" id="detail-chart" onclick="expandChart()" style="cursor:pointer;">
           <h3>📈 แนวโน้มค่ารายเดือนย้อนหลัง <span style="font-size:0.55rem;color:var(--text-muted);font-weight:400;">(คลิกเพื่อขยาย)</span></h3>
+          <div id="chart-year-selector" class="chart-year-selector" style="display:none;">
+            <label style="font-size:0.75rem;color:var(--text-muted);margin-right:6px;">ปี:</label>
+            <select id="history-year-select" onchange="onHistoryYearChange(this.value)" style="font-size:0.8rem;padding:2px 6px;border-radius:4px;border:1px solid var(--border);background:var(--bg-card);color:var(--text);"></select>
+          </div>
           <div id="chart-summary" class="chart-summary"></div>
           <div class="chart-container">
             <canvas id="trend-chart"></canvas>
@@ -222,7 +226,8 @@
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script src="data/mock-data.js?v=2"></script>
   <script src="js/map.js?v=2"></script>
-  <script src="js/charts.js?v=2"></script>
+  <script src="js/history.js?v=1"></script>
+  <script src="js/charts.js?v=3"></script>
   <script src="js/upload.js"></script>
   <script src="js/app.js?v=2"></script>
 

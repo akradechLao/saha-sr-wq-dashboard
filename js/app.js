@@ -36,6 +36,13 @@ function initApp() {
   });
 
   window.addEventListener('resize', handleResize);
+
+  // Load historical data in background
+  if (typeof loadHistoricalData === 'function') {
+    loadHistoricalData().then(data => {
+      if (data) console.log('Historical data loaded:', Object.keys(data).length, 'factories');
+    });
+  }
 }
 
 function handleResize() {
@@ -272,6 +279,9 @@ function showDetail(factory) {
 
   renderParamGrid(factory);
   try { renderChartSummary(factory, 'chart-summary'); } catch(e) {}
+
+  // Setup history year selector
+  setupHistoryYearSelector(factory);
   renderTrendChart(factory);
 
   setTimeout(() => {
@@ -346,6 +356,49 @@ function renderParamGrid(factory) {
       </div>
     </div>
   `).join('');
+}
+
+/* ============ HISTORY YEAR SELECTOR ============ */
+let currentHistoryYear = null;
+
+function setupHistoryYearSelector(factory) {
+  const container = document.getElementById('chart-year-selector');
+  const select = document.getElementById('history-year-select');
+  if (!container || !select) return;
+
+  const years = getHistoryYears(factory.name);
+  if (!years || years.length === 0) {
+    container.style.display = 'none';
+    currentHistoryYear = null;
+    return;
+  }
+
+  container.style.display = 'flex';
+  container.style.alignItems = 'center';
+  container.style.gap = '6px';
+  container.style.marginBottom = '6px';
+
+  select.innerHTML = years.slice().reverse().map(y => {
+    const buddhist = y + 543;
+    const isCurrent = y === new Date().getFullYear() || y === (typeof DATA_YEAR !== 'undefined' ? DATA_YEAR - 543 : 2026);
+    return `<option value="${y}" ${isCurrent ? 'selected' : ''}>${buddhist} (${y})</option>`;
+  }).join('');
+
+  currentHistoryYear = Number(select.value);
+}
+
+function onHistoryYearChange(yearStr) {
+  currentHistoryYear = Number(yearStr);
+  if (!selectedFactoryId) return;
+  const factory = MOCK_DATA.find(f => f.id === selectedFactoryId);
+  if (!factory) return;
+
+  renderTrendChart(factory);
+  try { renderChartSummary(factory, 'chart-summary'); } catch(e) {}
+}
+
+function getSelectedHistoryYear() {
+  return currentHistoryYear;
 }
 
 function closeDetail() {
