@@ -1,5 +1,5 @@
 let trendChart = null;
-const MONTH_LABELS = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.'];
+const MONTH_LABELS = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
 
 function getChartColors() {
   const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
@@ -59,21 +59,40 @@ function buildChartDataFromMonthly(md, dl) {
   if (!md || !md.BOD) return null;
   const colors = getChartColors();
   const monthCount = md.BOD.length;
-  const labels = MONTH_LABELS.slice(0, monthCount);
+  const labels = MONTH_LABELS.slice(0, 12);
+
+  function padTo12(arr) {
+    if (!arr) return new Array(12).fill(null);
+    const padded = arr.map(v => v);
+    while (padded.length < 12) padded.push(null);
+    return padded;
+  }
+
+  function padDLTo12(arr) {
+    if (!arr) return new Array(12).fill(false);
+    const padded = arr.map(v => v);
+    while (padded.length < 12) padded.push(false);
+    return padded;
+  }
+
+  const dlPadded = {};
+  if (dl) {
+    Object.keys(dl).forEach(k => { dlPadded[k] = padDLTo12(dl[k]); });
+  }
 
   const rawDefs = [
-    { label: 'BOD', raw: md.BOD, borderColor: '#d4a017', backgroundColor: 'rgba(212, 160, 23, 0.08)', borderWidth: 2, tension: 0.35, fill: true, pointRadius: 3, pointHoverRadius: 6, yAxisID: 'y' },
-    { label: 'COD', raw: md.COD, borderColor: '#3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.06)', borderWidth: 2, tension: 0.35, fill: false, pointRadius: 3, pointHoverRadius: 6, yAxisID: 'y1' },
-    md.SS ? { label: 'SS', raw: md.SS, borderColor: '#f97316', borderWidth: 1.5, tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 5, yAxisID: 'y', borderDash: [4, 2] } : null,
-    md.pH ? { label: 'pH', raw: md.pH, borderColor: '#a855f7', backgroundColor: 'rgba(168, 85, 247, 0.06)', borderWidth: 2, tension: 0.35, fill: false, pointRadius: 3, pointHoverRadius: 5, yAxisID: 'y3', hidden: true } : null,
-    md.Temp ? { label: 'Temp', raw: md.Temp, borderColor: '#ef4444', backgroundColor: 'rgba(239, 68, 68, 0.06)', borderWidth: 2, borderDash: [5, 3], tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 5, yAxisID: 'y1' } : null,
-    md.TDS ? { label: 'TDS', raw: md.TDS, borderColor: '#06b6d4', borderWidth: 1.5, tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 4, yAxisID: 'y2', borderDash: [3, 2] } : null,
-    md.FOG ? { label: 'FOG', raw: md.FOG, borderColor: '#84cc16', borderWidth: 1.5, tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 4, yAxisID: 'y2', borderDash: [2, 2] } : null,
-    md.Surfactant ? { label: 'Surfactant', raw: md.Surfactant, borderColor: '#ec4899', borderWidth: 1.5, tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 4, yAxisID: 'y2', borderDash: [6, 2] } : null,
-    md.Color ? { label: 'Color', raw: md.Color, borderColor: '#8b5cf6', borderWidth: 1.5, tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 4, yAxisID: 'y2', borderDash: [2, 4] } : null,
+    { label: 'BOD', raw: padTo12(md.BOD), borderColor: '#d4a017', backgroundColor: 'rgba(212, 160, 23, 0.08)', borderWidth: 2, tension: 0.35, fill: true, pointRadius: 3, pointHoverRadius: 6, yAxisID: 'y', spanGaps: true },
+    { label: 'COD', raw: padTo12(md.COD), borderColor: '#3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.06)', borderWidth: 2, tension: 0.35, fill: false, pointRadius: 3, pointHoverRadius: 6, yAxisID: 'y1', spanGaps: true },
+    md.SS ? { label: 'SS', raw: padTo12(md.SS), borderColor: '#f97316', borderWidth: 1.5, tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 5, yAxisID: 'y', borderDash: [4, 2], spanGaps: true } : null,
+    md.pH ? { label: 'pH', raw: padTo12(md.pH), borderColor: '#a855f7', backgroundColor: 'rgba(168, 85, 247, 0.06)', borderWidth: 2, tension: 0.35, fill: false, pointRadius: 3, pointHoverRadius: 5, yAxisID: 'y3', hidden: true, spanGaps: true } : null,
+    md.Temp ? { label: 'Temp', raw: padTo12(md.Temp), borderColor: '#ef4444', backgroundColor: 'rgba(239, 68, 68, 0.06)', borderWidth: 2, borderDash: [5, 3], tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 5, yAxisID: 'y1', spanGaps: true } : null,
+    md.TDS ? { label: 'TDS', raw: padTo12(md.TDS), borderColor: '#06b6d4', borderWidth: 1.5, tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 4, yAxisID: 'y2', borderDash: [3, 2], spanGaps: true } : null,
+    md.FOG ? { label: 'FOG', raw: padTo12(md.FOG), borderColor: '#84cc16', borderWidth: 1.5, tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 4, yAxisID: 'y2', borderDash: [2, 2], spanGaps: true } : null,
+    md.Surfactant ? { label: 'Surfactant', raw: padTo12(md.Surfactant), borderColor: '#ec4899', borderWidth: 1.5, tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 4, yAxisID: 'y2', borderDash: [6, 2], spanGaps: true } : null,
+    md.Color ? { label: 'Color', raw: padTo12(md.Color), borderColor: '#8b5cf6', borderWidth: 1.5, tension: 0.35, fill: false, pointRadius: 2, pointHoverRadius: 4, yAxisID: 'y2', borderDash: [2, 4], spanGaps: true } : null,
   ].filter(Boolean);
 
-  const datasets = rawDefs.map(def => processDatasetWithDL(def.label, def.raw, dl || {}, def, colors));
+  const datasets = rawDefs.map(def => processDatasetWithDL(def.label, def.raw, dlPadded, def, colors));
   return { labels, datasets, colors };
 }
 
@@ -158,9 +177,9 @@ function createChartConfig(data, fontSize) {
       },
       scales: {
         x: { ticks: { color: data.colors.textMuted, font: { size: fs } }, grid: { color: data.colors.grid, drawBorder: false } },
-        y: { position: 'left', title: { display: true, text: 'BOD / SS', color: data.colors.textMuted, font: { size: fs } }, ticks: { color: data.colors.textMuted, font: { size: fs } }, grid: { color: data.colors.grid, drawBorder: false } },
-        y1: { position: 'right', title: { display: true, text: 'COD / Temp', color: data.colors.textMuted, font: { size: fs } }, ticks: { color: data.colors.textMuted, font: { size: fs } }, grid: { drawOnChartArea: false } },
-        y2: { display: false, position: 'right', ticks: { color: data.colors.textMuted, font: { size: fs - 1 } }, grid: { drawOnChartArea: false } },
+        y: { position: 'left', beginAtZero: true, title: { display: true, text: 'BOD / SS', color: data.colors.textMuted, font: { size: fs } }, ticks: { color: data.colors.textMuted, font: { size: fs } }, grid: { color: data.colors.grid, drawBorder: false } },
+        y1: { position: 'right', beginAtZero: true, title: { display: true, text: 'COD / Temp', color: data.colors.textMuted, font: { size: fs } }, ticks: { color: data.colors.textMuted, font: { size: fs } }, grid: { drawOnChartArea: false } },
+        y2: { display: false, position: 'right', beginAtZero: true, ticks: { color: data.colors.textMuted, font: { size: fs - 1 } }, grid: { drawOnChartArea: false } },
         y3: { display: false, position: 'left', min: 4, max: 10, ticks: { color: data.colors.textMuted, font: { size: fs - 1 } }, grid: { drawOnChartArea: false } }
       }
     }
@@ -184,15 +203,10 @@ function renderTrendChart(factory) {
   }
   if (!data) return;
 
-  // For historical data with >12 months, show YYYY labels
-  if (useHistory && data.labels.length > 12) {
+  // For historical data, append year to month labels
+  if (useHistory) {
     const buddhist = selectedYear + 543;
-    const monthNames = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
-    const months = getHistoryMonths(factory.name, selectedYear);
-    if (months) {
-      const monthKeys = Object.keys(months).sort((a, b) => Number(a) - Number(b));
-      data.labels = monthKeys.map(m => monthNames[Number(m) - 1] + ' ' + buddhist);
-    }
+    data.labels = data.labels.map(l => l + ' ' + buddhist);
   }
 
   trendChart = new Chart(ctx, createChartConfig(data, 9));
@@ -219,14 +233,10 @@ function renderExpandChart(factory) {
   let data;
   if (useHistory) {
     data = buildHistoryChartData(factory, selectedYear);
-    // Update labels with year for historical data
-    if (data && data.labels.length > 12) {
+    // Append year to labels for historical data
+    if (data) {
       const buddhist = selectedYear + 543;
-      const months = getHistoryMonths(factory.name, selectedYear);
-      if (months) {
-        const monthKeys = Object.keys(months).sort((a, b) => Number(a) - Number(b));
-        data.labels = monthKeys.map(m => HISTORY_MONTH_NAMES[Number(m) - 1] + ' ' + buddhist);
-      }
+      data.labels = data.labels.map(l => l + ' ' + buddhist);
     }
   } else {
     data = buildChartData(factory);
@@ -238,7 +248,7 @@ function renderExpandChart(factory) {
   if (useHistory) {
     const buddhist = selectedYear + 543;
     cfg.options.plugins.tooltip.callbacks.title = function(items) {
-      return `เดือน ${items[0].label} ${buddhist}`;
+      return `เดือน ${items[0].label}`;
     };
   }
   expandChartInstance = new Chart(ctx, cfg);
