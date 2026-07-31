@@ -539,7 +539,9 @@ const MOCK_DATA = [
     nameTh: 'ราชพัฒนา เอ็นเนอร์ยี (จุดที่1)',
     industry: 'โรงไฟฟ้า',
     address: '636 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0985, lng: 100.9583,
+    // Ratchaphatthana Energy (Existing)
+    lat: 13.098581, lng: 100.960303,
+    //lat: 13.0985, lng: 100.9583,
     current: { bod: 2.0, cod: 40.0, do: 8.0, ph: 7.7, temp: 31.0, tds: 858.0, tss: 8.0 },
     monthlyData: {
       BOD: [2.0, 2.0, 2.0, 2.0, 2.0, 2.0],
@@ -556,7 +558,9 @@ const MOCK_DATA = [
     nameTh: 'ราชพัฒนา เอ็นเนอร์ยี (จุดที่2)',
     industry: 'โรงไฟฟ้า',
     address: '636 หมู่ 11 ถ.สุขาภิบาล 8 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0987, lng: 100.9588,
+    // Ratchaphatthana Energy (Expansion)
+    lat: 13.099289, lng: 100.957876,
+    //lat: 13.0987, lng: 100.9588,
     current: { bod: 2.0, cod: 40.0, do: 7.4, ph: 7.3, temp: 31.0, tds: 700.0, tss: 5.0 },
     monthlyData: {
       BOD: [2.1, 2.0, 2.0, 2.0, 2.0, 2.0],
