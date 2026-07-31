@@ -562,6 +562,10 @@ document.getElementById('chart-expand-overlay').addEventListener('click', functi
   if (e.target === this) closeExpandChart();
 });
 
+document.getElementById('mh-detail-panel').addEventListener('click', function(e) {
+  if (e.target === this) closeMHDetail();
+});
+
 /* ============ MANHOLE ============ */
 let selectedMHId = null;
 let mhTrendChart = null;
@@ -601,12 +605,6 @@ function selectMH(id) {
   const mh = MH_DATA.find(m => m.id === id);
   if (!mh) return;
 
-  const term = (document.getElementById('search-factory').value || '').toLowerCase();
-  const filtered = term ? MH_DATA.filter(m =>
-    m.name.toLowerCase().includes(term) || m.nameTh.includes(term) || m.zone.includes(term)
-  ) : MH_DATA;
-  renderMHList(filtered);
-
   showMHDetail(mh);
 
   Object.keys(mhMarkers).forEach(key => {
@@ -616,18 +614,18 @@ function selectMH(id) {
   if (marker) {
     try { const el = marker.getElement(); if (el) el.classList.add('selected'); } catch(e) {}
     map.panTo(marker.getLatLng(), { animate: false });
+    setTimeout(() => { marker.openPopup(); }, 100);
+  }
+
+  if (window.innerWidth <= 900) {
+    closeSidebar();
   }
 }
 
 function showMHDetail(mh) {
   const panel = document.getElementById('mh-detail-panel');
-  const factoryPanel = document.getElementById('detail-panel');
-  const sidebar = document.getElementById('sidebar');
-
-  factoryPanel.classList.add('hidden');
+  if (!panel) return;
   panel.classList.remove('hidden');
-  panel.scrollTop = 0;
-  sidebar.classList.add('has-detail');
 
   document.getElementById('mh-detail-name').textContent = `${mh.name} — ${mh.nameTh}`;
   document.getElementById('mh-detail-zone').textContent = mh.zone;
@@ -646,9 +644,8 @@ function showMHDetail(mh) {
 
 function closeMHDetail() {
   const panel = document.getElementById('mh-detail-panel');
-  panel.classList.add('hidden');
+  if (panel) panel.classList.add('hidden');
   selectedMHId = null;
-  document.getElementById('sidebar').classList.remove('has-detail');
 }
 
 function renderMHParamGrid(mh) {

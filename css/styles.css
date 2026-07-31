@@ -1704,6 +1704,87 @@ body:not(.admin-mode) .coord-picker-popup {
   color: var(--text);
 }
 
+/* ============ MANHOLE OVERLAY ============ */
+.mh-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(6px);
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.mh-overlay.hidden { display: none; }
+
+.mh-overlay-content {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 14px;
+  width: 90vw;
+  max-width: 800px;
+  height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.mh-overlay-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.mh-overlay-header h2 {
+  font-size: 1rem;
+  color: var(--accent-yellow);
+  font-weight: 700;
+}
+
+.mh-overlay-header .close-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+  transition: var(--transition);
+}
+
+.mh-overlay-header .close-btn:hover {
+  background: var(--fail-bg);
+  border-color: var(--fail);
+  color: var(--fail);
+}
+
+.mh-overlay-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 20px 20px;
+}
+
+.mh-overlay-body .param-grid {
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+.mh-overlay-body .param-card {
+  padding: 10px 12px;
+}
+
 /* ============ MANHOLE ICON ============ */
 .mh-icon-wrapper {
   background: none !important;
