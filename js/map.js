@@ -30,17 +30,15 @@ function loadSavedCoords() {
     const saved = JSON.parse(raw);
     if (typeof saved !== 'object' || saved === null) return;
     Object.keys(saved).forEach(id => {
-      const numId = parseInt(id);
-      const factory = MOCK_DATA.find(f => f.id === numId);
-      if (factory && saved[id] && typeof saved[id].lat === 'number' && typeof saved[id].lng === 'number') {
+      if (!saved[id] || typeof saved[id].lat !== 'number' || typeof saved[id].lng !== 'number') return;
+      const factory = MOCK_DATA.find(f => f.id === parseInt(id));
+      const mh = typeof MH_DATA !== 'undefined' ? MH_DATA.find(m => m.id === id) : null;
+      if (factory) {
         factory.lat = saved[id].lat;
         factory.lng = saved[id].lng;
-      } else if (typeof MH_DATA !== 'undefined') {
-        const mh = MH_DATA.find(m => m.id === numId);
-        if (mh && saved[id] && typeof saved[id].lat === 'number' && typeof saved[id].lng === 'number') {
-          mh.lat = saved[id].lat;
-          mh.lng = saved[id].lng;
-        }
+      } else if (mh) {
+        mh.lat = saved[id].lat;
+        mh.lng = saved[id].lng;
       }
     });
   } catch (e) {
@@ -66,12 +64,11 @@ function exportSavedCoords() {
   }
   let code = '';
   Object.keys(saved).forEach(id => {
-    const numId = parseInt(id);
-    const f = MOCK_DATA.find(f => f.id === numId);
+    const f = MOCK_DATA.find(f => f.id === parseInt(id));
     if (f) {
       code += `// ${f.name}\nlat: ${saved[id].lat}, lng: ${saved[id].lng}\n\n`;
     } else if (typeof MH_DATA !== 'undefined') {
-      const mh = MH_DATA.find(m => m.id === numId);
+      const mh = MH_DATA.find(m => m.id === id);
       if (mh) {
         code += `// ${mh.name} (${mh.nameTh})\nlat: ${saved[id].lat}, lng: ${saved[id].lng}\n\n`;
       }
