@@ -116,8 +116,9 @@ function createFactoryIcon(color) {
 }
 
 function addFactoryMarker(factory) {
-  const pass = isPass(factory.current);
-  const color = pass ? '#22c55e' : '#ef4444';
+  const hasCurrent = !!factory.current;
+  const pass = hasCurrent ? isPass(factory.current) : false;
+  const color = !hasCurrent ? '#64748b' : (pass ? '#22c55e' : '#ef4444');
 
   const marker = L.marker([factory.lat, factory.lng], {
     icon: createFactoryIcon(color)
@@ -156,6 +157,18 @@ function addFactoryMarker(factory) {
 
 function buildPopupHTML(factory) {
   const d = factory.current;
+  if (!d) {
+    return `<div class="popup-content">
+      <div class="popup-header">
+        <h3>${escapeHtml(factory.name)}</h3>
+        <div class="popup-type">${escapeHtml(factory.nameTh)}</div>
+        <span class="popup-industry-tag">${escapeHtml(factory.industry)}</span>
+      </div>
+      <div style="padding:12px;text-align:center;color:var(--text-muted);font-size:0.8rem;">
+        ยังไม่มีข้อมูลตรวจวัด
+      </div>
+    </div>`;
+  }
   const checks = getParamChecks(d);
 
   const rows = [
@@ -210,6 +223,7 @@ function buildPopupHTML(factory) {
 }
 
 function isPass(d) {
+  if (!d) return false;
   return d.bod <= 120 && d.cod <= 500 && d.do >= 2 && d.ph >= 5.5 && d.ph <= 9 && d.temp <= 45
     && (d.tds === undefined || d.tds <= 3000)
     && (d.tss === undefined || d.tss <= 200)

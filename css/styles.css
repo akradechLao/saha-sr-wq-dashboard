@@ -480,7 +480,11 @@ body {
 .status-indicator.fail {
   background: var(--fail);
   box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
-  animation: pulse-fail 2s infinite;
+}
+
+.status-indicator.no-data {
+  background: #64748b;
+  box-shadow: 0 0 6px rgba(100, 116, 139, 0.3);
 }
 
 @keyframes pulse-fail {

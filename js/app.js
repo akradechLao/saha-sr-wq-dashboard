@@ -175,7 +175,8 @@ function renderFactoryList(factories) {
   }
 
   list.innerHTML = factories.map(factory => {
-    const pass = isPass(factory.current);
+    const hasCurrent = !!factory.current;
+    const pass = hasCurrent ? isPass(factory.current) : null;
     const isActive = selectedFactoryId === factory.id;
     const photoHTML = factory.photo
       ? `<img class="factory-item-photo" src="${escapeHtml(factory.photo)}" alt="${escapeHtml(factory.name)}" loading="lazy" onerror="this.style.display='none'">`
@@ -190,8 +191,8 @@ function renderFactoryList(factories) {
           <div class="factory-item-name">${escapeHtml(factory.name)}</div>
           <div class="factory-item-type">${escapeHtml(factory.industry)}</div>
         </div>
-        <div class="status-indicator ${pass ? 'pass' : 'fail'}"
-             title="${pass ? 'ผ่านเกณฑ์' : 'ไม่ผ่านเกณฑ์'}"></div>
+        <div class="status-indicator ${hasCurrent ? (pass ? 'pass' : 'fail') : 'no-data'}"
+             title="${hasCurrent ? (pass ? 'ผ่านเกณฑ์' : 'ไม่ผ่านเกณฑ์') : 'ยังไม่มีข้อมูล'}"></div>
       </div>
     `;
   }).join('');
