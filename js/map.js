@@ -403,3 +403,132 @@ function copyCoord(text) {
     }
   });
 }
+
+/* ============ MANHOLE LAYER ============ */
+let mhMarkers = {};
+let currentLayer = 'factory';
+const MH_DL_DISPLAY = { BOD: 2, COD: 40, SS: 5, FOG: 3, TDS: 3000, pH: 5.5 };
+
+function createMHIcon(color) {
+  return L.divIcon({
+    className: 'mh-icon-wrapper',
+    html: `<svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="11" cy="11" r="9" fill="${color}" fill-opacity="0.25" stroke="${color}" stroke-width="2"/>
+      <circle cx="11" cy="11" r="4" fill="${color}"/>
+    </svg>`,
+    iconSize: [22, 22],
+    iconAnchor: [11, 11],
+    popupAnchor: [0, -12]
+  });
+}
+
+function isMHPass(d) {
+  if (!d) return false;
+  return d.bod <= 120 && d.cod <= 500 && d.tss <= 200 && d.ph >= 5.5 && d.ph <= 9 && (d.fog === undefined || d.fog <= 10);
+}
+
+function buildMHPopupHTML(mh) {
+  const d = mh.current;
+  if (!d) {
+    return `<div class="popup-content">
+      <div class="popup-header">
+        <h3>${escapeHtml(mh.name)}</h3>
+        <div class="popup-type">${escapeHtml(mh.nameTh)}</div>
+        <span class="popup-industry-tag">${escapeHtml(mh.zone)}</span>
+      </div>
+      <div style="padding:12px;text-align:center;color:var(--text-muted);font-size:0.8rem;">ยังไม่มีข้อมูลตรวจวัด</div>
+    </div>`;
+  }
+
+  const checks = { bod: d.bod <= 120, cod: d.cod <= 500, ss: d.tss <= 200, ph: d.ph >= 5.5 && d.ph <= 9, fog: !d.fog || d.fog <= 10 };
+
+  const rows = [
+    { label: 'BOD', value: d.bod, unit: 'mg/L', pass: checks.bod, standard: '≤ 120' },
+    { label: 'COD', value: d.cod, unit: 'mg/L', pass: checks.cod, standard: '≤ 500' },
+    { label: 'SS', value: d.tss, unit: 'mg/L', pass: checks.ss, standard: '≤ 200' },
+    { label: 'pH', value: d.ph, unit: '', pass: checks.ph, standard: '5.5–9.0' },
+  ];
+  if (d.fog !== undefined && d.fog > 0) {
+    rows.push({ label: 'FOG', value: d.fog, unit: 'mg/L', pass: checks.fog, standard: '≤ 10' });
+  }
+
+  const paramsHTML = rows.map(r => `
+    <div class="popup-param">
+      <div class="popup-param-left">
+        <span class="popup-param-label">${r.label}</span>
+        <span class="popup-param-standard">(${r.standard} ${r.unit})</span>
+      </div>
+      <span class="param-val ${r.pass ? 'pass' : 'fail'}">
+        ${r.value} ${r.unit}
+        <span class="param-check">${r.pass ? '✓' : '✗'}</span>
+      </span>
+    </div>
+  `).join('');
+
+  const allPass = Object.values(checks).every(Boolean);
+
+  return `
+    <div class="popup-content">
+      <div class="popup-header">
+        <h3>${escapeHtml(mh.name)}</h3>
+        <div class="popup-type">${escapeHtml(mh.nameTh)}</div>
+        <span class="popup-industry-tag">${escapeHtml(mh.zone)}</span>
+      </div>
+      <div class="popup-params">${paramsHTML}</div>
+      <div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border);text-align:center;">
+        <span style="font-size:0.72rem;color:${allPass ? 'var(--pass)' : 'var(--fail)'};font-weight:600;">
+          ${allPass ? '✓ ผ่านเกณฑ์มาตรฐานทั้งหมด' : '✗ มีค่าไม่ผ่านเกณฑ์'}
+        </span>
+      </div>
+    </div>
+  `;
+}
+
+function addMHMarker(mh) {
+  const hasCurrent = !!mh.current;
+  const pass = hasCurrent ? isMHPass(mh.current) : false;
+  const color = !hasCurrent ? '#64748b' : (pass ? '#22c55e' : '#ef4444');
+
+  const marker = L.marker([mh.lat, mh.lng], { icon: createMHIcon(color) }).addTo(map);
+
+  marker.bindTooltip(`${mh.name} — ${mh.nameTh}`, {
+    sticky: true, className: 'factory-tooltip', direction: 'top', offset: [0, -12]
+  });
+  marker.on('mouseover', function () { this.openTooltip(); });
+
+  const popupHTML = buildMHPopupHTML(mh);
+  marker.bindPopup(popupHTML, { maxWidth: 300, minWidth: 240, closeButton: true, autoPan: true });
+  marker.on('click', function () { selectMH(mh.id); });
+
+  marker.mhId = mh.id;
+  mhMarkers[mh.id] = marker;
+}
+
+function switchLayer(layer) {
+  currentLayer = layer;
+
+  document.querySelectorAll('.layer-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.layer-btn[data-layer="${layer}"]`).classList.add('active');
+
+  const factoryList = document.getElementById('factory-list');
+  const mhList = document.getElementById('mh-list');
+  const searchInput = document.getElementById('search-factory');
+
+  if (layer === 'factory') {
+    Object.values(mhMarkers).forEach(m => map.removeLayer(m));
+    Object.values(factoryMarkers).forEach(m => { try { m.addTo(map); } catch(e) {} });
+    factoryList.classList.remove('hidden');
+    mhList.classList.add('hidden');
+    searchInput.placeholder = 'ค้นหาโรงงาน...';
+    closeMHDetail();
+  } else {
+    Object.values(factoryMarkers).forEach(m => map.removeLayer(m));
+    Object.values(mhMarkers).forEach(m => { try { m.addTo(map); } catch(e) {} });
+    factoryList.classList.add('hidden');
+    mhList.classList.remove('hidden');
+    searchInput.placeholder = 'ค้นหา Manhole...';
+    closeDetail();
+  }
+
+  handleSearch({ target: searchInput });
+}

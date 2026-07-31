@@ -14,6 +14,11 @@ function initApp() {
     addFactoryMarker(factory);
   });
 
+  if (typeof MH_DATA !== 'undefined') {
+    MH_DATA.forEach(mh => { addMHMarker(mh); });
+    renderMHList(MH_DATA);
+  }
+
   renderFactoryList(displayFactories);
   updateSummary();
   updateCurrentDate();
@@ -21,6 +26,7 @@ function initApp() {
 
   document.getElementById('search-factory').addEventListener('input', handleSearch);
   document.getElementById('close-detail').addEventListener('click', closeDetail);
+  document.getElementById('close-mh-detail').addEventListener('click', closeMHDetail);
   document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
   document.getElementById('sidebar-toggle').addEventListener('click', toggleSidebar);
   document.getElementById('sidebar-overlay').addEventListener('click', closeSidebar);
@@ -200,6 +206,15 @@ function renderFactoryList(factories) {
 
 function handleSearch(e) {
   const term = e.target.value.toLowerCase().trim();
+
+  if (currentLayer === 'manhole') {
+    if (!term) { renderMHList(MH_DATA); return; }
+    const filtered = MH_DATA.filter(m =>
+      m.name.toLowerCase().includes(term) || m.nameTh.includes(term) || m.zone.includes(term)
+    );
+    renderMHList(filtered);
+    return;
+  }
 
   if (!term) {
     renderFactoryList(displayFactories);
@@ -546,5 +561,183 @@ function closeExpandChart() {
 document.getElementById('chart-expand-overlay').addEventListener('click', function(e) {
   if (e.target === this) closeExpandChart();
 });
+
+/* ============ MANHOLE ============ */
+let selectedMHId = null;
+let mhTrendChart = null;
+
+function renderMHList(mhs) {
+  const list = document.getElementById('mh-list');
+  if (!list) return;
+
+  if (mhs.length === 0) {
+    list.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-muted);font-size:0.85rem;">ไม่พบจุดตรวจ</div>';
+    return;
+  }
+
+  list.innerHTML = mhs.map(mh => {
+    const pass = isMHPass(mh.current);
+    const hasData = !!mh.current;
+    const isActive = selectedMHId === mh.id;
+
+    return `
+      <div class="factory-item ${isActive ? 'active' : ''}"
+           data-id="${mh.id}"
+           onclick="selectMH(${mh.id})">
+        <div class="factory-item-photo-placeholder">🕳️</div>
+        <div class="factory-item-info">
+          <div class="factory-item-name">${escapeHtml(mh.name)} <span style="color:var(--text-muted);font-size:0.7rem;">${escapeHtml(mh.nameTh)}</span></div>
+          <div class="factory-item-type">${escapeHtml(mh.zone)}</div>
+        </div>
+        <div class="status-indicator ${hasData ? (pass ? 'pass' : 'fail') : 'no-data'}"
+             title="${hasData ? (pass ? 'ผ่านเกณฑ์' : 'ไม่ผ่านเกณฑ์') : 'ยังไม่มีข้อมูล'}"></div>
+      </div>
+    `;
+  }).join('');
+}
+
+function selectMH(id) {
+  selectedMHId = id;
+  const mh = MH_DATA.find(m => m.id === id);
+  if (!mh) return;
+
+  const term = (document.getElementById('search-factory').value || '').toLowerCase();
+  const filtered = term ? MH_DATA.filter(m =>
+    m.name.toLowerCase().includes(term) || m.nameTh.includes(term) || m.zone.includes(term)
+  ) : MH_DATA;
+  renderMHList(filtered);
+
+  showMHDetail(mh);
+
+  Object.keys(mhMarkers).forEach(key => {
+    try { const el = mhMarkers[key].getElement(); if (el) el.classList.remove('selected'); } catch(e) {}
+  });
+  const marker = mhMarkers[id];
+  if (marker) {
+    try { const el = marker.getElement(); if (el) el.classList.add('selected'); } catch(e) {}
+    map.panTo(marker.getLatLng(), { animate: false });
+  }
+}
+
+function showMHDetail(mh) {
+  const panel = document.getElementById('mh-detail-panel');
+  const factoryPanel = document.getElementById('detail-panel');
+  const sidebar = document.getElementById('sidebar');
+
+  factoryPanel.classList.add('hidden');
+  panel.classList.remove('hidden');
+  sidebar.classList.add('has-detail');
+
+  document.getElementById('mh-detail-name').textContent = `${mh.name} — ${mh.nameTh}`;
+  document.getElementById('mh-detail-zone').textContent = mh.zone;
+  document.getElementById('mh-detail-name-th').textContent = mh.nameTh;
+
+  const coordEl = document.getElementById('mh-detail-coords');
+  if (coordEl) coordEl.textContent = `พิกัด: ${mh.lat}, ${mh.lng}`;
+
+  renderMHParamGrid(mh);
+  renderMHChartSummary(mh, 'mh-chart-summary');
+
+  if (mh.monthlyData && mh.monthlyData.BOD) {
+    renderMHTrendChart(mh);
+  }
+}
+
+function closeMHDetail() {
+  const panel = document.getElementById('mh-detail-panel');
+  panel.classList.add('hidden');
+  selectedMHId = null;
+  document.getElementById('sidebar').classList.remove('has-detail');
+}
+
+function renderMHParamGrid(mh) {
+  const grid = document.getElementById('mh-param-grid');
+  if (!grid) return;
+  if (!mh.current) { grid.innerHTML = '<div style="color:var(--text-muted);font-size:0.8rem;padding:10px;">ยังไม่มีข้อมูลตรวจวัด</div>'; return; }
+
+  const d = mh.current;
+  const checks = {
+    bod: d.bod <= 120, cod: d.cod <= 500, ss: d.tss <= 200,
+    ph: d.ph >= 5.5 && d.ph <= 9, fog: !d.fog || d.fog <= 10
+  };
+
+  const params = [
+    { key: 'bod', label: 'BOD', value: d.bod, unit: 'mg/L', pass: checks.bod, standard: '≤ 120 mg/L' },
+    { key: 'cod', label: 'COD', value: d.cod, unit: 'mg/L', pass: checks.cod, standard: '≤ 500 mg/L' },
+    { key: 'ss', label: 'SS', value: d.tss, unit: 'mg/L', pass: checks.ss, standard: '≤ 200 mg/L' },
+    { key: 'ph', label: 'pH', value: d.ph, unit: '', pass: checks.ph, standard: '5.5 – 9.0' },
+  ];
+  if (d.fog !== undefined && d.fog > 0) params.push({ key: 'fog', label: 'FOG', value: d.fog, unit: 'mg/L', pass: checks.fog, standard: '≤ 10 mg/L' });
+
+  grid.innerHTML = params.map(p => {
+    const ps = typeof PARAM_STYLES !== 'undefined' ? PARAM_STYLES[p.label] : null;
+    const borderColor = ps ? ps.color : 'var(--border)';
+    return `
+    <div class="param-card" style="border-left:3px solid ${borderColor};">
+      <div class="param-label" style="color:${borderColor};">${p.label}</div>
+      <div class="param-value ${p.pass ? 'pass' : 'fail'}">${escapeHtml(p.value)}<span class="param-unit">${p.unit}</span></div>
+      <div class="param-status ${p.pass ? 'pass' : 'fail'}">${p.pass ? '✓ ผ่านเกณฑ์' : '✗ ไม่ผ่านเกณฑ์'} (${p.standard})</div>
+    </div>`;
+  }).join('');
+}
+
+function renderMHChartSummary(mh, containerId) {
+  const el = document.getElementById(containerId);
+  if (!el || !mh.current) { if (el) el.innerHTML = ''; return; }
+
+  const d = mh.current;
+  const checks = { bod: d.bod <= 120, cod: d.cod <= 500, ss: d.tss <= 200, ph: d.ph >= 5.5 && d.ph <= 9, fog: !d.fog || d.fog <= 10 };
+  const failed = [];
+  if (!checks.bod) failed.push(`BOD ${d.bod} mg/L (เกณฑ์ ≤ 120)`);
+  if (!checks.cod) failed.push(`COD ${d.cod} mg/L (เกณฑ์ ≤ 500)`);
+  if (!checks.ss) failed.push(`SS ${d.tss} mg/L (เกณฑ์ ≤ 200)`);
+  if (!checks.ph) failed.push(`pH ${d.ph} (เกณฑ์ 5.5–9.0)`);
+  if (!checks.fog) failed.push(`FOG ${d.fog} mg/L (เกณฑ์ ≤ 10)`);
+
+  if (failed.length === 0) {
+    el.className = 'chart-summary pass';
+    el.innerHTML = '<div class="summary-title">✓ ผ่านกฎหมายทุกรายการ</div>';
+  } else {
+    el.className = 'chart-summary fail';
+    el.innerHTML = `<div class="summary-title">✗ มี ${failed.length} รายการเกินมาตรฐาน</div>
+      <div class="summary-detail">${failed.join(' · ')}</div>`;
+  }
+}
+
+let mhTrendChartInstance = null;
+
+function renderMHTrendChart(mh) {
+  if (mhTrendChartInstance) { mhTrendChartInstance.destroy(); mhTrendChartInstance = null; }
+  const ctx = document.getElementById('mh-trend-chart');
+  if (!ctx || !mh.monthlyData) return;
+
+  const data = buildChartDataFromMonthly(mh.monthlyData, mh.belowDL);
+  if (!data) return;
+
+  mhTrendChartInstance = new Chart(ctx, createChartConfig(data, 9));
+}
+
+let expandMHChartInstance = null;
+
+function expandMHChart() {
+  if (!selectedMHId) return;
+  const mh = MH_DATA.find(m => m.id === selectedMHId);
+  if (!mh || !mh.monthlyData) return;
+
+  const overlay = document.getElementById('chart-expand-overlay');
+  overlay.classList.remove('hidden');
+  document.getElementById('chart-expand-title').textContent = `📈 ${mh.name} — ${mh.nameTh}`;
+
+  try { renderExpandChartSummary({ current: mh.current, name: mh.name }, 'chart-expand-summary'); } catch(e) {}
+
+  setTimeout(() => {
+    if (expandChartInstance) { expandChartInstance.destroy(); expandChartInstance = null; }
+    const ctx = document.getElementById('trend-chart-expand');
+    if (!ctx) return;
+    const data = buildChartDataFromMonthly(mh.monthlyData, mh.belowDL);
+    if (!data) return;
+    expandChartInstance = new Chart(ctx, createChartConfig(data, 12));
+  }, 100);
+}
 
 document.addEventListener('DOMContentLoaded', initApp);
