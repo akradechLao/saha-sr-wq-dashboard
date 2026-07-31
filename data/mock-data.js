@@ -520,7 +520,9 @@ const MOCK_DATA = [
     nameTh: 'เอสที (ประเทศไทย)',
     industry: 'อิเล็กทรอนิกส์',
     address: 'ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
-    lat: 13.0970, lng: 100.9590,
+    // S T (Thailand)
+    lat: 13.09244, lng: 100.960291,
+    //lat: 13.0970, lng: 100.9590,
     photo: 'data/photos/S T (Thailand).jpg',
     current: { bod: 2.0, cod: 40.0, do: 7.1, ph: 7.5, temp: 31.0 },
     monthlyData: {
