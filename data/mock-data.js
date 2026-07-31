@@ -520,8 +520,16 @@ const MOCK_DATA = [
     nameTh: 'เอสที (ประเทศไทย)',
     industry: 'อิเล็กทรอนิกส์',
     address: 'ต.หนองขาม อ.ศรีราชา จ.ชลบุรี 20230',
+    lat: 13.0970, lng: 100.9590,
     photo: 'data/photos/S T (Thailand).jpg',
-    hasData: false,
+    current: { bod: 2.0, cod: 40.0, do: 7.1, ph: 7.5, temp: 31.0 },
+    monthlyData: {
+      BOD: [4.3, 3.6, 2.0, 2.0, 2.0, 2.0],
+      COD: [40.0, 40.0, 40.0, 40.0, 40.0, 40.0],
+      pH: [7.1, 7.3, 7.5, 7.0, 8.0, 7.5],
+      Temp: [33, 29, 31, 30, 32, 31],
+    },
+    belowDL: { BOD: [false,false,true,true,true,true], COD: [true,true,true,true,true,true] },
   },
   {
     id: 82,
