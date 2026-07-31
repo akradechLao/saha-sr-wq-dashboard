@@ -549,6 +549,7 @@ function switchLayer(layer) {
     factoryList.classList.remove('hidden');
     mhList.classList.add('hidden');
     searchInput.placeholder = 'ค้นหาโรงงาน...';
+    document.getElementById('sidebar-title').textContent = 'รายชื่อโรงงาน';
     closeMHDetail();
   } else {
     Object.values(factoryMarkers).forEach(m => map.removeLayer(m));
@@ -556,6 +557,7 @@ function switchLayer(layer) {
     factoryList.classList.add('hidden');
     mhList.classList.remove('hidden');
     searchInput.placeholder = 'ค้นหา Manhole...';
+    document.getElementById('sidebar-title').textContent = 'จุดตรวจ Manhole';
     closeDetail();
   }
 
