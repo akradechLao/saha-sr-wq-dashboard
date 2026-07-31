@@ -509,6 +509,10 @@ body {
 .sidebar.has-detail .mh-list { display: none; }
 .sidebar.has-detail .sidebar-header { display: none; }
 
+.sidebar.has-detail {
+  overflow: visible;
+}
+
 .detail-panel-header {
   padding: 10px 14px;
   border-bottom: 1px solid var(--border);
