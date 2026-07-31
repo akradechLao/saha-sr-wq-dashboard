@@ -711,7 +711,7 @@ const MOCK_DATA = [
 /* ============ MANHOLE DATA ============ */
 const MH_DATA = [
   {
-    id: 1, name: 'MH1', nameTh: 'ด้านหน้า HST', zone: 'Phase #1',
+    id: 91, name: 'MH1', nameTh: 'ด้านหลัง HST', zone: 'Phase #1',
     lat: 13.0968, lng: 100.9610,
     current: { bod: 8.1, cod: 67, do: 0, ph: 7.2, temp: 0, tss: 11, fog: 3.0 },
     monthlyData: {
@@ -724,13 +724,13 @@ const MH_DATA = [
     belowDL: { COD: [false,false,true,false,false,false], SS: [false,false,true,false,false,false], FOG: [true,true,true,true,true,true] },
   },
   {
-    id: 2, name: 'MH2', nameTh: 'หน้าโรงงานฝั่งซ้าย TJC', zone: 'Phase #1',
+    id: 92, name: 'MH2', nameTh: 'หลังโรงงานฝั่งซ้าย TJC', zone: 'Phase #1',
     lat: 13.0955, lng: 100.9600,
     current: null,
     monthlyData: null,
   },
   {
-    id: 3, name: 'MH3', nameTh: 'หน้าโรงงานฝั่งขวา TJC', zone: 'Phase #1',
+    id: 93, name: 'MH3', nameTh: 'หน้าโรงงานฝั่งขวา TJC', zone: 'Phase #1',
     lat: 13.0953, lng: 100.9605,
     current: { bod: 26.2, cod: 77, do: 0, ph: 7.6, temp: 0, tss: 24, fog: 0 },
     monthlyData: {
@@ -743,7 +743,7 @@ const MH_DATA = [
     belowDL: { FOG: [false,false,false,false,false,false] },
   },
   {
-    id: 4, name: 'MH4', nameTh: 'ด้านหน้า RPE', zone: 'Phase #1',
+    id: 94, name: 'MH4', nameTh: 'ด้านหน้า RPE', zone: 'Phase #1',
     lat: 13.0988, lng: 100.9600,
     current: { bod: 7.3, cod: 40, do: 0, ph: 8.0, temp: 0, tss: 19, fog: 3.0 },
     monthlyData: {
@@ -756,7 +756,7 @@ const MH_DATA = [
     belowDL: { COD: [true,false,false,false,false,false], FOG: [true,true,true,true,true,true] },
   },
   {
-    id: 5, name: 'MH5', nameTh: 'ด้านหน้า RPE', zone: 'Phase #1',
+    id: 95, name: 'MH5', nameTh: 'ด้านหลัง RPE ฝั่ง TPC3', zone: 'Phase #1',
     lat: 13.0990, lng: 100.9595,
     current: { bod: 12.3, cod: 51, do: 0, ph: 8.0, temp: 0, tss: 18, fog: 3.0 },
     monthlyData: {
@@ -769,7 +769,7 @@ const MH_DATA = [
     belowDL: { BOD: [false,false,true,false,false,false], COD: [false,false,true,false,false,false], SS: [false,true,false,false,false,false], FOG: [true,true,true,true,true,true] },
   },
   {
-    id: 6, name: 'MH6', nameTh: 'ด้านหน้า ILF', zone: 'Phase #1',
+    id: 96, name: 'MH6', nameTh: 'ด้านหน้า ILF', zone: 'Phase #1',
     lat: 13.0942, lng: 100.9620,
     current: { bod: 7.1, cod: 64, do: 0, ph: 8.1, temp: 0, tss: 16, fog: 3.0 },
     monthlyData: {
@@ -782,7 +782,7 @@ const MH_DATA = [
     belowDL: { SS: [false,false,false,false,true,true], FOG: [true,true,true,true,true,true] },
   },
   {
-    id: 7, name: 'MH7', nameTh: 'ด้านหน้า ETC', zone: 'Phase #1',
+    id: 97, name: 'MH7', nameTh: 'ด้านหน้า ETC', zone: 'Phase #1',
     lat: 13.0938, lng: 100.9615,
     current: { bod: 30.4, cod: 192, do: 0, ph: 8.1, temp: 0, tss: 85, fog: 3.2 },
     monthlyData: {
@@ -795,7 +795,7 @@ const MH_DATA = [
     belowDL: { FOG: [false,true,false,true,false,true] },
   },
   {
-    id: 8, name: 'MH8', nameTh: 'ด้านหลัง SJI', zone: 'Phase #1',
+    id: 98, name: 'MH8', nameTh: 'ด้านหลัง SJI', zone: 'Phase #1',
     lat: 13.0940, lng: 100.9610,
     current: { bod: 181, cod: 641, do: 0, ph: 7.8, temp: 0, tss: 100, fog: 12 },
     monthlyData: {
@@ -808,7 +808,7 @@ const MH_DATA = [
     belowDL: {},
   },
   {
-    id: 9, name: 'MH9', nameTh: 'ท้ายโรงงาน TORA1010', zone: 'Phase #2',
+    id: 99, name: 'MH9', nameTh: 'ในโรงงาน TORA1010', zone: 'Phase #2',
     lat: 13.0925, lng: 100.9575,
     current: { bod: 85.1, cod: 301, do: 0, ph: 7.6, temp: 0, tss: 65, fog: 16.1 },
     monthlyData: {
@@ -821,7 +821,7 @@ const MH_DATA = [
     belowDL: {},
   },
   {
-    id: 10, name: 'MH10', nameTh: 'กลางโรงงาน TORA1010', zone: 'Phase #2',
+    id: 910, name: 'MH10', nameTh: 'ในโรงงาน TORA1010', zone: 'Phase #2',
     lat: 13.0928, lng: 100.9580,
     current: { bod: 3.6, cod: 64, do: 0, ph: 7.2, temp: 0, tss: 16, fog: 3.0 },
     monthlyData: {
@@ -834,7 +834,7 @@ const MH_DATA = [
     belowDL: { BOD: [false,false,false,false,false,false], FOG: [true,true,false,false,false,false] },
   },
   {
-    id: 11, name: 'MH11', nameTh: 'กลางโรงงาน TPC-3', zone: 'Phase #2',
+    id: 911, name: 'MH11', nameTh: 'ในโรงงาน TPC-3', zone: 'Phase #2',
     lat: 13.0932, lng: 100.9585,
     current: { bod: 47.2, cod: 141, do: 0, ph: 7.7, temp: 0, tss: 71, fog: 5.0 },
     monthlyData: {
@@ -847,7 +847,7 @@ const MH_DATA = [
     belowDL: { FOG: [false,false,false,false,false,true] },
   },
   {
-    id: 12, name: 'MH12', nameTh: 'ด้านหน้าโรงงาน LCT', zone: 'Phase #2',
+    id: 912, name: 'MH12', nameTh: 'หลังโรงงาน LCT', zone: 'Phase #2',
     lat: 13.0945, lng: 100.9575,
     current: { bod: 27.1, cod: 109, do: 0, ph: 8.0, temp: 0, tss: 62, fog: 7.5 },
     monthlyData: {
@@ -860,7 +860,7 @@ const MH_DATA = [
     belowDL: {},
   },
   {
-    id: 13, name: 'MH13', nameTh: 'Pump Sump 1 (ก่อนส่งต่อบ่อ)', zone: 'Phase #1',
+    id: 913, name: 'MH13', nameTh: 'Pump Sump 1 (น้ำเข้า CWWTP)', zone: 'Phase #4',
     lat: 13.0960, lng: 100.9595,
     current: { bod: 28.4, cod: 96, do: 0, ph: 8.0, temp: 0, tss: 50, fog: 4.1 },
     monthlyData: {
@@ -873,7 +873,7 @@ const MH_DATA = [
     belowDL: {},
   },
   {
-    id: 14, name: 'MH14', nameTh: 'ฝั่งโรงงาน ST', zone: 'Phase #2',
+    id: 914, name: 'MH14', nameTh: 'Pump Sump ST', zone: 'Phase #2',
     lat: 13.0965, lng: 100.9590,
     current: { bod: 27.3, cod: 77, do: 0, ph: 7.7, temp: 0, tss: 12, fog: 3.0 },
     monthlyData: {
@@ -886,7 +886,7 @@ const MH_DATA = [
     belowDL: { SS: [false,false,true,false,false,false], FOG: [false,true,true,false,true,false] },
   },
   {
-    id: 15, name: 'MH15', nameTh: 'ด้านหลังโรงงาน LCT', zone: 'Phase #2',
+    id: 915, name: 'MH15', nameTh: 'ด้านหลังโรงงาน LCT', zone: 'Phase #2',
     lat: 13.0942, lng: 100.9570,
     current: { bod: 10.9, cod: 51, do: 0, ph: 6.8, temp: 0, tss: 10, fog: 3.0 },
     monthlyData: {
@@ -899,7 +899,7 @@ const MH_DATA = [
     belowDL: { BOD: [false,false,true,false,false,false], COD: [false,false,true,false,false,false], SS: [false,false,true,true,true,false], FOG: [true,true,true,true,true,true] },
   },
   {
-    id: 16, name: 'MH16', nameTh: 'Pump Sump SSC', zone: 'Phase #2',
+    id: 916, name: 'MH16', nameTh: 'Pump Sump SSC', zone: 'Phase #2',
     lat: 13.0915, lng: 100.9570,
     current: { bod: 11.3, cod: 105, do: 0, ph: 7.9, temp: 0, tss: 10, fog: 3.0 },
     monthlyData: {
@@ -912,7 +912,7 @@ const MH_DATA = [
     belowDL: { FOG: [true,true,true,true,true,true] },
   },
   {
-    id: 17, name: 'MH17', nameTh: 'Pump Sump ฝั่ง TJC', zone: 'Phase #1',
+    id: 917, name: 'MH17', nameTh: 'Pump Sump ฝั่ง TJC', zone: 'Phase #1',
     lat: 13.0948, lng: 100.9598,
     current: { bod: 7.5, cod: 57, do: 0, ph: 7.9, temp: 0, tss: 5, fog: 3.0 },
     monthlyData: {
@@ -925,7 +925,7 @@ const MH_DATA = [
     belowDL: { SS: [false,false,true,true,true,true], FOG: [true,true,true,true,true,true] },
   },
   {
-    id: 18, name: 'MH18', nameTh: 'Pump Sump AKST', zone: 'Phase #2',
+    id: 918, name: 'MH18', nameTh: 'Pump Sump AKST', zone: 'Phase #2',
     lat: 13.0910, lng: 100.9565,
     current: { bod: 6.2, cod: 40, do: 0, ph: 7.9, temp: 0, tss: 16, fog: 3.0 },
     monthlyData: {
