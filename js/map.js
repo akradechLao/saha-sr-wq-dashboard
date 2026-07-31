@@ -315,6 +315,7 @@ function initCoordinatePicker() {
     }).addTo(map);
 
     const factory = selectedFactoryId ? MOCK_DATA.find(f => f.id === selectedFactoryId) : null;
+    const mh = currentLayer === 'manhole' && selectedMHId ? MH_DATA.find(m => m.id === selectedMHId) : null;
 
     let html = `<div class="coord-picker-content">
       <div class="coord-label">พิกัดที่คลิก</div>
@@ -324,7 +325,6 @@ function initCoordinatePicker() {
       </div>`;
 
     if (factory) {
-      const hasSaved = getSavedCoords()[factory.id];
       html += `<div class="coord-divider"></div>
         <div class="coord-label">โรงงาน: ${factory.name}</div>
         <div class="coord-values">
@@ -332,6 +332,15 @@ function initCoordinatePicker() {
         </div>
         <div class="coord-code">lat: ${lat.toFixed(6)}, lng: ${lng.toFixed(6)}</div>
         <button class="coord-save-btn" onclick="saveNewCoords(${factory.id}, ${lat.toFixed(6)}, ${lng.toFixed(6)})">💾 บันทึกพิกัดนี้</button>
+        <button class="coord-copy-btn" onclick="copyCoord('${lat.toFixed(6)}, ${lng.toFixed(6)}')">คัดลอกพิกัด</button>`;
+    } else if (mh) {
+      html += `<div class="coord-divider"></div>
+        <div class="coord-label">Manhole: ${mh.name} — ${mh.nameTh}</div>
+        <div class="coord-values">
+          <span class="coord-item old">เดิม: ${mh.lat}, ${mh.lng}</span>
+        </div>
+        <div class="coord-code">lat: ${lat.toFixed(6)}, lng: ${lng.toFixed(6)}</div>
+        <button class="coord-save-btn" onclick="saveNewCoords(${mh.id}, ${lat.toFixed(6)}, ${lng.toFixed(6)})">💾 บันทึกพิกัดนี้</button>
         <button class="coord-copy-btn" onclick="copyCoord('${lat.toFixed(6)}, ${lng.toFixed(6)}')">คัดลอกพิกัด</button>`;
     } else {
       html += `<button class="coord-copy-btn" onclick="copyCoord('${lat.toFixed(6)}, ${lng.toFixed(6)}')">คัดลอกพิกัด</button>`;
@@ -348,30 +357,37 @@ function initCoordinatePicker() {
   });
 }
 
-function saveNewCoords(factoryId, lat, lng) {
-  saveCoordsToStorage(factoryId, lat, lng);
+function saveNewCoords(id, lat, lng) {
+  saveCoordsToStorage(id, lat, lng);
 
-  const factory = MOCK_DATA.find(f => f.id === factoryId);
+  // Check factory first, then MH
+  const factory = MOCK_DATA.find(f => f.id === id);
+  const mh = !factory && typeof MH_DATA !== 'undefined' ? MH_DATA.find(m => m.id === id) : null;
+
   if (factory) {
     factory.lat = lat;
     factory.lng = lng;
-
-    if (factoryMarkers[factoryId]) {
-      factoryMarkers[factoryId].setLatLng([lat, lng]);
-    }
-
+    if (factoryMarkers[id]) factoryMarkers[id].setLatLng([lat, lng]);
     const coordEl = document.getElementById('detail-coords');
-    if (coordEl && selectedFactoryId === factoryId) {
+    if (coordEl && selectedFactoryId === id) {
       coordEl.innerHTML = `<strong>พิกัด:</strong> ${escapeHtml(lat)}, ${escapeHtml(lng)} <span style="color:var(--pass);font-size:0.7rem;">✓ บันทึกแล้ว</span>`;
     }
+    showSaveToast(factory.name);
+  } else if (mh) {
+    mh.lat = lat;
+    mh.lng = lng;
+    if (mhMarkers[id]) mhMarkers[id].setLatLng([lat, lng]);
+    const coordEl = document.getElementById('mh-detail-coords');
+    if (coordEl && selectedMHId === id) {
+      coordEl.innerHTML = `พิกัด: ${escapeHtml(lat)}, ${escapeHtml(lng)} <span style="color:var(--pass);font-size:0.7rem;">✓ บันทึกแล้ว</span>`;
+    }
+    showSaveToast(mh.name);
   }
 
   if (coordPickerMarker) {
     map.removeLayer(coordPickerMarker);
     coordPickerMarker = null;
   }
-
-  showSaveToast(factory ? factory.name : '');
 }
 
 function showSaveToast(name) {
