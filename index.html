@@ -155,7 +155,7 @@
 
   </div>
 
-  <!-- ============ MH DETAIL OVERLAY (full screen) ============ -->
+  <!-- ============ MH DETAIL OVERLAY ============ -->
   <div class="mh-overlay hidden" id="mh-detail-panel">
     <div class="mh-overlay-content">
       <div class="mh-overlay-header">
@@ -169,11 +169,15 @@
         <div class="detail-name-th" id="mh-detail-name-th">—</div>
         <div class="detail-coords" id="mh-detail-coords" style="font-size:0.8rem;color:var(--text-muted);font-family:monospace;padding:2px 0 8px;border-bottom:1px solid var(--border);margin-bottom:8px;"></div>
         <div class="param-grid" id="mh-param-grid"></div>
-        <div class="detail-chart" id="mh-detail-chart" onclick="expandMHChart()" style="cursor:pointer;min-height:300px;">
-          <h3>📈 แนวโน้มค่ารายเดือน <span style="font-size:0.6rem;color:var(--text-muted);font-weight:400;">(คลิกเพื่อขยาย)</span></h3>
-          <div id="mh-chart-summary" class="chart-summary"></div>
-          <div class="chart-container">
-            <canvas id="mh-trend-chart"></canvas>
+        <div id="mh-chart-summary" class="chart-summary" style="margin-top:8px;"></div>
+        <div class="mh-expand-section" id="mh-expand-section">
+          <button class="mh-expand-btn" id="mh-expand-btn">📈 ดูกราฟแนวโน้ม</button>
+        </div>
+        <div class="mh-chart-section hidden" id="mh-chart-section">
+          <div class="detail-chart" id="mh-detail-chart" style="min-height:250px;">
+            <div class="chart-container">
+              <canvas id="mh-trend-chart"></canvas>
+            </div>
           </div>
         </div>
       </div>
@@ -268,7 +272,7 @@
   <script src="js/history.js?v=2"></script>
   <script src="js/charts.js?v=6"></script>
   <script src="js/upload.js"></script>
-  <script src="js/app.js?v=10"></script>
+  <script src="js/app.js?v=11"></script>
 
 </body>
 </html>

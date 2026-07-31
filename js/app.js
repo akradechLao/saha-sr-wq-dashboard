@@ -27,6 +27,7 @@ function initApp() {
   document.getElementById('search-factory').addEventListener('input', handleSearch);
   document.getElementById('close-detail').addEventListener('click', closeDetail);
   document.getElementById('close-mh-detail').addEventListener('click', closeMHDetail);
+  document.getElementById('mh-expand-btn').addEventListener('click', toggleMHChart);
   document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
   document.getElementById('sidebar-toggle').addEventListener('click', toggleSidebar);
   document.getElementById('sidebar-overlay').addEventListener('click', closeSidebar);
@@ -626,6 +627,12 @@ function showMHDetail(mh) {
   const panel = document.getElementById('mh-detail-panel');
   if (!panel) return;
   panel.classList.remove('hidden');
+  panel.classList.remove('expanded');
+
+  const chartSection = document.getElementById('mh-chart-section');
+  const expandSection = document.getElementById('mh-expand-section');
+  if (chartSection) chartSection.classList.add('hidden');
+  if (expandSection) expandSection.classList.remove('hidden');
 
   document.getElementById('mh-detail-name').textContent = `${mh.name} — ${mh.nameTh}`;
   document.getElementById('mh-detail-zone').textContent = mh.zone;
@@ -636,9 +643,29 @@ function showMHDetail(mh) {
 
   renderMHParamGrid(mh);
   renderMHChartSummary(mh, 'mh-chart-summary');
+}
 
-  if (mh.monthlyData && mh.monthlyData.BOD) {
-    renderMHTrendChart(mh);
+function toggleMHChart() {
+  const panel = document.getElementById('mh-detail-panel');
+  const chartSection = document.getElementById('mh-chart-section');
+  const expandSection = document.getElementById('mh-expand-section');
+  const expandBtn = document.getElementById('mh-expand-btn');
+  const isExpanded = panel.classList.contains('expanded');
+
+  if (isExpanded) {
+    panel.classList.remove('expanded');
+    chartSection.classList.add('hidden');
+    expandBtn.textContent = '📈 ดูกราฟแนวโน้ม';
+  } else {
+    panel.classList.add('expanded');
+    chartSection.classList.remove('hidden');
+    expandSection.classList.add('hidden');
+
+    if (!document.getElementById('mh-trend-chart').getContext) return;
+    const mh = MH_DATA.find(m => m.id === selectedMHId);
+    if (mh && mh.monthlyData && mh.monthlyData.BOD) {
+      renderMHTrendChart(mh);
+    }
   }
 }
 

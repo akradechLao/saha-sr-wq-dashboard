@@ -1710,8 +1710,8 @@ body:not(.admin-mode) .coord-picker-popup {
 .mh-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
   z-index: 9998;
   display: flex;
   align-items: center;
@@ -1726,25 +1726,30 @@ body:not(.admin-mode) .coord-picker-popup {
   border: 1px solid var(--border-light);
   border-radius: 14px;
   width: 90vw;
-  max-width: 800px;
-  height: 85vh;
+  max-width: 480px;
+  max-height: 70vh;
   display: flex;
   flex-direction: column;
   box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
-  overflow: hidden;
+  transition: max-width 0.3s, max-height 0.3s;
+}
+
+.mh-overlay.expanded .mh-overlay-content {
+  max-width: 90vw;
+  max-height: 90vh;
 }
 
 .mh-overlay-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 20px;
+  padding: 14px 18px;
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
 }
 
 .mh-overlay-header h2 {
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: var(--accent-yellow);
   font-weight: 700;
 }
@@ -1753,14 +1758,14 @@ body:not(.admin-mode) .coord-picker-popup {
   background: none;
   border: 1px solid var(--border);
   color: var(--text-secondary);
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   border-radius: 8px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   flex-shrink: 0;
   transition: var(--transition);
 }
@@ -1774,17 +1779,57 @@ body:not(.admin-mode) .coord-picker-popup {
 .mh-overlay-body {
   flex: 1;
   overflow-y: auto;
-  padding: 16px 20px 20px;
+  padding: 14px 18px 18px;
 }
 
 .mh-overlay-body .param-grid {
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  padding: 0;
+}
+
+.mh-overlay.expanded .mh-overlay-body .param-grid {
   grid-template-columns: 1fr 1fr 1fr;
   gap: 8px;
-  padding: 8px 0;
 }
 
 .mh-overlay-body .param-card {
-  padding: 10px 12px;
+  padding: 8px 10px;
+}
+
+.mh-expand-section {
+  text-align: center;
+  padding: 10px 0 4px;
+}
+
+.mh-expand-btn {
+  background: var(--accent-blue);
+  color: #fff;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.mh-expand-btn:hover {
+  background: var(--accent-blue-light);
+}
+
+.mh-chart-section {
+  margin-top: 10px;
+}
+
+.mh-chart-section.hidden { display: none; }
+
+.mh-chart-section .chart-container {
+  min-height: 220px;
+}
+
+.mh-overlay.expanded .mh-chart-section .chart-container {
+  min-height: 350px;
 }
 
 /* ============ MANHOLE ICON ============ */
