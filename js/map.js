@@ -350,7 +350,7 @@ function initCoordinatePicker() {
           <span class="coord-item old">เดิม: ${mh.lat}, ${mh.lng}</span>
         </div>
         <div class="coord-code">lat: ${lat.toFixed(6)}, lng: ${lng.toFixed(6)}</div>
-        <button class="coord-save-btn" onclick="saveNewCoords(${mh.id}, ${lat.toFixed(6)}, ${lng.toFixed(6)})">💾 บันทึกพิกัดนี้</button>
+        <button class="coord-save-btn" onclick="saveNewCoords('${mh.id}', ${lat.toFixed(6)}, ${lng.toFixed(6)})">💾 บันทึกพิกัดนี้</button>
         <button class="coord-copy-btn" onclick="copyCoord('${lat.toFixed(6)}, ${lng.toFixed(6)}')">คัดลอกพิกัด</button>`;
     } else {
       html += `<button class="coord-copy-btn" onclick="copyCoord('${lat.toFixed(6)}, ${lng.toFixed(6)}')">คัดลอกพิกัด</button>`;

@@ -583,7 +583,7 @@ function renderMHList(mhs) {
     return `
       <div class="factory-item ${isActive ? 'active' : ''}"
            data-id="${mh.id}"
-           onclick="selectMH(${mh.id})">
+           onclick="selectMH('${mh.id}')">
         <div class="factory-item-photo-placeholder">🕳️</div>
         <div class="factory-item-info">
           <div class="factory-item-name">${escapeHtml(mh.name)} <span style="color:var(--text-muted);font-size:0.7rem;">${escapeHtml(mh.nameTh)}</span></div>
