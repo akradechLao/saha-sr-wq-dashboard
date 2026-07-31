@@ -1727,7 +1727,8 @@ body:not(.admin-mode) .coord-picker-popup {
   border-radius: 14px;
   width: 90vw;
   max-width: 900px;
-  height: 85vh;
+  height: auto;
+  max-height: 85vh;
   display: flex;
   flex-direction: column;
   box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
@@ -1792,7 +1793,8 @@ body:not(.admin-mode) .coord-picker-popup {
 }
 
 .mh-overlay-body .detail-chart {
-  flex: 1;
+  flex: none;
+  height: 280px;
   min-height: 0;
 }
 
