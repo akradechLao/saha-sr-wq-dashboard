@@ -506,6 +506,7 @@ body {
 .detail-panel.hidden { display: none; }
 
 .sidebar.has-detail .factory-list { display: none; }
+.sidebar.has-detail .mh-list { display: none; }
 .sidebar.has-detail .sidebar-header { display: none; }
 
 .detail-panel-header {

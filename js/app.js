@@ -626,6 +626,7 @@ function showMHDetail(mh) {
 
   factoryPanel.classList.add('hidden');
   panel.classList.remove('hidden');
+  panel.scrollTop = 0;
   sidebar.classList.add('has-detail');
 
   document.getElementById('mh-detail-name').textContent = `${mh.name} — ${mh.nameTh}`;
