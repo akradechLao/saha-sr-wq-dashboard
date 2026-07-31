@@ -396,6 +396,8 @@ body {
   padding: 8px;
 }
 
+.factory-list.hidden { display: none; }
+
 .factory-list::-webkit-scrollbar { width: 4px; }
 .factory-list::-webkit-scrollbar-track { background: transparent; }
 .factory-list::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 2px; }
