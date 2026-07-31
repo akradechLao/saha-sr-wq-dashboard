@@ -409,16 +409,17 @@ let mhMarkers = {};
 let currentLayer = 'factory';
 const MH_DL_DISPLAY = { BOD: 2, COD: 40, SS: 5, FOG: 3, TDS: 3000, pH: 5.5 };
 
-function createMHIcon(color) {
+function createMHIcon(color, label) {
   return L.divIcon({
     className: 'mh-icon-wrapper',
-    html: `<svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+    html: `<svg width="36" height="22" viewBox="0 0 36 22" xmlns="http://www.w3.org/2000/svg">
       <circle cx="11" cy="11" r="9" fill="${color}" fill-opacity="0.25" stroke="${color}" stroke-width="2"/>
       <circle cx="11" cy="11" r="4" fill="${color}"/>
+      <text x="24" y="15" font-size="11" font-weight="700" fill="${color}" font-family="Segoe UI, system-ui, sans-serif">${escapeHtml(label)}</text>
     </svg>`,
-    iconSize: [22, 22],
+    iconSize: [36, 22],
     iconAnchor: [11, 11],
-    popupAnchor: [0, -12]
+    popupAnchor: [8, -12]
   });
 }
 
@@ -489,7 +490,7 @@ function addMHMarker(mh) {
   const pass = hasCurrent ? isMHPass(mh.current) : false;
   const color = !hasCurrent ? '#64748b' : (pass ? '#22c55e' : '#ef4444');
 
-  const marker = L.marker([mh.lat, mh.lng], { icon: createMHIcon(color) }).addTo(map);
+  const marker = L.marker([mh.lat, mh.lng], { icon: createMHIcon(color, mh.name) }).addTo(map);
 
   marker.bindTooltip(`${mh.name} — ${mh.nameTh}`, {
     sticky: true, className: 'factory-tooltip', direction: 'top', offset: [0, -12]
