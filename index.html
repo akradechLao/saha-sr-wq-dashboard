@@ -151,6 +151,27 @@
           </div>
         </div>
       </div>
+
+      <!-- MH DETAIL PANEL (inside sidebar) -->
+      <div id="mh-detail-panel" class="detail-panel hidden">
+        <div class="detail-panel-header">
+          <div class="detail-header-left">
+            <h2 id="mh-detail-name">—</h2>
+            <span class="industry-tag" id="mh-detail-zone">—</span>
+          </div>
+          <button class="close-btn" id="close-mh-detail">✕</button>
+        </div>
+        <div class="detail-name-th" id="mh-detail-name-th">—</div>
+        <div class="detail-coords" id="mh-detail-coords" style="font-size:0.75rem;color:var(--text-muted);font-family:monospace;padding:2px 0 6px;border-bottom:1px solid var(--border);margin-bottom:6px;"></div>
+        <div class="param-grid" id="mh-param-grid"></div>
+        <div class="detail-chart" id="mh-detail-chart" onclick="expandMHChart()" style="cursor:pointer;">
+          <h3>📈 แนวโน้มค่ารายเดือน <span style="font-size:0.55rem;color:var(--text-muted);font-weight:400;">(คลิกเพื่อขยาย)</span></h3>
+          <div id="mh-chart-summary" class="chart-summary"></div>
+          <div class="chart-container">
+            <canvas id="mh-trend-chart"></canvas>
+          </div>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -231,31 +252,6 @@
               <button class="upload-save-local-btn" onclick="saveUploadedData()">⬇ ดาวน์โหลด mock-data.js</button>
         </div>
       </div>
-
-      <!-- MH DETAIL PANEL (inside sidebar) -->
-      <div id="mh-detail-panel" class="detail-panel hidden">
-        <div class="detail-panel-header">
-          <div class="detail-header-left">
-            <h2 id="mh-detail-name">—</h2>
-            <span class="industry-tag" id="mh-detail-zone">—</span>
-          </div>
-          <button class="close-btn" id="close-mh-detail">✕</button>
-        </div>
-        <div class="detail-name-th" id="mh-detail-name-th">—</div>
-        <div class="detail-coords" id="mh-detail-coords" style="font-size:0.75rem;color:var(--text-muted);font-family:monospace;padding:2px 0 6px;border-bottom:1px solid var(--border);margin-bottom:6px;"></div>
-        <div class="param-grid" id="mh-param-grid"></div>
-        <div class="detail-chart" id="mh-detail-chart" onclick="expandMHChart()" style="cursor:pointer;">
-          <h3>📈 แนวโน้มค่ารายเดือน <span style="font-size:0.55rem;color:var(--text-muted);font-weight:400;">(คลิกเพื่อขยาย)</span></h3>
-          <div id="mh-chart-summary" class="chart-summary"></div>
-          <div class="chart-container">
-            <canvas id="mh-trend-chart"></canvas>
-          </div>
-        </div>
-      </div>
-    </div>
-      </div>
-    </div>
-  </div>
 
   <!-- ============ SCRIPTS ============ -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin="anonymous"></script>
