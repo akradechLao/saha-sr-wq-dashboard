@@ -712,7 +712,7 @@ const MOCK_DATA = [
 const MH_DATA = [
   {
     id: 'MH1', name: 'MH1', nameTh: 'ด้านหลัง HST', zone: 'Phase #1',
-    lat: 13.0968, lng: 100.9610,
+    lat: 13.095107, lng: 100.959464,
     current: { bod: 8.1, cod: 67, do: 0, ph: 7.2, temp: 0, tss: 11, fog: 3.0 },
     monthlyData: {
       BOD: [6.8, 8.8, 3.3, 3.2, 8.1, 15.1],
@@ -725,13 +725,13 @@ const MH_DATA = [
   },
   {
     id: 'MH2', name: 'MH2', nameTh: 'หลังโรงงานฝั่งซ้าย TJC', zone: 'Phase #1',
-    lat: 13.0955, lng: 100.9600,
+    lat: 13.094636, lng: 100.9647,
     current: null,
     monthlyData: null,
   },
   {
     id: 'MH3', name: 'MH3', nameTh: 'หน้าโรงงานฝั่งขวา TJC', zone: 'Phase #1',
-    lat: 13.0953, lng: 100.9605,
+    lat: 13.094071, lng: 100.964915,
     current: { bod: 26.2, cod: 77, do: 0, ph: 7.6, temp: 0, tss: 24, fog: 0 },
     monthlyData: {
       BOD: [53.5, 21.4, 36, 23.2, 56.6, 26.2],
@@ -744,7 +744,7 @@ const MH_DATA = [
   },
   {
     id: 'MH4', name: 'MH4', nameTh: 'ด้านหน้า RPE', zone: 'Phase #1',
-    lat: 13.0988, lng: 100.9600,
+    lat: 13.098503, lng: 100.961267,
     current: { bod: 7.3, cod: 40, do: 0, ph: 8.0, temp: 0, tss: 19, fog: 3.0 },
     monthlyData: {
       BOD: [5.9, 9.5, 10.1, 7.6, 10.9, 7.3],
@@ -757,7 +757,7 @@ const MH_DATA = [
   },
   {
     id: 'MH5', name: 'MH5', nameTh: 'ด้านหลัง RPE ฝั่ง TPC3', zone: 'Phase #1',
-    lat: 13.0990, lng: 100.9595,
+    lat: 13.099694, lng: 100.956889,
     current: { bod: 12.3, cod: 51, do: 0, ph: 8.0, temp: 0, tss: 18, fog: 3.0 },
     monthlyData: {
       BOD: [11.2, 11.3, 2.0, 36.4, 10, 12.3],
@@ -770,7 +770,7 @@ const MH_DATA = [
   },
   {
     id: 'MH6', name: 'MH6', nameTh: 'ด้านหน้า ILF', zone: 'Phase #1',
-    lat: 13.0942, lng: 100.9620,
+    lat: 13.094542, lng: 100.964389,
     current: { bod: 7.1, cod: 64, do: 0, ph: 8.1, temp: 0, tss: 16, fog: 3.0 },
     monthlyData: {
       BOD: [7.1, 8.8, 9.5, 11.1, 5.0, 7.1],
@@ -783,7 +783,7 @@ const MH_DATA = [
   },
   {
     id: 'MH7', name: 'MH7', nameTh: 'ด้านหน้า ETC', zone: 'Phase #1',
-    lat: 13.0938, lng: 100.9615,
+    lat: 13.094145, lng: 100.961631,
     current: { bod: 30.4, cod: 192, do: 0, ph: 8.1, temp: 0, tss: 85, fog: 3.2 },
     monthlyData: {
       BOD: [66.6, 12.6, 28.3, 24.6, 50.1, 30.4],
@@ -796,7 +796,7 @@ const MH_DATA = [
   },
   {
     id: 'MH8', name: 'MH8', nameTh: 'ด้านหลัง SJI', zone: 'Phase #1',
-    lat: 13.0940, lng: 100.9610,
+    lat: 13.095064, lng: 100.960676,
     current: { bod: 181, cod: 641, do: 0, ph: 7.8, temp: 0, tss: 100, fog: 12 },
     monthlyData: {
       BOD: [106, 53, 54, 132, 162, 181],
@@ -809,7 +809,7 @@ const MH_DATA = [
   },
   {
     id: 'MH9', name: 'MH9', nameTh: 'ในโรงงาน TORA1010', zone: 'Phase #2',
-    lat: 13.0925, lng: 100.9575,
+    lat: 13.096755, lng: 100.958553,
     current: { bod: 85.1, cod: 301, do: 0, ph: 7.6, temp: 0, tss: 65, fog: 16.1 },
     monthlyData: {
       BOD: [69.2, 28, 49.9, 69.2, 92.5, 85.1],
@@ -822,7 +822,7 @@ const MH_DATA = [
   },
   {
     id: 'MH10', name: 'MH10', nameTh: 'ในโรงงาน TORA1010', zone: 'Phase #2',
-    lat: 13.0928, lng: 100.9580,
+    lat: 13.096515, lng: 100.958477,
     current: { bod: 3.6, cod: 64, do: 0, ph: 7.2, temp: 0, tss: 16, fog: 3.0 },
     monthlyData: {
       BOD: [8.9, 11.6, 53.5, 20.6, 90.1, 3.6],
@@ -835,7 +835,7 @@ const MH_DATA = [
   },
   {
     id: 'MH11', name: 'MH11', nameTh: 'ในโรงงาน TPC-3', zone: 'Phase #2',
-    lat: 13.0932, lng: 100.9585,
+    lat: 13.097529, lng: 100.956986,
     current: { bod: 47.2, cod: 141, do: 0, ph: 7.7, temp: 0, tss: 71, fog: 5.0 },
     monthlyData: {
       BOD: [30.8, 33.6, 30.6, 62.3, 35.8, 47.2],
@@ -848,7 +848,7 @@ const MH_DATA = [
   },
   {
     id: 'MH12', name: 'MH12', nameTh: 'หลังโรงงาน LCT', zone: 'Phase #2',
-    lat: 13.0945, lng: 100.9575,
+    lat: 13.098512, lng: 100.954667,
     current: { bod: 27.1, cod: 109, do: 0, ph: 8.0, temp: 0, tss: 62, fog: 7.5 },
     monthlyData: {
       BOD: [29, 21, 33.4, 121, 40, 27.1],
@@ -861,7 +861,7 @@ const MH_DATA = [
   },
   {
     id: 'MH13', name: 'MH13', nameTh: 'Pump Sump 1 (น้ำเข้า CWWTP)', zone: 'Phase #4',
-    lat: 13.0960, lng: 100.9595,
+    lat: 13.098826, lng: 100.952242,
     current: { bod: 28.4, cod: 96, do: 0, ph: 8.0, temp: 0, tss: 50, fog: 4.1 },
     monthlyData: {
       BOD: [32.5, 29.5, 41.5, 120, 23.7, 28.4],
@@ -874,7 +874,7 @@ const MH_DATA = [
   },
   {
     id: 'MH14', name: 'MH14', nameTh: 'Pump Sump ST', zone: 'Phase #2',
-    lat: 13.0965, lng: 100.9590,
+    lat: 13.091357, lng: 100.960688,
     current: { bod: 27.3, cod: 77, do: 0, ph: 7.7, temp: 0, tss: 12, fog: 3.0 },
     monthlyData: {
       BOD: [44.7, 22.3, 26.9, 23.5, 20.7, 27.3],
@@ -887,7 +887,7 @@ const MH_DATA = [
   },
   {
     id: 'MH15', name: 'MH15', nameTh: 'ด้านหลังโรงงาน LCT', zone: 'Phase #2',
-    lat: 13.0942, lng: 100.9570,
+    lat: 13.098177, lng: 100.955473,
     current: { bod: 10.9, cod: 51, do: 0, ph: 6.8, temp: 0, tss: 10, fog: 3.0 },
     monthlyData: {
       BOD: [5.0, 10.4, 2.0, 5.7, 4.7, 10.9],
@@ -900,7 +900,7 @@ const MH_DATA = [
   },
   {
     id: 'MH16', name: 'MH16', nameTh: 'Pump Sump SSC', zone: 'Phase #2',
-    lat: 13.0915, lng: 100.9570,
+    lat: 13.08655, lng: 100.95499,
     current: { bod: 11.3, cod: 105, do: 0, ph: 7.9, temp: 0, tss: 10, fog: 3.0 },
     monthlyData: {
       BOD: [9.8, 10, 11.3, 4.1, 6.8, 11.3],
@@ -913,7 +913,7 @@ const MH_DATA = [
   },
   {
     id: 'MH17', name: 'MH17', nameTh: 'Pump Sump ฝั่ง TJC', zone: 'Phase #1',
-    lat: 13.0948, lng: 100.9598,
+    lat: 13.095126, lng: 100.964679,
     current: { bod: 7.5, cod: 57, do: 0, ph: 7.9, temp: 0, tss: 5, fog: 3.0 },
     monthlyData: {
       BOD: [6.2, 11.2, 8.4, 10.3, 5.3, 7.5],
@@ -926,7 +926,7 @@ const MH_DATA = [
   },
   {
     id: 'MH18', name: 'MH18', nameTh: 'Pump Sump AKST', zone: 'Phase #2',
-    lat: 13.0910, lng: 100.9565,
+    lat: 13.086194, lng: 100.955934,
     current: { bod: 6.2, cod: 40, do: 0, ph: 7.9, temp: 0, tss: 16, fog: 3.0 },
     monthlyData: {
       BOD: [15.5, 2.0, 2.0, 12.7, 6.1, 6.2],
