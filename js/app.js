@@ -1007,6 +1007,7 @@ function checkParamPass(key, val) {
 function openFactorySummary() {
   const factory = MOCK_DATA.find(f => f.id === selectedFactoryId);
   if (!factory) return;
+  closeDetail();
 
   const titleEl = document.getElementById('summary-title');
   titleEl.textContent = `📊 สรุปสถิติ — ${factory.name} (${factory.nameTh})`;
@@ -1153,6 +1154,7 @@ function openFactorySummary() {
 function openMHSummary() {
   const mh = MH_DATA.find(m => m.id === selectedMHId);
   if (!mh) return;
+  closeMHDetail();
 
   const titleEl = document.getElementById('summary-title');
   titleEl.textContent = `📊 สรุปสถิติ — ${mh.name} (${mh.nameTh})`;
