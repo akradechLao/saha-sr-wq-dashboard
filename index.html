@@ -7,7 +7,7 @@
   <title>Dashboard คุณภาพน้ำเสีย — สวนอุตสาหกรรมเครือสหพัฒน์ ศรีราชา</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💧</text></svg>">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="css/styles.css?v=9">
+  <link rel="stylesheet" href="css/styles.css?v=13">
 </head>
 <body>
 
@@ -130,6 +130,7 @@
             <h2 id="detail-name">—</h2>
             <span class="industry-tag" id="detail-industry">—</span>
           </div>
+          <button class="summary-btn" id="factory-summary-btn" onclick="openFactorySummary()" style="display:none;">📊 สรุปสถิติ</button>
           <button class="close-btn" id="close-detail">✕</button>
         </div>
         <img id="detail-photo" class="detail-photo" src="" alt="" loading="lazy" style="display:none;">
@@ -150,6 +151,17 @@
             <canvas id="trend-chart"></canvas>
           </div>
         </div>
+        <!-- Factory month stepper -->
+        <div class="factory-month-stepper" id="factory-month-stepper" style="display:none;">
+          <button class="mh-month-btn" id="factory-month-prev">◀</button>
+          <div class="mh-month-info">
+            <span class="mh-month-label" id="factory-month-label">—</span>
+            <span class="mh-month-idx" id="factory-month-idx"></span>
+          </div>
+          <button class="mh-month-btn" id="factory-month-next">▶</button>
+        </div>
+        <!-- Factory month status card -->
+        <div class="factory-month-status" id="factory-month-status"></div>
       </div>
     </div>
 
@@ -159,22 +171,36 @@
   <div class="mh-overlay hidden" id="mh-detail-panel">
     <div class="mh-overlay-content">
       <div class="mh-overlay-header">
+        <button class="mh-nav-btn" id="mh-nav-prev">◀</button>
         <div class="detail-header-left">
           <h2 id="mh-detail-name">—</h2>
           <span class="industry-tag" id="mh-detail-zone">—</span>
         </div>
+        <button class="summary-btn" id="mh-summary-btn" onclick="openMHSummary()" style="display:none;">📊</button>
         <button class="close-btn" id="close-mh-detail">✕</button>
+        <button class="mh-nav-btn" id="mh-nav-next">▶</button>
       </div>
       <div class="mh-overlay-body">
         <div class="detail-name-th" id="mh-detail-name-th">—</div>
         <div class="detail-coords" id="mh-detail-coords" style="font-size:0.8rem;color:var(--text-muted);font-family:monospace;padding:2px 0 8px;border-bottom:1px solid var(--border);margin-bottom:8px;"></div>
         <div class="param-grid" id="mh-param-grid"></div>
         <div id="mh-chart-summary" class="chart-summary" style="margin-top:8px;"></div>
-        <div class="detail-chart" id="mh-detail-chart" style="min-height:250px;">
+        <div class="detail-chart" id="mh-detail-chart" style="height:280px;min-height:0;">
           <div class="chart-container">
             <canvas id="mh-trend-chart"></canvas>
           </div>
         </div>
+        <!-- Month stepper -->
+        <div class="mh-month-stepper" id="mh-month-stepper" style="display:none;">
+          <button class="mh-month-btn" id="mh-month-prev">◀</button>
+          <div class="mh-month-info">
+            <span class="mh-month-label" id="mh-month-label">—</span>
+            <span class="mh-month-idx" id="mh-month-idx"></span>
+          </div>
+          <button class="mh-month-btn" id="mh-month-next">▶</button>
+        </div>
+        <!-- Month status card -->
+        <div class="mh-month-status" id="mh-month-status"></div>
       </div>
     </div>
   </div>
@@ -198,6 +224,17 @@
         </div>
         <canvas id="trend-chart-expand"></canvas>
       </div>
+    </div>
+  </div>
+
+  <!-- ============ SUMMARY OVERLAY ============ -->
+  <div class="summary-overlay hidden" id="summary-overlay">
+    <div class="summary-modal">
+      <div class="summary-modal-header">
+        <h3 id="summary-title">📊 สรุปสถิติคุณภาพน้ำ</h3>
+        <button class="close-btn" onclick="closeSummary()">✕</button>
+      </div>
+      <div class="summary-modal-body" id="summary-body"></div>
     </div>
   </div>
 
@@ -265,9 +302,9 @@
   <script src="data/mock-data.js?v=8"></script>
   <script src="js/map.js?v=9"></script>
   <script src="js/history.js?v=2"></script>
-  <script src="js/charts.js?v=6"></script>
+  <script src="js/charts.js?v=7"></script>
   <script src="js/upload.js"></script>
-  <script src="js/app.js?v=11"></script>
+  <script src="js/app.js?v=16"></script>
 
 </body>
 </html>

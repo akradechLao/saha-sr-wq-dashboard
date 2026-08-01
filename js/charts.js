@@ -206,7 +206,7 @@ function createChartConfig(data, fontSize) {
   };
 }
 
-function renderTrendChart(factory) {
+function renderTrendChart(factory, activeMonthIdx) {
   if (trendChart) { trendChart.destroy(); trendChart = null; }
   const ctx = document.getElementById('trend-chart');
   if (!ctx) return;
@@ -229,7 +229,34 @@ function renderTrendChart(factory) {
     data.labels = data.labels.map(l => l + ' ' + buddhist);
   }
 
-  trendChart = new Chart(ctx, createChartConfig(data, 9));
+  const cfg = createChartConfig(data, 9);
+  if (activeMonthIdx != null) {
+    const verticalLinePlugin = {
+      id: 'factoryVerticalLine',
+      afterDraw(chart) {
+        const idx = chart.config._factoryActiveIdx;
+        if (idx == null) return;
+        const meta = chart.getDatasetMeta(0);
+        if (!meta || !meta.data[idx]) return;
+        const x = meta.data[idx].x;
+        const yAxis = chart.scales.y;
+        const c = chart.ctx;
+        c.save();
+        c.beginPath();
+        c.setLineDash([5, 3]);
+        c.strokeStyle = 'rgba(250,204,21,0.7)';
+        c.lineWidth = 2;
+        c.moveTo(x, yAxis.top);
+        c.lineTo(x, yAxis.bottom);
+        c.stroke();
+        c.restore();
+      }
+    };
+    cfg.plugins = [verticalLinePlugin];
+    cfg._factoryActiveIdx = activeMonthIdx;
+    cfg.animation = { duration: 300 };
+  }
+  trendChart = new Chart(ctx, cfg);
 
   // Override tooltip year for historical data
   if (useHistory && trendChart) {
