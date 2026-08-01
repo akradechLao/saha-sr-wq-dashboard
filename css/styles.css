@@ -1472,6 +1472,8 @@ body {
   padding: 20px;
 }
 
+.summary-overlay.hidden { display: none; }
+
 .summary-modal {
   background: var(--bg);
   border: 1px solid var(--border);
