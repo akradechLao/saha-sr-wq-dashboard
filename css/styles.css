@@ -1226,7 +1226,7 @@ body {
 }
 
 .mh-nav-btn {
-  background: var(--card);
+  background: var(--bg-card);
   border: 1px solid var(--border);
   color: var(--text-secondary);
   width: 34px;
@@ -1323,7 +1323,7 @@ body {
 }
 
 .mh-month-btn {
-  background: var(--card);
+  background: var(--bg-card);
   border: 1px solid var(--border);
   color: var(--text-secondary);
   width: 32px;
@@ -1364,7 +1364,7 @@ body {
   border-radius: 10px;
   padding: 12px 14px;
   border: 1px solid var(--border);
-  background: var(--card);
+  background: var(--bg-card);
 }
 
 .mh-month-status-card.pass {
@@ -1475,7 +1475,7 @@ body {
 .summary-overlay.hidden { display: none; }
 
 .summary-modal {
-  background: var(--bg);
+  background: var(--bg-primary);
   border: 1px solid var(--border);
   border-radius: 16px;
   width: 90vw;
@@ -1515,7 +1515,7 @@ body {
 }
 
 .summary-stat-card {
-  background: var(--card);
+  background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 12px;
@@ -1579,7 +1579,7 @@ body {
   border-radius: 4px;
   display: flex;
   overflow: hidden;
-  background: var(--card);
+  background: var(--bg-card);
 }
 
 .summary-bar-pass {
@@ -1625,7 +1625,7 @@ body {
 }
 
 .summary-year-card {
-  background: var(--card);
+  background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 8px 10px;
