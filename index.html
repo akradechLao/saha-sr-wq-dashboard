@@ -56,31 +56,9 @@
         <div class="time-value" id="current-date">—</div>
       </div>
 
-      <button class="admin-btn" id="admin-btn" title="เข้าสู่ระบบ Admin">⚙</button>
-    </div>
-  </header>
-
-  <!-- ============ ADMIN LOGIN MODAL ============ -->
-  <div class="admin-modal-overlay hidden" id="admin-modal-overlay">
-    <div class="admin-modal">
-      <h3>🔐 เข้าสู่ระบบ Admin</h3>
-      <p>กรุณาใส่รหัสผ่านเพื่อเข้าสู่โหมดแก้ไข</p>
-      <input type="password" id="admin-password" placeholder="รหัสผ่าน" autocomplete="off">
-      <div class="admin-modal-error hidden" id="admin-login-error">รหัสผ่านไม่ถูกต้อง</div>
-      <div class="admin-modal-actions">
-        <button class="admin-modal-cancel" id="admin-login-cancel">ยกเลิก</button>
-        <button class="admin-modal-ok" id="admin-login-ok">เข้าสู่ระบบ</button>
       </div>
     </div>
-  </div>
-
-  <!-- ============ ADMIN BAR ============ -->
-  <div class="admin-bar hidden" id="admin-bar">
-    <span>🔧 โหมด Admin — เลือกโรงงาน → คลิกแผนที่ → บันทึกพิกัด</span>
-    <button class="admin-export-btn" id="admin-export-btn" onclick="exportSavedCoords()">📋 ส่งออกพิกัดที่แก้ไข</button>
-    <button class="admin-upload-btn" onclick="openUploadModal()">📁 อัพโหลดข้อมูลย้อนหลัง</button>
-    <button class="admin-logout-btn" id="admin-logout-btn">ออกจากระบบ</button>
-  </div>
+  </header>
 
   <!-- ============ MAIN CONTENT ============ -->
   <div class="main-container">
@@ -244,67 +222,14 @@
   <!-- ============ SIDEBAR TOGGLE (MOBILE) ============ -->
   <button class="sidebar-toggle" id="sidebar-toggle">🏭</button>
 
-  <!-- ============ EXCEL UPLOAD MODAL ============ -->
-  <div class="upload-modal-overlay hidden" id="upload-modal-overlay">
-    <div class="upload-modal">
-      <div class="upload-modal-header">
-        <h3>📁 อัพโหลดข้อมูลย้อนหลัง</h3>
-        <button class="close-btn" onclick="closeUploadModal()">✕</button>
-      </div>
-      <div class="upload-modal-body">
-        <div class="upload-step" id="upload-step-1">
-          <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:12px;">
-            เลือกไฟล์ Excel ข้อมูลคุณภาพน้ำรายเดือนย้อนหลัง (เลือกหลายไฟล์ได้ ระบบจะรวมให้อัตโนมัติ)
-          </p>
-          <div class="upload-dropzone" id="upload-dropzone">
-            <div style="font-size:2rem;margin-bottom:8px;">📊</div>
-            <div style="font-size:0.85rem;font-weight:600;color:var(--text-primary);">ลากไฟล์มาวางที่นี่</div>
-            <div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;">หรือคลิกเพื่อเลือกไฟล์ (เลือกหลายไฟล์ได้)</div>
-            <input type="file" id="upload-file-input" accept=".xlsx,.xls" multiple style="display:none;">
-          </div>
-          <div class="upload-year-input" style="margin-top:12px;">
-            <label style="font-size:0.75rem;color:var(--text-secondary);display:block;margin-bottom:4px;">ปี พ.ศ. ของข้อมูลในไฟล์</label>
-            <input type="number" id="upload-year" placeholder="เช่น 2568" min="2560" max="2570"
-              style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:6px;background:var(--bg-primary);color:var(--text-primary);font-size:0.85rem;outline:none;box-sizing:border-box;">
-          </div>
-          <div class="upload-error hidden" id="upload-error" style="color:var(--fail);font-size:0.75rem;margin-top:8px;"></div>
-        </div>
-
-        <div class="upload-step hidden" id="upload-step-2">
-          <div class="upload-progress">
-            <div class="upload-spinner"></div>
-            <div style="font-size:0.85rem;color:var(--text-secondary);">กำลังอ่านข้อมูล...</div>
-          </div>
-        </div>
-
-        <div class="upload-step hidden" id="upload-step-3">
-          <div class="upload-preview-header">
-            <span style="font-size:0.85rem;font-weight:600;color:var(--pass);">✓ อ่านข้อมูลสำเร็จ</span>
-            <span id="upload-preview-count" style="font-size:0.75rem;color:var(--text-muted);"></span>
-          </div>
-          <div class="upload-preview-table" id="upload-preview-table"></div>
-          <div class="upload-code-section">
-            <label style="font-size:0.72rem;color:var(--text-secondary);display:block;margin-bottom:4px;">
-              โค้ด mock-data.js ทั้งไฟล์ — กดคัดลอกแล้วไปแทนที่ไฟล์เดิม
-            </label>
-            <textarea id="upload-code-output" readonly rows="12"
-              style="width:100%;padding:8px;border:1px solid var(--border);border-radius:6px;background:var(--bg-primary);color:var(--accent-yellow);font-family:'Courier New',monospace;font-size:0.7rem;resize:vertical;outline:none;box-sizing:border-box;"></textarea>
-            <div class="upload-actions">
-              <button class="upload-copy-btn" onclick="copyUploadCode()">📋 คัดลอกโค้ดทั้งหมด</button>
-              <button class="upload-save-local-btn" onclick="saveUploadedData()">⬇ ดาวน์โหลด mock-data.js</button>
-        </div>
-      </div>
-
   <!-- ============ SCRIPTS ============ -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" integrity="sha384-e6nUZLBkQ86NJ6TVVKAeSaK8jWa3NhkYWZFomE39AvDbQWeie9PlQqM3pmYW5d1g" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" integrity="sha384-vtjasyidUo0kW94K5MXDXntzOJpQgBKXmE7e2Ga4LG0skTTLeBi97eFAXsqewJjw" crossorigin="anonymous"></script>
   <script src="data/mock-data.js?v=8"></script>
   <script src="js/map.js?v=9"></script>
   <script src="js/history.js?v=2"></script>
   <script src="js/charts.js?v=7"></script>
-  <script src="js/upload.js"></script>
-  <script src="js/app.js?v=16"></script>
+  <script src="js/app.js?v=17"></script>
 
 </body>
 </html>

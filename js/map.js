@@ -46,39 +46,6 @@ function loadSavedCoords() {
   }
 }
 
-function saveCoordsToStorage(factoryId, lat, lng) {
-  const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-  saved[factoryId] = { lat, lng, savedAt: new Date().toISOString() };
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
-}
-
-function getSavedCoords() {
-  return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-}
-
-function exportSavedCoords() {
-  const saved = getSavedCoords();
-  if (Object.keys(saved).length === 0) {
-    alert('ยังไม่มีพิกัดที่บันทึกไว้');
-    return;
-  }
-  let code = '';
-  Object.keys(saved).forEach(id => {
-    const f = MOCK_DATA.find(f => f.id === parseInt(id));
-    if (f) {
-      code += `// ${f.name}\nlat: ${saved[id].lat}, lng: ${saved[id].lng}\n\n`;
-    } else if (typeof MH_DATA !== 'undefined') {
-      const mh = MH_DATA.find(m => m.id === id);
-      if (mh) {
-        code += `// ${mh.name} (${mh.nameTh})\nlat: ${saved[id].lat}, lng: ${saved[id].lng}\n\n`;
-      }
-    }
-  });
-  navigator.clipboard.writeText(code).then(() => {
-    alert('คัดลอกโค้ดพิกัดทั้งหมดแล้ว!\nนำไปวางใน mock-data.js แล้ว push');
-  });
-}
-
 /* ============ MAP INIT ============ */
 function initMap() {
   loadSavedCoords();
@@ -92,7 +59,6 @@ function initMap() {
 
   setTileLayer('street');
   drawEstateBoundary();
-  initCoordinatePicker();
 }
 
 function setTileLayer(type) {
@@ -288,148 +254,6 @@ function invalidateMapSize() {
   if (map) {
     setTimeout(() => map.invalidateSize(), 100);
   }
-}
-
-/* ============ COORDINATE PICKER ============ */
-let coordPickerMarker = null;
-let coordPickerEnabled = false;
-
-function enableCoordinatePicker() {
-  coordPickerEnabled = true;
-}
-
-function disableCoordinatePicker() {
-  coordPickerEnabled = false;
-  if (coordPickerMarker) {
-    map.removeLayer(coordPickerMarker);
-    coordPickerMarker = null;
-  }
-}
-
-function initCoordinatePicker() {
-  map.on('click', function(e) {
-    if (!coordPickerEnabled || !isAdmin) return;
-
-    const { lat, lng } = e.latlng;
-
-    if (coordPickerMarker) {
-      map.removeLayer(coordPickerMarker);
-    }
-
-    coordPickerMarker = L.circleMarker([lat, lng], {
-      radius: 6,
-      color: '#06b6d4',
-      fillColor: '#06b6d4',
-      fillOpacity: 0.9,
-      weight: 2
-    }).addTo(map);
-
-    const factory = selectedFactoryId ? MOCK_DATA.find(f => f.id === selectedFactoryId) : null;
-    const mh = currentLayer === 'manhole' && selectedMHId ? MH_DATA.find(m => m.id === selectedMHId) : null;
-
-    let html = `<div class="coord-picker-content">
-      <div class="coord-label">พิกัดที่คลิก</div>
-      <div class="coord-values">
-        <span class="coord-item">lat: ${lat.toFixed(6)}</span>
-        <span class="coord-item">lng: ${lng.toFixed(6)}</span>
-      </div>`;
-
-    if (factory) {
-      html += `<div class="coord-divider"></div>
-        <div class="coord-label">โรงงาน: ${factory.name}</div>
-        <div class="coord-values">
-          <span class="coord-item old">เดิม: ${factory.lat}, ${factory.lng}</span>
-        </div>
-        <div class="coord-code">lat: ${lat.toFixed(6)}, lng: ${lng.toFixed(6)}</div>
-        <button class="coord-save-btn" onclick="saveNewCoords(${factory.id}, ${lat.toFixed(6)}, ${lng.toFixed(6)})">💾 บันทึกพิกัดนี้</button>
-        <button class="coord-copy-btn" onclick="copyCoord('${lat.toFixed(6)}, ${lng.toFixed(6)}')">คัดลอกพิกัด</button>`;
-    } else if (mh) {
-      html += `<div class="coord-divider"></div>
-        <div class="coord-label">Manhole: ${mh.name} — ${mh.nameTh}</div>
-        <div class="coord-values">
-          <span class="coord-item old">เดิม: ${mh.lat}, ${mh.lng}</span>
-        </div>
-        <div class="coord-code">lat: ${lat.toFixed(6)}, lng: ${lng.toFixed(6)}</div>
-        <button class="coord-save-btn" onclick="saveNewCoords('${mh.id}', ${lat.toFixed(6)}, ${lng.toFixed(6)})">💾 บันทึกพิกัดนี้</button>
-        <button class="coord-copy-btn" onclick="copyCoord('${lat.toFixed(6)}, ${lng.toFixed(6)}')">คัดลอกพิกัด</button>`;
-    } else {
-      html += `<button class="coord-copy-btn" onclick="copyCoord('${lat.toFixed(6)}, ${lng.toFixed(6)}')">คัดลอกพิกัด</button>`;
-    }
-
-    html += `</div>`;
-
-    coordPickerMarker.bindPopup(html, {
-      maxWidth: 280,
-      minWidth: 200,
-      closeButton: true,
-      className: 'coord-picker-popup'
-    }).openPopup();
-  });
-}
-
-function saveNewCoords(id, lat, lng) {
-  saveCoordsToStorage(id, lat, lng);
-
-  const factory = MOCK_DATA.find(f => f.id === id);
-  const mh = !factory && typeof MH_DATA !== 'undefined' ? MH_DATA.find(m => m.id === id) : null;
-
-  if (factory) {
-    factory.lat = lat;
-    factory.lng = lng;
-    if (factoryMarkers[id]) factoryMarkers[id].setLatLng([lat, lng]);
-    const coordEl = document.getElementById('detail-coords');
-    if (coordEl && selectedFactoryId === id) {
-      coordEl.innerHTML = `<strong>พิกัด:</strong> ${escapeHtml(lat)}, ${escapeHtml(lng)} <span style="color:var(--pass);font-size:0.7rem;">✓ บันทึกแล้ว</span>`;
-    }
-    showSaveToast(factory.name);
-  } else if (mh) {
-    mh.lat = lat;
-    mh.lng = lng;
-    if (mhMarkers[id]) {
-      mhMarkers[id].setLatLng([lat, lng]);
-      mhMarkers[id].setPopupContent(buildMHPopupHTML(mh));
-    }
-    const coordEl = document.getElementById('mh-detail-coords');
-    if (coordEl && selectedMHId === id) {
-      coordEl.innerHTML = `พิกัด: ${escapeHtml(lat)}, ${escapeHtml(lng)} <span style="color:var(--pass);font-size:0.7rem;">✓ บันทึกแล้ว</span>`;
-    }
-    showSaveToast(mh.name);
-  }
-
-  if (coordPickerMarker) {
-    map.removeLayer(coordPickerMarker);
-    coordPickerMarker = null;
-  }
-}
-
-function showSaveToast(name) {
-  const existing = document.querySelector('.save-toast');
-  if (existing) existing.remove();
-
-  const toast = document.createElement('div');
-  toast.className = 'save-toast';
-  toast.innerHTML = `✓ บันทึกพิกัด${name ? ' ' + escapeHtml(name) : ''}แล้ว`;
-  document.body.appendChild(toast);
-
-  setTimeout(() => toast.classList.add('show'), 10);
-  setTimeout(() => {
-    toast.classList.remove('show');
-    setTimeout(() => toast.remove(), 300);
-  }, 2000);
-}
-
-function copyCoord(text) {
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = document.querySelector('.coord-copy-btn');
-    if (btn) {
-      btn.textContent = 'คัดลอกแล้ว!';
-      btn.classList.add('copied');
-      setTimeout(() => {
-        btn.textContent = 'คัดลอกพิกัด';
-        btn.classList.remove('copied');
-      }, 1500);
-    }
-  });
 }
 
 /* ============ MANHOLE LAYER ============ */

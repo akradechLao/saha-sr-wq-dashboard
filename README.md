@@ -14,7 +14,6 @@
 - **Month Stepper** — ◀ ▶ เลื่อนดูข้อมูลทีละเดือน พร้อม status card ผ่าน/ไม่ผ่านเกณฑ์
 - **Vertical Line** — เส้นประสีเหลืองบนกราฟ ชี้เดือนที่กำลังดู
 - **Summary Statistics** — สรุปสถิติย้อนหลังทั้งหมด (ผ่าน/ไม่ผ่าน, %, รายปี, รายเดือน)
-- **Admin Mode** — แก้ไขพิกัด + export ข้อมูล (รหัส: admin_k / 1975)
 - **Year Selector** — เลือกดูข้อมูลย้อนหลังหลายปี
 - **Chart Expand** — คลิกกราฟเพื่อขยายเต็มจอ
 - **Detection Limit Visualization** — ค่าต่ำกว่า DL แสดงเป็น ◇ (hollow diamond)
@@ -45,10 +44,9 @@ saha-sr-wq-dashboard/
 │   └── styles.css            ← ธีมสีเหลือง-ทอง-น้ำเงิน (Light/Dark)
 ├── js/
 │   ├── app.js                ← Controller หลัก + Month Stepper + Summary
-│   ├── map.js                ← Leaflet map + factory/MH markers + coord picker
+│   ├── map.js                ← Leaflet map + factory/MH markers
 │   ├── charts.js             ← Chart.js config + trend lines + PARAM_STYLES
-│   ├── history.js            ← โหลดข้อมูลประวัติย้อนหลัง (JSON)
-│   └── upload.js             ← อัพโหลดไฟล์ Excel
+│   └── history.js            ← โหลดข้อมูลประวัติย้อนหลัง (JSON)
 ├── data/
 │   ├── mock-data.js          ← ข้อมูลโรงงาน + Manhole + Standards
 │   ├── stat69.xlsx           ← ไฟล์ต้นฉบับผลวิเคราะห์คุณภาพน้ำ ปี 2569
@@ -80,10 +78,6 @@ saha-sr-wq-dashboard/
 ```
 https://akradechLao.github.io/saha-sr-wq-dashboard/
 ```
-
-### Admin Mode
-
-คลิกปุ่ม 🔒 เพื่อเข้าสู่โหมดผู้ดูแล
 
 ## แหล่งข้อมูล
 

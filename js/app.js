@@ -1,5 +1,4 @@
 let selectedFactoryId = null;
-let isAdmin = false;
 const displayFactories = MOCK_DATA.filter(f => f.hasData !== false);
 
 function escapeHtml(s) {
@@ -44,17 +43,6 @@ function initApp() {
     btn.addEventListener('click', handleMapToggle);
   });
 
-  document.getElementById('admin-btn').addEventListener('click', openAdminLogin);
-  document.getElementById('admin-login-cancel').addEventListener('click', closeAdminLogin);
-  document.getElementById('admin-login-ok').addEventListener('click', attemptAdminLogin);
-  document.getElementById('admin-modal-overlay').addEventListener('click', function(e) {
-    if (e.target === this) closeAdminLogin();
-  });
-  document.getElementById('admin-logout-btn').addEventListener('click', adminLogout);
-  document.getElementById('admin-password').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') attemptAdminLogin();
-  });
-
   window.addEventListener('resize', handleResize);
 
   // Load historical data in background, then re-setup year selector if a factory is selected
@@ -73,46 +61,6 @@ function initApp() {
 
 function handleResize() {
   invalidateMapSize();
-}
-
-/* ============ ADMIN ============ */
-function openAdminLogin() {
-  if (isAdmin) {
-    adminLogout();
-    return;
-  }
-  document.getElementById('admin-modal-overlay').classList.remove('hidden');
-  document.getElementById('admin-password').value = '';
-  document.getElementById('admin-login-error').classList.add('hidden');
-  setTimeout(() => document.getElementById('admin-password').focus(), 100);
-}
-
-function closeAdminLogin() {
-  document.getElementById('admin-modal-overlay').classList.add('hidden');
-}
-
-function attemptAdminLogin() {
-  const pw = document.getElementById('admin-password').value.trim();
-  if (pw === '1975') {
-    isAdmin = true;
-    document.body.classList.add('admin-mode');
-    document.getElementById('admin-bar').classList.remove('hidden');
-    document.getElementById('admin-btn').classList.add('active');
-    closeAdminLogin();
-    enableCoordinatePicker();
-  } else {
-    document.getElementById('admin-login-error').classList.remove('hidden');
-    document.getElementById('admin-password').value = '';
-    document.getElementById('admin-password').focus();
-  }
-}
-
-function adminLogout() {
-  isAdmin = false;
-  document.body.classList.remove('admin-mode');
-  document.getElementById('admin-bar').classList.add('hidden');
-  document.getElementById('admin-btn').classList.remove('active');
-  disableCoordinatePicker();
 }
 
 /* ============ THEME ============ */
@@ -297,11 +245,7 @@ function showDetail(factory) {
 
   const coordEl = document.getElementById('detail-coords');
   if (coordEl) {
-    if (isAdmin) {
-      coordEl.innerHTML = `<strong>พิกัด:</strong> ${factory.lat}, ${factory.lng} <span style="color:var(--accent-yellow);font-size:0.7rem;">(คลิกแผนที่เพื่อแก้)</span>`;
-    } else {
-      coordEl.textContent = `พิกัด: ${factory.lat}, ${factory.lng}`;
-    }
+    coordEl.textContent = `พิกัด: ${factory.lat}, ${factory.lng}`;
   }
 
   const photoEl = document.getElementById('detail-photo');
