@@ -104,12 +104,14 @@
       <!-- DETAIL PANEL (inside sidebar) -->
       <div id="detail-panel" class="detail-panel hidden">
         <div class="detail-panel-header">
+          <button class="mh-nav-btn" id="factory-nav-prev" onclick="navigateFactory(-1)">◀</button>
           <div class="detail-header-left">
             <h2 id="detail-name">—</h2>
             <span class="industry-tag" id="detail-industry">—</span>
           </div>
           <button class="summary-btn" id="factory-summary-btn" onclick="openFactorySummary()" style="display:none;">📊 สรุปสถิติ</button>
           <button class="close-btn" id="close-detail">✕</button>
+          <button class="mh-nav-btn" id="factory-nav-next" onclick="navigateFactory(1)">▶</button>
         </div>
         <img id="detail-photo" class="detail-photo" src="" alt="" loading="lazy" style="display:none;">
         <div id="detail-date-label" class="detail-date-label"></div>

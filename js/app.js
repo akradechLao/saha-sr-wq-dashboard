@@ -282,6 +282,7 @@ function showDetail(factory) {
   setupHistoryYearSelector(factory);
   renderTrendChart(factory, factory.monthlyData && factory.monthlyData.BOD ? factoryCurrentMonthIdx : undefined);
   showFactoryMonthStepper(factory);
+  updateFactoryNavArrows();
 
   setTimeout(() => {
     if (map) map.invalidateSize();
@@ -559,6 +560,23 @@ function closeDetail() {
   resetHighlights();
   renderFactoryList(displayFactories);
   invalidateMapSize();
+}
+
+function updateFactoryNavArrows() {
+  const prevBtn = document.getElementById('factory-nav-prev');
+  const nextBtn = document.getElementById('factory-nav-next');
+  if (!prevBtn || !nextBtn) return;
+  const idx = displayFactories.findIndex(f => f.id === selectedFactoryId);
+  prevBtn.style.visibility = idx > 0 ? 'visible' : 'hidden';
+  nextBtn.style.visibility = idx < displayFactories.length - 1 ? 'visible' : 'hidden';
+}
+
+function navigateFactory(dir) {
+  const idx = displayFactories.findIndex(f => f.id === selectedFactoryId);
+  if (idx === -1) return;
+  const nextIdx = idx + dir;
+  if (nextIdx < 0 || nextIdx >= displayFactories.length) return;
+  selectFactory(displayFactories[nextIdx].id);
 }
 
 /* ============ CHART EXPAND ============ */
@@ -1279,10 +1297,8 @@ document.addEventListener('keydown', e => {
   } else if (selectedFactoryId) {
     const stepper = document.getElementById('factory-month-stepper');
     const monthVisible = stepper && stepper.style.display !== 'none';
-    if (monthVisible) {
-      if (e.key === 'ArrowLeft') { e.preventDefault(); navigateFactoryMonth(-1); }
-      if (e.key === 'ArrowRight') { e.preventDefault(); navigateFactoryMonth(1); }
-      if (e.key === 'Escape') closeDetail();
-    }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); monthVisible ? navigateFactoryMonth(-1) : navigateFactory(-1); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); monthVisible ? navigateFactoryMonth(1) : navigateFactory(1); }
+    if (e.key === 'Escape') closeDetail();
   }
 });
