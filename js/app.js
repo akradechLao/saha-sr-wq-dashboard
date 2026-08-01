@@ -116,12 +116,25 @@ function updateCurrentDate() {
 
 /* ============ SUMMARY ============ */
 function updateSummary() {
-  const passCount = displayFactories.filter(f => isPass(f.current)).length;
-  const failCount = displayFactories.length - passCount;
+  const summaryEl = document.querySelector('.summary-stats');
+  if (!summaryEl) return;
 
-  document.getElementById('total-count').textContent = displayFactories.length;
-  document.getElementById('pass-count').textContent = passCount;
-  document.getElementById('fail-count').textContent = failCount;
+  if (currentLayer === 'manhole') {
+    const withData = MH_DATA.filter(m => !!m.current);
+    const passCount = withData.filter(m => isMHPass(m.current)).length;
+    const failCount = withData.length - passCount;
+    document.querySelector('.summary-stats .stat-card:nth-child(1) .stat-label').textContent = 'จุดตรวจทั้งหมด';
+    document.getElementById('total-count').textContent = MH_DATA.length;
+    document.getElementById('pass-count').textContent = passCount;
+    document.getElementById('fail-count').textContent = failCount;
+  } else {
+    const passCount = displayFactories.filter(f => isPass(f.current)).length;
+    const failCount = displayFactories.length - passCount;
+    document.querySelector('.summary-stats .stat-card:nth-child(1) .stat-label').textContent = 'โรงงานทั้งหมด';
+    document.getElementById('total-count').textContent = displayFactories.length;
+    document.getElementById('pass-count').textContent = passCount;
+    document.getElementById('fail-count').textContent = failCount;
+  }
 }
 
 /* ============ FACTORY LIST ============ */

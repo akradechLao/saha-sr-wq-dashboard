@@ -386,4 +386,5 @@ function switchLayer(layer) {
   }
 
   handleSearch({ target: searchInput });
+  updateSummary();
 }
